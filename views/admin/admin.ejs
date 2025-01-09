@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ecf0f1;
+        }
+
+        .login-container {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #2980b9;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: green;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<!-- <body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <form id="adminform" action="/admin/login" method="POST">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        <div class="error-message" id="error-message">
+           Error messages will be displayed here 
+        </div>
+        <div class="success-message" id="success-message">
+           Success message will be displayed here 
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('adminform').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission to allow validation
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+
+            // Clear previous messages
+            errorMessage.textContent = '';
+            successMessage.textContent = '';
+
+            // Email validation
+            if (!email) {
+                errorMessage.textContent = 'Email is required.';
+                return;
+            }
+
+            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!emailPattern.test(email)) {
+                errorMessage.textContent = 'Please enter a valid email address.';
+                return;
+            }
+
+            // Password validation
+            if (!password) {
+                errorMessage.textContent = 'Password is required.';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorMessage.textContent = 'Password must be at least 6 characters long.';
+                return;
+            }
+
+            // // If validation passes, submit the form
+            successMessage.textContent = 'Login successful!';
+            // // Manually submit the form after successful validation
+            this.submit();
+
+            
+        });
+
+
+    </script>
+
+</body> -->
+<body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <form id="adminform">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('adminform').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            // Validation
+            if (!email) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email is required.',
+                });
+                return;
+            }
+
+            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+            if (!emailPattern.test(email)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter a valid email address.',
+                });
+                return;
+            }
+
+            if (!password) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Password is required.',
+                });
+                return;
+            }
+
+            if (password.length < 6) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Password must be at least 6 characters long.',
+                });
+                return;
+            }
+
+            // Send login request to the server using Axios
+            try {
+                const response = await fetch('/admin/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if ( data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful',
+                text: 'You will be redirected to the dashboard shortly.',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+            }).then(() => {
+                window.location.href = '/admin/dashboard';
+            });
+        } else {
+            // Handle server-side errors
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: data.message || 'An error occurred.',
+            });
+        }
+    } catch (error) {
+        // Handle network or other unexpected errors
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Unable to connect to the server.',
+        });
+    }
+            
+        });
+    </script>
+</body>
+
+</html>

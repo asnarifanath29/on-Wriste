@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= product.name %> Details
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #973a4d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .product-details {
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .product-info {
+            text-align: center;
+        }
+
+        .product-info h2 {
+            margin: 10px 0;
+        }
+
+        .product-info .price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #a3485a;
+        }
+
+        .image-gallery {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .thumbnails {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .thumbnail-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail-img.selected {
+            border: 2px solid #a3485a;
+        }
+
+        .main-image img {
+            width: 500px;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-left: 20px;
+        }
+
+        .product-details-section {
+            margin-top: 30px;
+        }
+
+        .reviews-section {
+            margin-top: 30px;
+        }
+
+        .review {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .review h4 {
+            margin: 0;
+        }
+
+        .review p {
+            color: #555;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            background-color: #a3485a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .action-buttons button:hover {
+            background-color: #8a3450;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .magnifier-lens {
+            position: absolute;
+            border: 1px solid #000;
+            border-radius: 50%;
+            cursor: crosshair;
+            box-shadow: 0 0 5px #000;
+            pointer-events: none;
+            visibility: hidden;
+            background-repeat: no-repeat;
+        }
+
+        .main-image {
+            position: relative;
+            display: inline-block;
+        }
+
+        #mainImage {
+            display: block;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Product Details</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/shop">Shop</a>
+        </nav>
+    </header>
+
+    <!-- Product Details Section -->
+    <div class="container product-details">
+        <!-- Product Name -->
+        <div class="product-info">
+            <h2>
+                <%= product.name %>
+            </h2>
+        </div>
+
+        <div class="container">
+            <nav aria-label="breadcrumb" class="pt-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/home" class="text-danger">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/shop"  class="text-danger">Shop</a>
+                    </li>
+                    <li class="breadcrumb-item active text-danger" aria-current="page">
+                        <%= product.name %>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+
+        <!-- Image Gallery -->
+        <div class="image-gallery">
+            <!-- Thumbnails -->
+            <div class="thumbnails">
+                <% product.images.forEach((image, index)=> { %>
+                    <img src="<%= image %>" alt="<%= product.name %> Thumbnail"
+                        class="thumbnail-img <%= index === 0 ? 'selected' : '' %>" data-index="<%= index %>">
+                    <% }) %>
+            </div>
+            <!-- Main Image -->
+            <div class="main-image">
+                <img id="mainImage" src="<%= product.images[0] %>" alt="<%= product.name %> Main Image">
+            </div>
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="product-details-section">
+            <h3>Product Details</h3>
+
+            <p class="price"><strong>Price:</strong><span style="text-decoration: line-through;">&nbsp;&nbsp;<%=
+                        product.price %></span>
+                <%= product.salesPrice %>
+            </p>
+            <p><strong>Brand:</strong>
+                <%= product.brand %>
+            </p>
+            <p><strong>Category:</strong>
+                <%= product.category ? product.category.name : 'Not Available' %>
+            </p>
+            <p>
+                <strong>Stock:</strong>
+                <% if (product.stock && product.stock> 0) { %>
+                    <%= product.stock %>
+                        <% } else { %>
+                            <span style="color: red;">Out of stock</span>
+                            <% } %>
+            </p>
+            <p><strong>Description:</strong>
+                <%= product.description %>
+            </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons text-center">
+            <a href="/add-to-cart" class="btn btn-warning">Add to Cart</a>
+            <button>Add to Wishlist</button>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h3>Customer Reviews</h3>
+            <% if (product.reviews.length===0) { %>
+                <p>No reviews yet.</p>
+                <% } else { %>
+                    <% product.reviews.forEach(review=> { %>
+                        <div class="review">
+                            <h4>
+                                <%= review.user.name %>
+                            </h4>
+                            <p>
+                                <%= review.comment %>
+                            </p>
+                            <p><strong>Rating:</strong>
+                                <%= review.rating %>/5
+                            </p>
+                        </div>
+                        <% }) %>
+                            <% } %>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+
+        document.querySelectorAll('.thumbnail-img').forEach((thumbnail) => {
+            thumbnail.addEventListener('click', function () {
+                // Change the main image source to the clicked thumbnail's source
+                document.getElementById('mainImage').src = this.src;
+
+                // Update selected class
+                document.querySelectorAll('.thumbnail-img').forEach((img) => img.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Create the Magnifier Lens
+        var magnifierLens = document.createElement('div');
+        magnifierLens.classList.add('magnifier-lens');
+        document.body.appendChild(magnifierLens); // Append it to the body or a specific container
+
+        function setupMagnifier(imageElement) {
+            var magnificationFactor = 3; // Adjust magnification level as needed
+            var magnifierSize = 200; // Starting size of the magnifier lens
+
+            // Ensure the magnifier lens is styled and prepared
+            magnifierLens.style.backgroundRepeat = 'no-repeat';
+            magnifierLens.style.pointerEvents = 'none';
+            magnifierLens.style.position = 'absolute';
+            magnifierLens.style.border = '1px solid #000';
+            magnifierLens.style.borderRadius = '50%';
+            magnifierLens.style.width = magnifierSize + 'px'; // Diameter of the lens
+            magnifierLens.style.height = magnifierSize + 'px'; // Diameter of the lens
+            magnifierLens.style.visibility = 'hidden'; // Initially hidden
+            magnifierLens.style.boxShadow = '0 0 5px #000';
+            magnifierLens.style.cursor = 'crosshair';
+
+            // Function to update magnifier lens size
+            function updateMagnifierSize(deltaY) {
+                // Update magnifier size
+                magnifierSize += deltaY > 0 ? -20 : 20;
+                magnifierSize = Math.max(100, Math.min(magnifierSize, 400));
+
+                // Adjust magnification factor based on lens size
+                magnificationFactor = 2 + (magnifierSize - 100) * (5 - 2) / (400 - 100);
+
+                magnifierLens.style.width = magnifierSize + 'px';
+                magnifierLens.style.height = magnifierSize + 'px';
+
+                // Update lens styling for new magnification
+                updateLensMagnification();
+            }
+
+            function updateLensMagnification() {
+                if (!imageElement) return; // Ensure there's an image element to work on
+
+                var bounds = imageElement.getBoundingClientRect();
+                var bgPosX = -(magnifierLens.offsetLeft - bounds.left) * magnificationFactor - magnifierLens.offsetWidth / 2;
+                var bgPosY = -(magnifierLens.offsetTop - bounds.top) * magnificationFactor - magnifierLens.offsetHeight / 2;
+
+                magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
+                magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
+
+                // Trigger reflow
+                magnifierLens.offsetHeight;
+            }
+
+            imageElement.addEventListener('mousemove', function (e) {
+                magnifierLens.style.visibility = 'visible';
+                var bounds = e.target.getBoundingClientRect();
+                var mouseX = e.clientX - bounds.left;
+                var mouseY = e.clientY - bounds.top;
+
+                var lensX = mouseX - (magnifierLens.offsetWidth / 2);
+                var lensY = mouseY - (magnifierLens.offsetHeight / 2);
+
+                magnifierLens.style.left = (bounds.left + window.pageXOffset + lensX) + 'px';
+                magnifierLens.style.top = (bounds.top + window.pageYOffset + lensY) + 'px';
+
+                var bgPosX = -((mouseX * magnificationFactor) - magnifierLens.offsetWidth / 2);
+                var bgPosY = -((mouseY * magnificationFactor) - magnifierLens.offsetHeight / 2);
+
+                magnifierLens.style.backgroundImage = `url('${imageElement.src}')`;
+                magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
+                magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
+
+                imageElement.style.cursor = 'none'; // Hide the cursor when magnifier is active
+            });
+
+            imageElement.addEventListener('wheel', function (e) {
+                e.preventDefault(); // Prevent the page from scrolling
+                updateMagnifierSize(e.deltaY); // Adjust the magnifier size based on scroll direction
+            }, { passive: false });
+
+            imageElement.addEventListener('mouseleave', function () {
+                magnifierLens.style.visibility = 'hidden';
+                imageElement.style.cursor = 'default'; // Reset the cursor when the mouse leaves
+            });
+        }
+
+        // Setup the magnifier on the image
+        var imageElement = document.getElementById('mainImage');
+        setupMagnifier(imageElement);
+    </script>
+</body>
+
+</html>

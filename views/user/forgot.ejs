@@ -1,0 +1,259 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .forgot-container {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: none;
+        }
+        .card-header {
+            background-color: transparent;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .btn-primary {
+            padding: 12px 24px;
+            font-weight: 500;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13,110,253,.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="forgot-container d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-header text-center pt-4">
+                            <h4 class="mb-0">Forgot Password?</h4>
+                            <p class="text-muted mt-2">Enter your email address to reset your password</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <form>
+                                <div class="mb-4">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="email" 
+                                           placeholder="name@example.com" >
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        Reset Password
+                                    </button>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <a href="/login" class="text-decoration-none">Back to Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+
+
+
+      <!-- Template CSS -->
+      <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+      <link rel="stylesheet" href="/assets/css/flaticon.css">
+      <link rel="stylesheet" href="/assets/css/slicknav.css">
+      <link rel="stylesheet" href="/assets/css/animate.min.css">
+      <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+      <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+      <link rel="stylesheet" href="/assets/css/themify-icons.css">
+      <link rel="stylesheet" href="/assets/css/slick.css">
+      <link rel="stylesheet" href="/assets/css/nice-select.css">
+      <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+         .forgot-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 60px 0;
+            min-height: calc(100vh - 200px);
+        }
+        .forgot-container {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .card {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: none;
+        }
+        .card-header {
+            background-color: transparent;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .btn-primary {
+            padding: 12px 24px;
+            font-weight: 500;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13,110,253,.15);
+        }
+    </style>
+</head>
+<body>
+     <!-- Include Header -->
+     <%- include('../partials/user/header') %>
+    <section class="forgot-container"> 
+    <div class="forgot-container d-flex align-items-center justify-content-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-header text-center pt-4">
+                            <h4 class="mb-0">Forgot Password?</h4>
+                            <p class="text-muted mt-2">Enter your email address to reset your password</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="resetForm" >
+                                <div class="mb-4">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="email" name="email" 
+                                           placeholder="name@example.com" >
+                                    <div id="emailError" class="text-danger" style="display: none;">Please enter a valid email address.</div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        Reset Password
+                                    </button>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <a href="/login" class="text-decoration-none">Back to Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Include Footer -->
+<%- include('../partials/user/footer') %>
+
+
+
+
+
+
+
+    <!-- Template Scripts -->
+    <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.slicknav.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/slick.min.js"></script>
+    <script src="/assets/js/wow.min.js"></script>
+    <script src="/assets/js/animated.headline.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.js"></script>
+    <script src="/assets/js/jquery.nice-select.min.js"></script>
+    <script src="/assets/js/jquery.sticky.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('resetForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+    
+            const email = document.getElementById('email').value;
+            const emailError = document.getElementById('emailError');
+    
+            // Regular expression for email validation
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    
+            // Client-side validation
+            if (!emailPattern.test(email)) {
+                emailError.style.display = 'block';
+                emailError.textContent = 'Please enter a valid email address.';
+                return;
+            } else {
+                emailError.style.display = 'none';
+            }
+    
+            // Server-side validation
+            try {
+                const response = await fetch('/forgot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                            window.location.href = '/forgot_otp';
+                    }
+                } else {
+                    const errorData = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorData.message || 'Email not found.',
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Error',
+                    text: 'Something went wrong. Please try again later.',
+                });
+            }
+        });
+    </script>
+    
+</body>
+</html>

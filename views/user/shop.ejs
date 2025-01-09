@@ -1,0 +1,525 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #a3485a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Products Grid Layout */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            background-color: white;
+            padding: 10px;
+        }
+
+        .product-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .view-details-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #a3485a;
+            color: white;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        .view-details-btn:hover {
+            background-color: #a3485a;
+        }
+
+        p {
+            color: #555;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <!-- <header>
+        <h1>Shop</h1>
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+    </header>
+
+    <!-- Main Section for Product Listings -->
+    <!-- <main>
+        <div class="products-grid">
+            <% if (products.length === 0) { %>
+                <p>No products available at the moment.</p>
+            <% } else { %>
+                <% products.forEach(product => { %>
+                    <div class="product-card">
+                        <!-- <a href="/product/<%= product._id %>"> -->
+                            <!-- <img src="<%= product.images[0] || 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.quotev.com%2Fstory%2F7244632%2FError-Loading-Refresh-page-If-doesnt-load-dont-read-this-story-&psig=AOvVaw0bAFHH8_4-xIoBRzvZFuKh&ust=1735955592639000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCICF6Nm42IoDFQAAAAAdAAAAABAE' %>" alt="<%= product.name %>" class="product-image">
+                            <h2><%= product.name %></h2>
+                        <!-- </a> -->
+                        <!-- <p>Price: $<%= product.offerPrice || product.price %></p>
+                        <p><%= product.description.substring(0, 50) %>...</p>
+                        <a href="/product/<%= product._id %>" class="view-details-btn">View Details</a>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </main>
+
+</body>
+
+</html>  -->
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Watch shop | eCommers</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- Additional Custom CSS -->
+    <style>
+        .rating {
+            color: #ffc107;
+            margin: 10px 0;
+        }
+        
+        .rating-count {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-left: 5px;
+        }
+        
+        .product-meta {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .brand, .category {
+            margin: 0 5px;
+        }
+        
+        .tags {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            color: #6c757d;
+        }
+        
+        .description {
+            color: #6c757d;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+        
+        .view-details-btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .view-details-btn:hover {
+            background-color: #333;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         /* Updated and new image-related styles */
+         .popular-img {
+            position: relative;
+            width: 300px;  /* Fixed width container */
+            height: 300px; /* Fixed height container */
+            margin: 0 auto;
+            overflow: hidden;
+            background-color: #f8f9fa;
+        }
+        
+        .popular-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This ensures the image covers the area without distortion */
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Hover effect for images */
+        .popular-img:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .popular-img {
+                width: 250px;
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .popular-img {
+                width: 200px;
+                height: 200px;
+            }
+        }
+        
+        /* Ensure product cards align properly */
+        .single-popular-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .popular-caption {
+            width: 100%;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    </style>
+</head>
+
+<body>
+    <!-- Header Start -->
+    <header>
+        <div class="header-area">
+            <div class="main-header header-sticky">
+                <div class="container-fluid">
+                    <div class="menu-wrapper">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                        </div>
+                        <!-- Main-menu -->
+                        <div class="main-menu d-none d-lg-block">
+                            <nav>                                                
+                                <ul id="navigation">  
+                                    <li><a href="/">Home</a></li>
+                                    <li><a href="/shop">shop</a></li>
+                                    <li><a href="about.html">about</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- Header Right -->
+                        <div class="header-right">
+                            <ul>
+                                <li>
+                                    <div class="nav-search search-switch">
+                                        <span class="flaticon-search"></span>
+                                    </div>
+                                </li>
+                                <li><a href="login.html"><span class="flaticon-user"></span></a></li>
+                                <li><a href="cart.html"><span class="flaticon-shopping-cart"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End -->
+
+    <main>
+        <!-- Hero Area Start-->
+        <div class="slider-area">
+            <div class="single-slider slider-height2 d-flex align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="hero-cap text-center">
+                                <h2>Watch Shop</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Hero Area End-->
+
+        <!-- Product Grid Start -->
+        <section class="popular-items latest-padding">
+            <div class="container">
+                <div class="row product-btn justify-content-between mb-40">
+                    <div class="properties__button">
+                        <nav>                                                      
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">NewestArrivals</a>
+                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Price high to low</a>
+                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Most populer</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="row">
+                            <% if (products.length === 0 || products.every(product => product.isDeleted)) { %>
+                                <div class="col-12 text-center">
+                                    <p>No products available at the moment.</p>
+                                </div>
+                            <% } else { %>
+                                <% products.filter(product => !product.isDeleted).forEach(product => { %>
+                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                        <div class="single-popular-items mb-50 text-center">
+                                            <div class="popular-img">
+                                                <img src="<%= product.images[0] || '/assets/img/default-product.png' %>" alt="<%= product.name %>">
+                                                <div class="img-cap">
+                                                    <span>Add to cart</span>
+                                                </div>
+                                                <div class="favorit-items">
+                                                    <span class="flaticon-heart"></span>
+                                                </div>
+                                            </div>
+                                            <div class="popular-caption">
+                                                <h3><a href="/product/<%= product._id %>"><%= product.name %></a></h3>
+                                                
+                                                <!-- Price Display -->
+                                                <div class="pricing">
+                                                    <% if (product.offerPrice && product.offerPrice < product.price) { %>
+                                                        <span class="price">Price<%= product.offerPrice.toFixed(2) %></span>
+                                                        <span class="original-price">Price<%= product.price.toFixed(2) %></span>
+                                                    <% } else { %>
+                                                        <span class="price">Price<%= product.price.toFixed(2) %></span>
+                                                    <% } %>
+                                                </div>
+
+                                                <!-- Rating Display -->
+                                                <div class="rating mt-2">
+                                                    <% for(let i = 1; i <= 5; i++) { %>
+                                                        <% if (i <= Math.round(product.rating)) { %>
+                                                            <i class="fas fa-star"></i>
+                                                        <% } else { %>
+                                                            <i class="far fa-star"></i>
+                                                        <% } %>
+                                                    <% } %>
+                                                    <span class="rating-count">
+                                                        (<%= product.reviews.length %> reviews)
+                                                    </span>
+                                                </div>
+
+                                                <!-- Brand & Category -->
+                                                <% if (product.brand || (product.category && product.category.name)) { %>
+                                                    <div class="product-meta mt-2">
+                                                        <% if (product.brand) { %>
+                                                            <span class="brand"><%= product.brand %></span>
+                                                        <% } %>
+                                                        <% if (product.category && product.category.name) { %>
+                                                            <span class="category">| <%= product.category.name %></span>
+                                                        <% } %>
+                                                    </div>
+                                                <% } %>
+
+                                                <!-- Description -->
+                                                <!-- <p class="description mt-2">
+                                                    <%= product.description.substring(0, 100) %>...
+                                                </p> -->
+
+                                                <!-- Tags -->
+                                                <% if (product.tags && product.tags.length > 0) { %>
+                                                    <div class="tags mt-2">
+                                                        <% product.tags.slice(0, 3).forEach(tag => { %>
+                                                            <span class="tag"><%= tag %></span>
+                                                        <% }) %>
+                                                    </div>
+                                                <% } %>
+
+                                                <a href="/product/<%= product._id %>" class="view-details-btn mt-3">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Product Grid End -->
+    </main>
+
+    <footer>
+        <!-- Footer Start-->
+        <div class="footer-area footer-padding">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="single-footer-caption mb-30">
+                                <!-- Footer Logo -->
+                                <div class="footer-logo">
+                                    <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End-->
+    </footer>
+
+    <!-- JS here -->
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/animated.headline.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.sticky.js"></script>
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>

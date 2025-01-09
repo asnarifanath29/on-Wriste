@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container styling */
+        .otp-container {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Heading styling */
+        .otp-container h1 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            font-size: 16px;
+            color: #ff0000;
+            margin-bottom: 20px;
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            color: #666666;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Button styling */
+        .btn {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745 !important;
+        }
+
+        .btn-danger {
+            background-color: #dc3545 !important;
+        }
+
+        .disabled {
+            pointer-events: none;
+            /* Prevents clicking */
+            color: gray;
+            text-decoration: none;
+            cursor: not-allowed;
+        }
+
+        /* Enabled link style */
+        .enabled {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="otp-container">
+        <h1>OTP Verification</h1>
+        <p class="timer">Time Remaining: <span id="countdown"></span></p>
+        <form id="otp-form">
+            <div class="form-group">
+                <!-- Hidden input field for email  -->
+                <input type="hidden" id="email" name="email" value="<%= userEmail %>">
+            </div>
+            <div class="form-group">
+                <label for="otp">OTP</label>
+                <input type="text" id="otp" name="otp" placeholder="Enter OTP" required>
+            </div>
+            <!-- <a  class="link-secondary"> Resend OTP</a> -->
+            <div class="resend-container">
+                <a id="resendLink" class="resend-button disabled">Resend OTP</a>
+                <div id="resendTimer" class="resend-timer"></div>
+            </div>
+            <button type="submit" id="verify-btn" class="btn">Verify OTP</button>
+
+        </form>
+    </div>
+
+    <script>
+        const otpForm = document.getElementById('otp-form');
+        const verifyBtn = document.getElementById('verify-btn');
+        const countdownElement = document.getElementById('countdown');
+        const resendLink = document.getElementById('resendLink');
+        const resendTimer = document.getElementById('resendTimer');
+
+        let remainingTime = 30; // 5 minutes for OTP validation
+        let resendCooldown = 6; // 1 minute cooldown for resend
+        let isResendEnabled = false;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes}m ${remainingSeconds}s`;
+        }
+
+        function updateResendButton() {
+            if (isResendEnabled) {
+                resendLink.classList.remove('disabled');
+                resendLink.classList.add('enabled');
+                resendTimer.textContent = '';
+            } else {
+                resendLink.classList.remove('enabled');
+                resendLink.classList.add('disabled');
+            }
+        }
+
+        function startResendCooldown() {
+            isResendEnabled = false;
+            updateResendButton();
+
+            let cooldownTime = resendCooldown;
+            const cooldownInterval = setInterval(() => {
+                cooldownTime--;
+                resendTimer.textContent = `Resend available in ${formatTime(cooldownTime)}`;
+
+                if (cooldownTime <= 0) {
+                    clearInterval(cooldownInterval);
+                    isResendEnabled = true;
+                    updateResendButton();
+                    resendTimer.textContent = '';
+                }
+            }, 1000);
+        }
+
+        startResendCooldown();
+
+        const timerInterval = setInterval(() => {
+            remainingTime--;
+            countdownElement.textContent = formatTime(remainingTime);
+
+            if (remainingTime <= 0) {
+                clearInterval(timerInterval);
+                countdownElement.textContent = "OTP Expired!";
+                verifyBtn.classList.add('btn-danger');
+            }
+        }, 1000);
+
+        resendLink.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            if (!isResendEnabled) return;
+
+            const formData = new FormData(otpForm);
+            const email = formData.get('email');
+
+            try {
+                resendLink.textContent = 'Sending...';
+                const response = await fetch('/resendforgot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Reset the main OTP timer
+                    remainingTime = 30;
+                    countdownElement.textContent = formatTime(remainingTime);
+
+                    // Start the resend cooldown
+                    startResendCooldown();
+
+                    alert(`New OTP sent to your email: ${email}`);
+                } else {
+                    alert('Failed to resend OTP. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error during OTP resend:', error);
+                alert('Error occurred. Please check your network.');
+            } finally {
+                resendLink.textContent = 'Resend OTP';
+            }
+        });
+
+        verifyBtn.addEventListener('click', async function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // if (remainingTime <= 0) {
+            //     alert("OTP has expired. Please request a new one.");
+            //     return;
+            // }
+
+            verifyBtn.innerText = "Waiting for response...";
+
+            const formData = new FormData(otpForm);
+            const email = formData.get('email');
+            const otp = formData.get('otp');
+
+            try {
+                const response = await fetch('/verifyOtpforgot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, otp }),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    verifyBtn.innerText = "Verified";
+                    verifyBtn.classList.add('btn-success');
+                    setTimeout(() => {
+                        window.location.href = "/password_reset";
+                    }, 1000);
+                } else {
+                    verifyBtn.innerText = "Invalid or expired OTP. Try again.";
+                    verifyBtn.classList.add('btn-danger');
+                }
+            } catch (error) {
+                console.error("Error verifying OTP:", error);
+                verifyBtn.innerText = "Error. Please try again.";
+                verifyBtn.classList.add('btn-danger');
+            } finally {
+                setTimeout(() => {
+                    verifyBtn.innerText = "Verify OTP";
+                    verifyBtn.classList.remove('btn-danger', 'btn-success');
+                }, 3000);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/assets/css/flaticon.css">
+  <link rel="stylesheet" href="/assets/css/slicknav.css">
+  <link rel="stylesheet" href="/assets/css/animate.min.css">
+  <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+  <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/assets/css/themify-icons.css">
+  <link rel="stylesheet" href="/assets/css/slick.css">
+  <link rel="stylesheet" href="/assets/css/nice-select.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+
+
+
+
+
+
+
+
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            /* height: 100vh;
+            display: flex;
+            align-items: center; */
+        }
+        .otp-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .countdown {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .resend-link {
+            color: #0d6efd;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .resend-link.disabled {
+            color: #6c757d;
+            pointer-events: none;
+        }
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .otp-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 60px 0;
+            min-height: calc(100vh - 200px);
+        }
+
+
+    </style>
+</head>
+<body>
+     <!-- Include Header -->
+<%- include('../partials/user/header') %>
+<section class="otp-section">
+    <div class="container">
+        <div class="otp-card">
+            <h4 class="text-center mb-3">OTP Verification</h4>
+            
+            <div class="text-center mb-3">
+                Time remaining: <span id="countdown" class="countdown">2:00</span>
+            </div>
+
+            <form id="otpForm" onsubmit="return validateOTP(event)">
+                <input type="hidden" id="email" name="email" value="<%= userEmail %>">
+                
+                <div class="mb-3">
+                    <input type="text" 
+                           class="form-control text-center" 
+                           id="otpInput" 
+                           placeholder="Enter OTP"
+                           maxlength="6" 
+                           onkeyup="validateOTPInput(this)"
+                           required>
+                    <div id="otpError" class="error">Please enter a valid 6-digit OTP</div>
+                </div>
+
+                <button type="submit" id="verifyBtn" class="btn w-100 mb-3" style="background-color: red; color: white; border-color: red;">
+                    Verify OTP
+                </button>
+
+                <div class="text-center">
+                    <a id="resendLink" class="resend-link disabled" onclick="handleResend()">Resend OTP</a>
+                    <div id="resendTimer" class="small text-muted mt-1"></div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</section>    
+  <!-- Include Footer -->
+    <%- include('../partials/user/footer') %>
+     <!-- Template Scripts -->
+     <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+     <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+     <script src="/assets/js/popper.min.js"></script>
+     <script src="/assets/js/bootstrap.min.js"></script>
+     <script src="/assets/js/jquery.slicknav.min.js"></script>
+     <script src="/assets/js/owl.carousel.min.js"></script>
+     <script src="/assets/js/slick.min.js"></script>
+     <script src="/assets/js/wow.min.js"></script>
+     <script src="/assets/js/animated.headline.js"></script>
+     <script src="/assets/js/jquery.magnific-popup.js"></script>
+     <script src="/assets/js/jquery.nice-select.min.js"></script>
+     <script src="/assets/js/jquery.sticky.js"></script>
+     <script src="/assets/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Global variables
+        const otpForm = document.getElementById('otpForm');
+        const otpInput = document.getElementById('otpInput');
+        const otpError = document.getElementById('otpError');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const countdownElement = document.getElementById('countdown');
+        const resendLink = document.getElementById('resendLink');
+        const resendTimer = document.getElementById('resendTimer');
+
+        let timerInterval;
+        let remainingTime = 120;
+        let resendCooldown = 120;
+        let isResendEnabled = false;
+
+        function startMainTimer() {
+            // Clear any existing timer
+            if(timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            // Reset time
+            remainingTime = 120;
+            countdownElement.textContent = formatTime(remainingTime);
+            verifyBtn.disabled = false;
+            verifyBtn.classList.replace('btn-danger', 'btn-primary');
+            
+            // Start new timer
+            timerInterval = setInterval(() => {
+                remainingTime--;
+                countdownElement.textContent = formatTime(remainingTime);
+
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    countdownElement.textContent = "Expired";
+                    verifyBtn.disabled = true;
+                    verifyBtn.classList.replace('btn-primary', 'btn-danger');
+                }
+            }, 1000);
+        }
+
+        function validateOTPInput(input) {
+            input.value = input.value.replace(/[^0-9]/g, '');
+            
+            if(input.value.length === 6) {
+                otpError.style.display = 'none';
+                verifyBtn.disabled = false;
+            } else {
+                otpError.style.display = 'block';
+                verifyBtn.disabled = true;
+            }
+        }
+
+        function validateOTP(event) {
+            event.preventDefault();
+            
+            const otp = otpInput.value;
+            
+            if(remainingTime <= 0) {
+                alert('OTP has expired. Please request a new one.');
+                return false;
+            }
+
+            if(otp.length !== 6) {
+                otpError.style.display = 'block';
+                return false;
+            }
+
+            handleVerification();
+            return false;
+        }
+
+        async function handleVerification() {
+            verifyBtn.textContent = 'Verifying...';
+            verifyBtn.disabled = true;
+
+            try {
+                const response = await fetch('/otp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value,
+                        otp: otpInput.value
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    verifyBtn.textContent = 'Verified';
+                    verifyBtn.classList.replace('btn-primary', 'btn-success');
+                    setTimeout(() => {
+                        window.location.href = "/home";
+                    }, 1000);
+                } else {
+                    verifyBtn.textContent = 'Invalid OTP';
+                    verifyBtn.classList.replace('btn-primary', 'btn-danger');
+                    otpError.textContent = 'Invalid OTP. Please try again.';
+                    otpError.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                verifyBtn.textContent = 'Error occurred';
+                verifyBtn.classList.replace('btn-primary', 'btn-danger');
+            } finally {
+                setTimeout(() => {
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Verify OTP';
+                    verifyBtn.classList.replace('btn-danger', 'btn-primary');
+                }, 3000);
+            }
+        }
+
+        async function handleResend() {
+            if (!isResendEnabled) return;
+
+            try {
+                resendLink.textContent = 'Sending...';
+                const response = await fetch('/resentOtp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Start new timer
+                    startMainTimer();
+                    
+                    // Start resend cooldown
+                    startResendCooldown();
+                    
+                    // Clear input and error
+                    otpInput.value = '';
+                    otpError.style.display = 'none';
+                    
+                    // alert('New OTP sent successfully');
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'OTP Sent!',
+                    text: 'A new OTP has been sent to your email.'
+                });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // alert('Failed to resend OTP');
+                Swal.fire({
+                icon: 'error',
+                title: 'Failed',
+                text: 'Failed to resend OTP. Please try again later.'
+            });
+            } finally {
+                resendLink.textContent = 'Resend OTP';
+            }
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateResendButton() {
+            if (isResendEnabled) {
+                resendLink.classList.remove('disabled');
+                resendTimer.textContent = '';
+            } else {
+                resendLink.classList.add('disabled');
+            }
+        }
+
+        function startResendCooldown() {
+            isResendEnabled = false;
+            updateResendButton();
+
+            let cooldownTime = resendCooldown;
+            const cooldownInterval = setInterval(() => {
+                cooldownTime--;
+                resendTimer.textContent = `Available in ${formatTime(cooldownTime)}`;
+
+                if (cooldownTime <= 0) {
+                    clearInterval(cooldownInterval);
+                    isResendEnabled = true;
+                    updateResendButton();
+                }
+            }, 1000);
+        }
+
+        // Initialize timers
+        startMainTimer();
+        startResendCooldown();
+        verifyBtn.disabled = true;
+    </script>
+</body>
+</html>

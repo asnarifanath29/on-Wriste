@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background: #343a40;
+            padding-top: 60px;
+            /* Space for navbar */
+            z-index: 1;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 2;
+            background: #343a40;
+            padding: 0.5rem 1rem;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .dropdown-menu {
+            margin-top: 0.5rem;
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .dropdown-item i {
+            width: 1.25rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 20px 20px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <!-- Sidebar Toggle Button (Mobile) -->
+            <button class="navbar-toggler text-white border-white" type="button" id="sidebarToggle">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <!-- Brand -->
+            <a class="navbar-brand text-white d-flex align-items-center" href="#">
+                <i class="bi bi-shop fs-4 me-2"></i>
+                E-Shop Admin
+            </a>
+
+            <!-- Profile Dropdown -->
+            <div class="dropdown ms-auto">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown">
+                    <div class="profile-img me-2">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="d-none d-md-block">
+                        <strong>John Doe</strong>
+                        <small class="d-block text-light">Admin</small>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#profile">
+                            <i class="bi bi-person"></i>Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#settings">
+                            <i class="bi bi-gear"></i>Settings
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#" id="logout-btn">
+                            <i class="bi bi-box-arrow-right"></i>Logout
+                        </a>
+                        <!-- <button class="logout-button" id="logout-btn">Logout</button> -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/products">
+                    <i class="bi bi-box-seam"></i>
+                    Products
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/userManagement">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/categories">
+                    <i class="bi bi-grid"></i>
+                    Categories
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2>Add Category</h2>
+        <div class="container mt-4">
+            <form id="add-category-form">
+                <!-- Category Name -->
+                <div class="mb-3">
+                    <label for="categoryName" class="form-label">Category Name</label>
+                    <input type="text" id="categoryName" name="categoryName" class="form-control"
+                        placeholder="Enter category name">
+                    <div class="invalid-feedback">Please provide a category name.</div>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="categoryDescription" class="form-label">Description</label>
+                    <textarea id="categoryDescription" name="categoryDescription" class="form-control" rows="3"
+                        placeholder="Enter category description"></textarea>
+                    <div class="invalid-feedback">Please provide a description.</div>
+                </div>
+
+
+                <!-- Buttons -->
+                <button type="submit" class="btn btn-primary">Add Category</button>
+                <a href="/admin/categories" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.11/dist/sweetalert2.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Sidebar Toggle
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+
+        // Form Validation
+        document.getElementById('add-category-form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            let form = event.target;
+            let isValid = true;
+
+            // Category Name Validation
+            const categoryName = document.getElementById('categoryName');
+            if (!categoryName.value.trim()) {
+                categoryName.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                categoryName.classList.remove('is-invalid');
+            }
+
+            // Category Description Validation
+            const categoryDescription = document.getElementById('categoryDescription');
+            if (!categoryDescription.value.trim()) {
+                categoryDescription.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                categoryDescription.classList.remove('is-invalid');
+            }
+
+
+
+            // If form is valid, proceed (e.g., submit the form or send data to server)
+            if (isValid) {
+                
+                const formData = {
+                    categoryName: categoryName.value,
+                    categoryDescription: categoryDescription.value
+                };
+
+                try {
+                    const response = await fetch('/admin/categories', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        console.log('Category added successfully', data);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Category Added Successfully',
+                            confirmButtonText: 'OK'
+                        }).then(()=>{
+                            window.location.href = '/admin/categories'; // Redirect to categories page after success
+                        })
+                    } else if (response.status === 409) {
+                        // Category already exists
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Category Already Exists',
+                            text: 'The category you are trying to add already exists.',
+                            confirmButtonText: 'OK'
+                        });
+                    } else if (response.status === 400) {
+                        // General error (failed to add category)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Failed to add the category. Please try again.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (error) {
+                    // Network error handling
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Network Error!',
+                        text: 'There was a problem with the network. Please try again later.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
