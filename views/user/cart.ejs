@@ -1,0 +1,823 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Watch shop | eCommers</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/flaticon.css">
+    <link rel="stylesheet" href="assets/css/slicknav.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* .quantity-selector {
+              display: inline-flex;
+              align-items: center;
+              border: 1px solid #ffffff;
+              border-radius: 4px;
+              overflow: hidden;
+          }
+          
+          .quantity-btn {
+              padding: 8px 12px;
+              background: #646464;
+              border: none;
+              cursor: pointer;
+          }
+          
+          .quantity-btn:hover {
+              background: #ffffff;
+          }
+          
+          .quantity-display {
+              padding: 8px 15px;
+              border-left: 1px solid #ddd;
+              border-right: 1px solid #ddd;
+              min-width: 50px;
+              text-align: center;
+          }
+          
+          .quantity-btn:disabled {
+              cursor: not-allowed;
+              opacity: 0.6;
+          } */
+        .quantity-selector {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .quantity-btn {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .quantity-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quantity-display {
+            padding: 8px 20px;
+            min-width: 60px;
+            text-align: center;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            background: #fff;
+        }
+
+        .stock-message {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .stock-info {
+            font-size: 0.875rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .quantity-btn {
+                padding: 6px 12px;
+            }
+
+            .quantity-display {
+                padding: 6px 15px;
+                min-width: 50px;
+            }
+        }
+
+
+
+        .cart-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .quantity-selector {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border: none;
+            color: #2d3436;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .quantity-display {
+            padding: 0.5rem 1.2rem;
+            min-width: 60px;
+            text-align: center;
+            background: #fff;
+            border-left: 1px solid #e9ecef;
+            border-right: 1px solid #e9ecef;
+        }
+
+        .delete-btn-cart {
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: transparent;
+            transition: all 0.2s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-btn-cart:hover {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .stock-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+        .stock-info {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkout-btn_1 {
+            background: #4a90e2;
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 6px;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .checkout-btn_1:hover {
+            background: #357abd;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!-- Header Start -->
+        <div class="header-area">
+            <div class="main-header header-sticky">
+                <div class="container-fluid">
+                    <div class="menu-wrapper">
+                        <!-- Logo -->
+                        <div class="logo">
+                            <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
+                        </div>
+                        <!-- Main-menu -->
+                        <div class="main-menu d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a href="/home">Home</a></li>
+                                    <li><a href="/shop">shop</a></li>
+                                    <li><a href="about.html">about</a></li>
+                                    <li class="hot"><a href="#">Latest</a>
+                                        <ul class="submenu">
+                                            <li><a href="shop.html"> Product list</a></li>
+                                            <li><a href="product_details.html"> Product Details</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="blog.html">Blog</a>
+                                        <ul class="submenu">
+                                            <li><a href="blog.html">Blog</a></li>
+                                            <li><a href="blog-details.html">Blog Details</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Pages</a>
+                                        <ul class="submenu">
+                                            <li><a href="login.html">Login</a></li>
+                                            <li><a href="cart.html">Cart</a></li>
+                                            <li><a href="elements.html">Element</a></li>
+                                            <li><a href="confirmation.html">Confirmation</a></li>
+                                            <li><a href="checkout.html">Product Checkout</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- Header Right -->
+                        <div class="header-right">
+                            <ul>
+                                <li>
+                                    <div class="nav-search search-switch">
+                                        <span class="flaticon-search"></span>
+                                    </div>
+                                </li>
+                                <li> <a href="/update-profile"><span class="flaticon-user"></span></a></li>
+                                <li><a href="/cart"><span class="flaticon-shopping-cart"></span></a> </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu -->
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+    </header>
+    <main>
+        <!-- Hero Area Start-->
+        <div class="slider-area ">
+            <div class="single-slider slider-height2 d-flex align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="hero-cap text-center">
+                                <h2>Cart List</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <section class="cart_area section_padding">
+            <div class="container">
+                <div class="cart_inner">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (cart && cart.items.length> 0) { %>
+                                    <%console.log(cart)%>
+                                    <% cart.items.forEach((item, index)=> { %>
+                                        <tr data-product-id="<%= item.productId._id %>"
+                                            data-price="<%= item.productId.salesPrice %>">
+                                            <td>
+                                                <div class="media">
+                                                    <div class="d-flex">
+                                                        <img src="<%= item.productId.images && item.productId.images.length > 0 ? item.productId.images[0] : 'https://via.placeholder.com/150' %>"
+                                                            alt="<%= item.productId.name %>" />
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p>
+                                                            <%= item.productId.name %>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <h5>$<%= item.productId.salesPrice.toFixed(2) %>
+                                                </h5>
+                                            </td>
+                                            <td>
+                                                <div class="quantity-selector">
+                                                    <button class="quantity-btn minus" data-index="<%= index %>"
+                                                        data-product="<%= item.productId._id %>"
+                                                        data-stock="<%= item.productId.stock %>">-</button>
+                                                    <span class="quantity-display"
+                                                        id="quantity-<%= item.productId._id %>"
+                                                        data-index="<%= index %>">
+                                                        <%= item.quantity %>
+                                                    </span>
+                                                    <button class="quantity-btn plus" data-index="<%= index %>"
+                                                        data-product="<%= item.productId._id %>"
+                                                        data-stock="<%= item.productId.stock %>">+</button>
+                                                </div>
+                                                <div class="stock-message text-danger mt-2"
+                                                    id="stock-msg-<%= item.productId._id %>"></div>
+                                                <% if (item.productId.stock <=5) { %>
+                                                    <div class="stock-info text-muted mt-2">
+                                                        Available stock: <span>
+                                                            <%= item.productId.stock %>
+                                                        </span>
+                                                    </div>
+                                                    <% } %>
+                                            </td>
+                                            <td>
+                                                <h5 id="total-<%= item.productId._id %>">$<%= (item.productId.salesPrice
+                                                        * item.quantity).toFixed(2) %>
+                                                </h5>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="text-danger delete-btn-cart"
+                                                    data-id="<%= item.productId._id %>" data-cart-id="<%= cart._id %>">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <p>Your cart is empty.</p>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+
+                                                    <!-- <tr class="bottom_button">
+                                <td>
+                                    <a class="btn_1" href="#">Update Cart</a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="cupon_text float-right">
+                                        <a class="btn_1" href="#">Close Coupon</a>
+                                    </div>
+                                </td>
+                            </tr>-->
+
+
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>
+                                                            <h5>Subtotal</h5>
+                                                        </td>
+                                                        <td>
+                                                            <h5>$<%= subtotal %>
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                    <!--  <tr class="shipping_area">
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <h5>Shipping</h5>
+                                </td>
+                                <td>
+                                    <div class="shipping_box">
+                                        <ul class="list">
+                                            <li>Flat Rate: $5.00
+                                                <input type="radio" aria-label="Radio button for following text input">
+                                            </li>
+                                            <li>Free Shipping
+                                                <input type="radio" aria-label="Radio button for following text input">
+                                            </li>
+                                            <li>Flat Rate: $10.00
+                                                <input type="radio" aria-label="Radio button for following text input">
+                                            </li>
+                                            <li class="active">Local Delivery: $2.00
+                                                <input type="radio" aria-label="Radio button for following text input">
+                                            </li>
+                                        </ul>
+                                        <h6>Calculate Shipping
+                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                        </h6>
+                                        <select class="shipping_select">
+                                            <option value="1">Bangladesh</option>
+                                            <option value="2">India</option>
+                                            <option value="4">Pakistan</option>
+                                        </select>
+                                        <select class="shipping_select section_bg">
+                                            <option value="1">Select a State</option>
+                                            <option value="2">Select a State</option>
+                                            <option value="4">Select a State</option>
+                                        </select>
+                                        <input class="post_code" type="text" placeholder="Postcode/Zipcode" />
+                                        <a class="btn_1" href="#">Update Details</a>
+                                    </div>
+                                </td>
+                            </tr> -->
+                            </tbody>
+                        </table>
+
+                        <div class="checkout_btn_inner float-right">
+                            <a class="btn_1" href="/shop">Continue Shopping</a>
+                            <button class="btn_1 checkout_btn_1" id="checkoutButton" onclick="goToCheckout()">Proceed to
+                                checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>>
+    <footer>
+        <!-- Footer Start-->
+        <div class="footer-area footer-padding">
+            <div class="container">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
+                        <div class="single-footer-caption mb-50">
+                            <div class="single-footer-caption mb-30">
+                                <!-- logo -->
+                                <div class="footer-logo">
+                                    <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
+                                </div>
+                                <div class="footer-tittle">
+                                    <div class="footer-pera">
+                                        <p>Asorem ipsum adipolor sdit amet, consectetur adipisicing elitcf sed do
+                                            eiusmod tem.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Quick Links</h4>
+                                <ul>
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#"> Offers & Discounts</a></li>
+                                    <li><a href="#"> Get Coupon</a></li>
+                                    <li><a href="#"> Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>New Products</h4>
+                                <ul>
+                                    <li><a href="#">Woman Cloth</a></li>
+                                    <li><a href="#">Fashion Accessories</a></li>
+                                    <li><a href="#"> Man Accessories</a></li>
+                                    <li><a href="#"> Rubber made Toys</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Support</h4>
+                                <ul>
+                                    <li><a href="#">Frequently Asked Questions</a></li>
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Report a Payment Issue</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer bottom -->
+                <div class="row align-items-center">
+                    <div class="col-xl-7 col-lg-8 col-md-7">
+                        <div class="footer-copy-right">
+                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This
+                                template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a
+                                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-4 col-md-5">
+                        <div class="footer-copy-right f-right">
+                            <!-- social -->
+                            <div class="footer-social">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="https://www.facebook.com/sai4ull"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                                <a href="#"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End-->
+    </footer>
+    <!--? Search model Begin -->
+    <div class="search-model-box">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-btn">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Searching key.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- JS here -->
+
+    <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="./assets/js/popper.min.js"></script>
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="./assets/js/jquery.slicknav.min.js"></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="./assets/js/owl.carousel.min.js"></script>
+    <script src="./assets/js/slick.min.js"></script>
+
+    <!-- One Page, Animated-HeadLin -->
+    <script src="./assets/js/wow.min.js"></script>
+    <script src="./assets/js/animated.headline.js"></script>
+
+    <!-- Scrollup, nice-select, sticky -->
+    <script src="./assets/js/jquery.scrollUp.min.js"></script>
+    <script src="./assets/js/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/jquery.sticky.js"></script>
+    <script src="./assets/js/jquery.magnific-popup.js"></script>
+
+    <!-- contact js -->
+    <script src="./assets/js/contact.js"></script>
+    <script src="./assets/js/jquery.form.js"></script>
+    <script src="./assets/js/jquery.validate.min.js"></script>
+    <script src="./assets/js/mail-script.js"></script>
+    <script src="./assets/js/jquery.ajaxchimp.min.js"></script>
+
+    <!-- Jquery Plugins, main Jquery -->
+    <script src="./assets/js/plugins.js"></script>
+    <script src="./assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all quantity controls
+            const quantityControls = document.querySelectorAll('.quantity-selector');
+
+            quantityControls.forEach(control => {
+                const minusBtn = control.querySelector('.minus');
+                const plusBtn = control.querySelector('.plus');
+                const quantityDisplay = control.querySelector('.quantity-display');
+                const productId = minusBtn.dataset.product;
+                const stock = parseInt(minusBtn.dataset.stock);
+
+                // Initialize quantity from the display
+                let quantity = parseInt(quantityDisplay.textContent);
+
+                function updateQuantity() {
+                    // Update display
+                    quantityDisplay.textContent = quantity;
+
+                    // Update total price
+                    const row = control.closest('tr');
+                    const price = parseFloat(row.dataset.price);
+                    const totalElement = document.getElementById(`total-${productId}`);
+                    totalElement.textContent = `$${(price * quantity).toFixed(2)}`;
+
+                    // Update stock message
+                    const stockMsg = document.getElementById(`stock-msg-${productId}`);
+                    if (stock <= 5) {
+                        stockMsg.textContent = `Only ${stock - quantity} items remaining`;
+                    }
+
+                    // Disable/enable buttons based on conditions
+                    minusBtn.disabled = quantity <= 1;
+                    plusBtn.disabled = quantity >= Math.min(stock, 10);
+
+                    // Update cart in backend
+                    updateCartInBackend(productId, quantity);
+
+                    // Update subtotal
+                    updateSubtotal();
+                }
+
+                minusBtn.addEventListener('click', () => {
+                    if (quantity > 1) {
+                        quantity--;
+                        updateQuantity();
+                    }
+                });
+
+                plusBtn.addEventListener('click', () => {
+                    if (quantity < Math.min(stock, 10)) {
+                        quantity++;
+                        updateQuantity();
+                    }
+                });
+
+                // Initialize button states
+                updateQuantity();
+            });
+
+            function updateSubtotal() {
+                const totals = Array.from(document.querySelectorAll('[id^="total-"]'))
+                    .map(el => parseFloat(el.textContent.replace('$', '')));
+
+                const subtotal = totals.reduce((sum, price) => sum + price, 0);
+                const subtotalElement = document.querySelector('.subtotal-amount');
+                if (subtotalElement) {
+                    subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+                }
+            }
+
+            async function updateCartInBackend(productId, quantity) {
+                try {
+                    const response = await fetch('/cart-update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            productId,
+                            quantity
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update cart');
+                    }
+
+                } catch (error) {
+                    console.error('Error updating cart:', error);
+                    // Optionally show error message to user
+                }
+            }
+        });
+
+
+
+        // Function to handle checkout
+        async function goToCheckout() {
+            const button = document.getElementById('checkoutButton');
+            if (!button) return; // Guard clause if button not found
+
+            try {
+                // Disable button and show loading state
+                button.disabled = true;
+                button.textContent = 'Processing...';
+
+                // Get all product totals and calculate subtotal
+                const totals = Array.from(document.querySelectorAll('[id^="total-"]'))
+                    .map(el => parseFloat(el.textContent.replace('$', '')));
+
+                const subtotal = totals.reduce((sum, price) => sum + price, 0);
+
+                if (isNaN(subtotal)) {
+                    throw new Error('Invalid subtotal calculation');
+                }
+
+                const response = await fetch('/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ subtotal }),
+                });
+
+                if (response.ok) {
+                    window.location.href = '/checkout';
+                } else {
+                    throw new Error('Failed to process checkout');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            } finally {
+                // Reset button state
+                button.disabled = false;
+                button.textContent = 'Proceed to checkout';
+            }
+        }
+
+        // Add event listeners when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initial subtotal calculation
+            updateSubtotal();
+
+            // Add click event listener to checkout button
+            const checkoutButton = document.getElementById('checkoutButton');
+            if (checkoutButton) {
+                checkoutButton.addEventListener('click', goToCheckout);
+            }
+        });
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const deleteButtons = document.querySelectorAll('.delete-btn-cart');
+
+            deleteButtons.forEach((button) => {
+                button.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    const productId = button.getAttribute('data-id');
+                    const cartId = button.getAttribute('data-cart-id');
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            try {
+                                const response = await fetch('/delete-product', {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ cartId, productId })
+                                });
+
+                                const data = await response.json();
+
+                                if (response.ok) {
+                                    await Swal.fire(
+                                        'Deleted!',
+                                        'Product has been removed from cart.',
+                                        'success'
+                                    );
+                                    window.location.reload();
+                                } else {
+                                    throw new Error(data.message || 'Failed to delete product');
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                                Swal.fire(
+                                    'Error!',
+                                    error.message || 'Failed to delete product',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

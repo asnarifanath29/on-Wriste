@@ -4,8 +4,8 @@ const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    salesPrice: { type: Number }, // Adding salesPrice
-    stock: { type: Number, required: true }, // Adding stock
+    salesPrice: { type: Number },
+    stock: { type: Number, required: true }, 
     offerPrice: { type: Number },
     images: [{ type: String }],
     tags: [{ type: String }],
@@ -28,6 +28,6 @@ const productSchema = new mongoose.Schema({
 
 
 
-// Correctly export the model
+
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;

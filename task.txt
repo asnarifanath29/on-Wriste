@@ -1,0 +1,44 @@
+User side : 
+User profile--(Show user details, show address, show orders, edit profile, cancel orders, forgot password).
+Add address management in user profile( Multiple Address, Add, Edit, Delete).
+
+
+Cart management --(Add to cart, list products in cart, remove products from cart)
+Qty (add to cart) should be controlled based on stocks left
+Handle maximum qty per person to add to cart for a product 
+Out of stock product need to shown or hidden based on filter
+
+
+Advanced search with sort based on 
+        Popularity 
+        Price: low to high
+        Price : high to low 
+        Average ratings
+        Featured
+        New arrivals
+        aA - zZ
+        zZ - aA
+
+
+Checkout page(Multiple address,edit and saved address)
+Place order with Cash on Delivery(Address selection)
+Stocks left - should be shown in product listing and product details page
+Purchase with COD.
+
+
+
+Order Management-Order cancellation option, Order history and status.
+
+
+Admin side : 
+Order Management
+Admin Side: List orders, change order status, cancel orders
+Inventory/Stock management.
+
+
+handle sessions properly
+use custom popups - category management
+handle blocking of already logged in user - apply the middleware for all pages
+keep all sensitive info in .env - include node mailer configs
+setup error handling middlewares
+maintain git repo with multiple feature branches

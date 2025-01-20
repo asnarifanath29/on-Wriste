@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/css/flaticon.css">
+    <link rel="stylesheet" href="/assets/css/slicknav.css">
+    <link rel="stylesheet" href="/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/assets/css/slick.css">
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .modal-backdrop {
+            z-index: 1040;
+        }
+
+        .modal {
+            z-index: 1050;
+        }
+
+        .reason-textarea {
+            resize: none;
+        }
+
+        .error-feedback {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            min-height: calc(100vh - 100px);
+            border-right: 1px solid #dee2e6;
+        }
+
+        .sidebar .nav-link {
+            color: #333;
+            padding: 0.8rem 1rem;
+            border-radius: 0.25rem;
+            margin: 0.2rem 0;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: #e9ecef;
+            color: #ff2020;
+        }
+
+        .profile-section {
+            padding: 2rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .address-card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .order-card {
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .text-danger {
+            color: #e74c3c;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../partials/user/header') %>
+
+        <section class="profile-container py-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <div class="col-lg-3 col-md-4 sidebar py-4">
+                        <div class="text-center mb-4">
+                            <img src="/api/placeholder/150/150" alt="Profile Picture" class="rounded-circle mb-3"
+                                style="width: 150px; height: 150px;">
+                            <h5>John Doe</h5>
+                            <p class="text-muted">john.doe@example.com</p>
+                        </div>
+                        <nav class="nav flex-column">
+                            <a class="nav-link active" data-section="profile">
+                                <i class="fas fa-user"></i> My Profile
+                            </a>
+                            <a class="nav-link" data-section="orders">
+                                <i class="fas fa-shopping-bag"></i> My Orders
+                            </a>
+                            <a class="nav-link" data-section="addresses">
+                                <i class="fas fa-map-marker-alt"></i> My Addresses
+                            </a>
+                            <a class="nav-link" data-section="password">
+                                <i class="fas fa-lock"></i> Change Password
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="col-lg-9 col-md-8 profile-section">
+                        <!-- Profile Section -->
+                        <div id="profile" class="section active">
+                            <h3>My Profile</h3>
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="profileForm">
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label">First Name</label>
+                                                <input type="text" id="firstName" class="form-control"
+                                                    value="<%= userData.name %>">
+                                                <span id="firstNameError" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" id="email" class="form-control"
+                                                    value="<%= userData.email %>" disabled>
+                                                <span id="emailError" class="text-danger small"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Phone</label>
+                                                <input type="tel" id="phone" class="form-control"
+                                                    value="<%= userData.phone %>">
+                                                <span id="phoneError" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orders Section -->
+                        <!-- <div id="orders" class="section">
+                        <h3>My Orders</h3>
+                        <div class="order-card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Order #12345</span>
+                                <span class="badge bg-success">Delivered</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img src="/api/placeholder/100/100" alt="Product" class="img-fluid">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Premium Watch XYZ</h6>
+                                        <p class="text-muted">Quantity: 1</p>
+                                        <p class="text-muted">Delivered on: 01 Jan 2025</p>
+                                    </div>
+                                    <div class="col-md-3 text-end">
+                                        <h6>$299.99</h6>
+                                        <button class="btn btn-sm btn-outline-primary mt-2">Track Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- <div id="orders" class="section">
+                        <h3>My Orders</h3>
+                        <% if (order && order.length > 0) { %>
+                            <% order.forEach(function(orderItem) { %>
+                                <div class="order-card mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center p-3">
+                                        <div>
+                                            <span class="fw-bold">Order #<%= orderItem.orderedId %></span>
+                                            <span class="text-muted ms-3 small">
+                                                <%= new Date(orderItem.createdAt).toLocaleDateString() %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <% orderItem.items.forEach(function(item) { %>
+                                            <div class="row mb-3 align-items-center">
+                                                <div class="col-md-2">
+                                                    <img src="<%= item.image %>" 
+                                                         alt="Product Image" 
+                                                         class="img-fluid rounded">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h6 class="mb-1"><%= item.productId.name %></h6>
+                                                    <p class="text-muted mb-1">Quantity: <%= item.quantity %></p>
+                                                    <% if (item.isCanceled) { %>
+                                                        <span class="badge bg-danger">Cancelled</span>
+                                                        <% if (item.canceledItems) { %>
+                                                            <span class="text-muted">(<%=item.canceledItems%> items)</span>
+                                                        <% } %>
+                                                    <% } %>
+                                                </div>
+                                                <div class="col-md-4 text-end">
+                                                    <h6 class="mb-1">₹<%= item.price.toFixed(2) %></h6>
+                                                    <small class="text-muted">
+                                                        <%= orderItem.paymentMethod.toUpperCase() %>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        <% }); %>
+                                        
+                                        <div class="border-top pt-3 mt-3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <h6>Delivery Address:</h6>
+                                                    <p class="mb-1"><%= orderItem.address.name %></p>
+                                                    <p class="mb-1"><%= orderItem.address.address %></p>
+                                                    <p class="mb-1">
+                                                        <%= orderItem.address.locality %>, 
+                                                        <%= orderItem.address.place %>, 
+                                                        <%= orderItem.address.state %> - 
+                                                        <%= orderItem.address.pincode %>
+                                                    </p>
+                                                    <p class="mb-1">Phone: <%= orderItem.address.phone %></p>
+                                                </div>
+                                                <div class="col-md-6 text-end">
+                                                    <div class="mb-2">
+                                                        <span class="text-muted">Items Total:</span>
+                                                        <span class="ms-2">₹<%= orderItem.totalAmount.toFixed(2) %></span>
+                                                    </div>
+                                                   
+                                                    <div class="fw-bold">
+                                                        <span>Total Payable:</span>
+                                                        <span class="ms-2">₹<%= orderItem.payableAmount.toFixed(2) %></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-end p-3">
+                                        <% if (!['Delivered', 'Canceled', 'Returned'].includes(orderItem.orderStatus)) { %>
+                                            <button class="btn btn-sm btn-outline-danger me-2" 
+                                                    onclick="cancelOrder('<%= orderItem._id %>')">
+                                                Cancel Order
+                                            </button>
+                                        <% } %>
+                                        <button class="btn btn-sm btn-primary" 
+                                                onclick="trackOrder('<%= orderItem._id %>')">
+                                            Track Order
+                                        </button>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="empty-orders text-center py-5">
+                                <i class="fas fa-shopping-bag mb-3" style="font-size: 3rem; color: #ccc;"></i>
+                                <h5>No Orders Yet</h5>
+                                <p class="text-muted">Start shopping to see your orders here!</p>
+                                <a href="/shop" class="btn btn-primary mt-3">Start Shopping</a>
+                            </div>
+                        <% } %>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -->
+
+
+                        <!-- Order Summary Card -->
+                        <div id="orders" class="section">
+                            <h3>My Orders</h3>
+                            <% if (order && order.length> 0) { %>
+                                <% order.forEach(function(orderItem) { %>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="mb-1">Order #<%= orderItem.orderedId %>
+                                                    </h6>
+                                                    <p class="text-muted mb-0 small">
+                                                        <%= new Date(orderItem.createdAt).toLocaleDateString() %>
+                                                    </p>
+                                                    <span class="badge bg-primary">
+                                                        <%= orderItem.orderStatus %>
+                                                    </span>
+                                                </div>
+                                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                    data-bs-target="#orderModal<%= orderItem.orderedId %>">
+                                                    View Order
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Order Details Modal -->
+                                    <div class="modal fade" id="orderModal<%= orderItem.orderedId %>" tabindex="-1"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Order Details #<%= orderItem.orderedId %>
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <!-- Order Items -->
+                                                    <% orderItem.items.forEach(function(item) { %>
+                                                        <div class="row mb-3 align-items-center">
+                                                            <div class="col-md-2">
+                                                                <img src="<%= item.image %>" alt="Product Image"
+                                                                    class="img-fluid rounded">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <h6 class="mb-1">
+                                                                    <%= item.productId.name %>
+                                                                </h6>
+                                                                <p class="text-muted mb-1">Quantity: <%= item.quantity
+                                                                        %>
+                                                                </p>
+                                                                <% if (item.isCanceled) { %>
+                                                                    <span class="badge bg-danger">Cancelled</span>
+                                                                    <% if (item.canceledItems) { %>
+                                                                        <span class="text-muted">(<%= item.canceledItems
+                                                                                %> items)</span>
+                                                                        <% } %>
+                                                                            <% } %>
+                                                            </div>
+                                                            <div class="col-md-4 text-end">
+                                                                <h6 class="mb-1">₹<%= item.price.toFixed(2) %>
+                                                                </h6>
+                                                                <small class="text-muted">
+                                                                    <%= orderItem.paymentMethod.toUpperCase() %>
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                        <% }); %>
+
+                                                            <!-- Delivery Address -->
+                                                            <div class="border-top pt-3 mt-3">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <h6>Delivery Address:</h6>
+                                                                        <p class="mb-1">
+                                                                            <%= orderItem.address.name %>
+                                                                        </p>
+                                                                        <p class="mb-1">
+                                                                            <%= orderItem.address.address %>
+                                                                        </p>
+                                                                        <p class="mb-1">
+                                                                            <%= orderItem.address.locality %>,
+                                                                                <%= orderItem.address.place %>,
+                                                                                    <%= orderItem.address.state %> -
+                                                                                        <%= orderItem.address.pincode %>
+                                                                        </p>
+                                                                        <p class="mb-1">Phone: <%=
+                                                                                orderItem.address.phone %>
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="col-md-6 text-end">
+                                                                        <div class="mb-2">
+                                                                            <span class="text-muted">Items Total:</span>
+                                                                            <span class="ms-2">₹<%=
+                                                                                    orderItem.totalAmount.toFixed(2) %>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="fw-bold">
+                                                                            <span>Total Payable:</span>
+                                                                            <span class="ms-2">₹<%=
+                                                                                    orderItem.payableAmount.toFixed(2)
+                                                                                    %></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <% if (!['Delivered', 'Canceled' , 'Returned'
+                                                        ].includes(orderItem.orderStatus)) { %>
+                                                        <button class="btn btn-outline-danger"
+                                                            onclick="cancelOrder('<%= orderItem._id %>')">
+                                                            Cancel Order
+                                                        </button>
+                                                        <% } %>
+                                                            <button class="btn btn-primary"
+                                                                onclick="trackOrder('<%= orderItem._id %>')">
+                                                                Track Order
+                                                            </button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <div class="empty-orders text-center py-5">
+                                                <i class="fas fa-shopping-bag mb-3"
+                                                    style="font-size: 3rem; color: #ccc;"></i>
+                                                <h5>No Orders Yet</h5>
+                                                <p class="text-muted">Start shopping to see your orders here!</p>
+                                                <a href="/shop" class="btn btn-primary mt-3">Start Shopping</a>
+                                            </div>
+                                            <% } %>
+                        </div>
+
+
+
+                        <!-- Addresses Section -->
+                        <div id="addresses" class="section">
+                            <h3>My Addresses</h3>
+                            <a href="/add-address" class="btn btn-primary mb-3">
+                                <i class="fas fa-plus"></i> Add New Address
+                            </a>
+                            <!-- <div class="row">
+                            <div class="col-md-6">
+                                <div class="address-card">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <h6>Home</h6>
+                                        <div>
+                                            <a href="#" class="text-primary me-2"><i class="fas fa-edit"></i></a>
+                                            <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    </div>
+                                    <p class="mb-1">John Doe</p>
+                                    <p class="mb-1">123 Main Street</p>
+                                    <p class="mb-1">New York, NY 10001</p>
+                                    <p class="mb-1">Phone: +1 234 567 890</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="address-card">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <h6>Office</h6>
+                                        <div>
+                                            <a href="#" class="text-primary me-2"><i class="fas fa-edit"></i></a>
+                                            <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    </div>
+                                    <p class="mb-1">John Doe</p>
+                                    <p class="mb-1">456 Business Ave</p>
+                                    <p class="mb-1">New York, NY 10002</p>
+                                    <p class="mb-1">Phone: +1 234 567 891</p>
+                                </div>
+                            </div>
+                        </div> -->
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                    aria-labelledby="nav-home-tab">
+                                    <div class="row">
+                                        <% if (addresses.length===0) { %>
+                                            <div class="col-12 text-center">
+                                                <p>No addresses available at the moment.</p>
+                                            </div>
+                                            <% } else { %>
+                                                <% addresses.forEach(address=> { %>
+                                                    <div class="col-md-6">
+                                                        <div class="address-card">
+                                                            <div class="d-flex justify-content-between mb-2">
+                                                                <h6>
+                                                                    <%= address.addressType %>
+                                                                </h6>
+                                                                <div>
+                                                                    <a href="/edit-address/<%= address._id %>"
+                                                                        class="text-primary me-2"><i
+                                                                            class="fas fa-edit"></i></a>
+                                                                    <a href="#" class="text-danger delete-btn"
+                                                                        data-id="<%= address._id %>">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <p class="mb-1">
+                                                                <%= address.name %>
+                                                            </p>
+                                                            <p class="mb-1">
+                                                                <%= address.locality %>
+                                                            </p>
+                                                            <p class="mb-1">
+                                                                <%= address.address %>
+                                                            </p>
+                                                            <p class="mb-1">
+                                                                <%= address.place %>, <%= address.state %>
+                                                                        <%= address.pincode %>
+                                                            </p>
+                                                            <p class="mb-1">Phone: <%= address.phone %>
+                                                            </p>
+                                                            <% if (address.alternatePhone) { %>
+                                                                <p class="mb-1">Alternate Phone: <%=
+                                                                        address.alternatePhone %>
+                                                                </p>
+                                                                <% } %>
+                                                                    <% if (address.landmark) { %>
+                                                                        <p class="mb-1">Landmark: <%= address.landmark
+                                                                                %>
+                                                                        </p>
+                                                                        <% } %>
+                                                        </div>
+                                                    </div>
+                                                    <% }) %>
+                                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Change Password Section -->
+                        <div id="password" class="section">
+                            <h3>Change Password</h3>
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="passwordForm">
+                                        <div class="mb-3">
+                                            <label for="currentPassword" class="form-label">Current Password</label>
+                                            <input type="password" id="currentPassword" class="form-control">
+                                            <div id="currentPasswordError" class="text-danger"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="newPassword" class="form-label">New Password</label>
+                                            <input type="password" id="newPassword" class="form-control">
+                                            <div id="newPasswordError" class="text-danger"></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirmNewPassword" class="form-label">Confirm New
+                                                Password</label>
+                                            <input type="password" id="confirmNewPassword" class="form-control">
+                                            <div id="confirmNewPasswordError" class="text-danger"></div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Update Password</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelOrderModalLabel">Cancel Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="cancelOrderForm">
+                            <input type="hidden" id="orderIdToCancel">
+                            <div class="mb-3">
+                                <label for="cancelReason" class="form-label">Please provide a reason for
+                                    cancellation</label>
+                                <textarea class="form-control reason-textarea" id="cancelReason" rows="4" required
+                                    minlength="10" maxlength="200"
+                                    placeholder="Enter your reason for cancellation (minimum 10 characters)"></textarea>
+                                <div class="error-feedback" id="reasonError">
+                                    Please provide a detailed reason (minimum 10 characters)
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" id="confirmCancelBtn">Cancel Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <%- include('../partials/user/footer') %>
+
+            <!-- Your existing scripts -->
+            <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+            <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+            <script src="/assets/js/popper.min.js"></script>
+            <script src="/assets/js/bootstrap.min.js"></script>
+            <script src="/assets/js/jquery.slicknav.min.js"></script>
+            <script src="/assets/js/owl.carousel.min.js"></script>
+            <script src="/assets/js/slick.min.js"></script>
+            <script src="/assets/js/wow.min.js"></script>
+            <script src="/assets/js/animated.headline.js"></script>
+            <script src="/assets/js/jquery.magnific-popup.js"></script>
+            <script src="/assets/js/jquery.nice-select.min.js"></script>
+            <script src="/assets/js/jquery.sticky.js"></script>
+            <script src="/assets/js/main.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+
+            <!-- Required JS -->
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Add this new script for handling section switching -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    const sections = document.querySelectorAll('.section');
+
+                    navLinks.forEach(link => {
+                        link.addEventListener('click', function (e) {
+                            // Remove active class from all links and sections
+                            navLinks.forEach(l => l.classList.remove('active'));
+                            sections.forEach(s => s.classList.remove('active'));
+
+                            // Add active class to clicked link
+                            this.classList.add('active');
+
+                            // Show corresponding section
+                            const sectionId = this.getAttribute('data-section');
+                            document.getElementById(sectionId).classList.add('active');
+                        });
+                    });
+                });
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const form = document.getElementById("profileForm");
+                    const firstName = document.getElementById("firstName");
+                    const phone = document.getElementById("phone");
+                    const firstNameError = document.getElementById("firstNameError");
+                    const phoneError = document.getElementById("phoneError");
+
+                    form.addEventListener("submit", async function (event) {
+                        event.preventDefault(); // Prevent default form submission
+
+                        let isValid = true;
+
+                        // Reset previous error messages
+                        firstNameError.textContent = "";
+                        phoneError.textContent = "";
+
+                        // Validate First Name
+                        if (firstName.value.trim() === "") {
+                            firstNameError.textContent = "First Name is required.";
+                            isValid = false;
+                        }
+
+                        // Validate Phone Number (basic check for 10-digit numbers)
+                        const phoneRegex = /^[0-9]{10}$/;
+                        if (!phoneRegex.test(phone.value.trim())) {
+                            phoneError.textContent = "Phone number must be a valid 10-digit number.";
+                            isValid = false;
+                        }
+
+                        // If form is valid, submit via fetch
+                        if (isValid) {
+                            const formData = {
+                                name: firstName.value.trim(),
+                                phone: phone.value.trim(),
+                            };
+
+                            try {
+                                const response = await fetch("/update-profile", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify(formData),
+                                });
+
+                                const result = await response.json();
+
+                                if (response.ok && result.success) {
+                                    // SweetAlert for success
+                                    Swal.fire({
+                                        title: "Success!",
+                                        text: "Profile updated successfully!",
+                                        icon: "success",
+                                        confirmButtonText: "OK",
+                                    }).then(() => {
+                                        // Redirect after success confirmation
+                                        window.location.href = "/update-profile";
+                                    });
+                                } else {
+                                    // SweetAlert for failure
+                                    Swal.fire({
+                                        title: "Failed!",
+                                        text: result.message || "Failed to update profile. Please try again.",
+                                        icon: "error",
+                                        confirmButtonText: "OK",
+                                    });
+                                }
+                            } catch (error) {
+                                console.error("Error:", error);
+
+                                // SweetAlert for error
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "An error occurred while submitting the form. Please try again.",
+                                    icon: "error",
+                                    confirmButtonText: "OK",
+                                });
+                            }
+
+
+                        }
+                    });
+                });
+
+            </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+                    deleteButtons.forEach((button) => {
+                        button.addEventListener('click', (event) => {
+                            event.preventDefault();
+                            const addressId = button.getAttribute('data-id');
+
+                            // Show confirmation dialog
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Perform deletion via Fetch API
+                                    fetch(`/delete-address/${addressId}`, {
+                                        method: 'DELETE', // Use DELETE method
+                                    })
+                                        .then((response) => {
+                                            if (response.ok) {
+                                                Swal.fire(
+                                                    'Deleted!',
+                                                    'The address has been deleted.',
+                                                    'success'
+                                                ).then(() => {
+                                                    // Reload or redirect to update the UI
+                                                    window.location.reload();
+                                                });
+                                            } else {
+                                                // Show error alert
+                                                Swal.fire(
+                                                    'Error!',
+                                                    'There was a problem deleting the address.',
+                                                    'error'
+                                                );
+                                            }
+                                        })
+                                        .catch(() => {
+                                            Swal.fire(
+                                                'Error!',
+                                                'Unable to connect to the server.',
+                                                'error'
+                                            );
+                                        });
+                                }
+                            });
+                        });
+                    });
+                });
+            </script>
+
+
+            <script>
+                document.getElementById('passwordForm').addEventListener('submit', async function (e) {
+                    e.preventDefault(); // Prevent form submission
+
+                    // Get input values
+                    const currentPassword = document.getElementByIdA('currentPassword').value.trim();
+                    const newPassword = document.getElementById('newPassword').value.trim();
+                    const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+
+                    // Get error message elements
+                    const currentPasswordError = document.getElementById('currentPasswordError');
+                    const newPasswordError = document.getElementById('newPasswordError');
+                    const confirmNewPasswordError = document.getElementById('confirmNewPasswordError');
+
+                    // Reset error messages
+                    currentPasswordError.textContent = '';
+                    newPasswordError.textContent = '';
+                    confirmNewPasswordError.textContent = '';
+
+                    let isValid = true;
+
+                    // Validate current password
+                    if (!currentPassword) {
+                        currentPasswordError.textContent = 'Current password is required.';
+                        isValid = false;
+                    } else if (currentPassword.length < 6) {
+                        currentPasswordError.textContent = 'current password must be at least 6 characters long.';
+                        isValid = false;
+                    }
+
+                    // Validate new password
+                    if (!newPassword) {
+                        newPasswordError.textContent = 'New password is required.';
+                        isValid = false;
+                    } else if (newPassword.length < 6) {
+                        newPasswordError.textContent = 'New password must be at least 6 characters long.';
+                        isValid = false;
+                    }
+
+                    // Validate confirm new password
+                    if (!confirmNewPassword) {
+                        confirmNewPasswordError.textContent = 'Please confirm your new password.';
+                        isValid = false;
+                    } else if (newPassword !== confirmNewPassword) {
+                        confirmNewPasswordError.textContent = 'Passwords do not match.';
+                        isValid = false;
+                    }
+
+                    // Submit form if all validations pass
+                    if (isValid) {
+                        try {
+                            const response = await fetch("/update-password", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({ currentPassword, newPassword }),
+                            });
+
+                            const result = await response.json();
+
+                            if (response.ok && result.success) {
+                                // SweetAlert for success
+                                Swal.fire({
+                                    title: "Success!",
+                                    text: "Password updated successfully!",
+                                    icon: "success",
+                                    confirmButtonText: "OK",
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                // SweetAlert for failure
+                                Swal.fire({
+                                    title: "Failed!",
+                                    text: result.message || "Failed to update password. Please try again.",
+                                    icon: "error",
+                                    confirmButtonText: "OK",
+                                });
+                            }
+                        } catch (error) {
+                            console.error("Error:", error);
+
+                            // SweetAlert for error
+                            Swal.fire({
+                                title: "Error!",
+                                text: "An error occurred while submitting the form. Please try again.",
+                                icon: "error",
+                                confirmButtonText: "OK",
+                            });
+                        }
+                    }
+                });
+            </script>
+
+
+
+
+
+
+
+
+
+            <script>
+                app.locals.getStatusColor = function (status) {
+                    const statusColors = {
+                        'Pending': 'warning',
+                        'Confirmed': 'info',
+                        'Shipped': 'primary',
+                        'Delivered': 'success',
+                        'Canceled': 'danger',
+                        'Returned': 'secondary'
+                    };
+                    return statusColors[status] || 'secondary';
+                };
+
+                app.locals.getPaymentStatusColor = function (status) {
+                    const statusColors = {
+                        'Pending': 'warning',
+                        'Paid': 'success',
+                        'Failed': 'danger',
+                        'Canceled': 'danger',
+                        'Refunded': 'info'
+                    };
+                    return statusColors[status] || 'secondary';
+                };
+
+
+
+
+
+
+
+                // Add these client-side functions:
+                function trackOrder(orderId) {
+                    window.location.href = `/track-order/${orderId}`;
+                }
+
+            </script>
+
+            <script>
+                let cancelOrderModal;
+                document.addEventListener('DOMContentLoaded', function () {
+                    cancelOrderModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+
+                    // Handle form submission
+                    document.getElementById('confirmCancelBtn').addEventListener('click', handleCancelOrder);
+
+                    // Reset form when modal is hidden
+                    document.getElementById('cancelOrderModal').addEventListener('hidden.bs.modal', function () {
+                        document.getElementById('cancelOrderForm').reset();
+                        document.getElementById('reasonError').style.display = 'none';
+                        document.getElementById('cancelReason').classList.remove('is-invalid');
+                    });
+                });
+
+                function cancelOrder(orderId) {
+                    document.getElementById('orderIdToCancel').value = orderId;
+                    cancelOrderModal.show();
+                }
+
+                function handleCancelOrder() {
+                    const orderId = document.getElementById('orderIdToCancel').value;
+                    const reason = document.getElementById('cancelReason').value.trim();
+                    const reasonInput = document.getElementById('cancelReason');
+                    const reasonError = document.getElementById('reasonError');
+
+                    // Validate reason
+                    if (!reason || reason.length < 10) {
+                        reasonInput.classList.add('is-invalid');
+                        reasonError.style.display = 'block';
+                        return;
+                    }
+
+                    // Clear validation state
+                    reasonInput.classList.remove('is-invalid');
+                    reasonError.style.display = 'none';
+
+                    // Show loading state
+                    const confirmBtn = document.getElementById('confirmCancelBtn');
+                    const originalText = confirmBtn.innerHTML;
+                    confirmBtn.disabled = true;
+                    confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+
+                    // Send cancellation request
+                    fetch(`/update-profile/cancel/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ cancelReason: reason })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Hide the cancel order modal first
+                            cancelOrderModal.hide();
+
+                            if (data.success) {
+                                // Show success message using SweetAlert2
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Your order has been successfully cancelled.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                            } else {
+                                throw new Error(data.message || 'Failed to cancel order');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Hide the cancel order modal
+                            cancelOrderModal.hide();
+
+                            // Show error message using SweetAlert2
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error.message || 'An error occurred while canceling the order.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        })
+                        .finally(() => {
+                            // Reset button state
+                            confirmBtn.disabled = false;
+                            confirmBtn.innerHTML = originalText;
+                        });
+                }
+            </script>
+</body>
+
+</html>

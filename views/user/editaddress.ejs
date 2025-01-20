@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Address</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .form-section {
+            padding: 2rem 0;
+            background-color: #f8f9fa;
+        }
+        
+        .address-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
+        }
+        
+        .text-danger {
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            background-color: #ff2020;
+            border-color: #ff2020;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e60000;
+            border-color: #e60000;
+        }
+    </style>
+</head>
+<body>
+    
+    
+
+    <div class="form-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="address-form">
+                        <h3 class="mb-4">Edit Address</h3>
+                        <form id="addressForm">
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label required-field">Full Name</label>
+                                    <input type="text" class="form-control" id="name" value="<%= address.name %>">
+                                    <span class="text-danger" id="nameError"></span>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="form-label required-field">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" value=" <%= address.phone %>" >
+                                    <span class="text-danger" id="phoneError"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required-field">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" value=" <%= address.pincode %>">
+                                    <span class="text-danger" id="pincodeError"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required-field">Locality</label>
+                                    <input type="text" class="form-control" id="locality" value=" <%= address.locality %>">
+                                    <span class="text-danger" id="localityError"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label required-field">Address (Area and Street)</label>
+                                    <textarea class="form-control" id="address" rows="3"><%= address.address %></textarea>
+                                    <span class="text-danger" id="addressError"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required-field">City/District/Town</label>
+                                    <input type="text" class="form-control" id="place" value=" <%= address.place %>">
+                                    <span class="text-danger" id="placeError"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label required-field">State</label>
+                                    <select class="form-select" id="state">
+                                        <option value="">Select State</option>
+                                        <option value="Kerala" <%= address.state === "Kerala" ? "selected" : "" %>>Kerala</option>
+                                        <option value="Tamil Nadu" <%= address.state === "Tamil Nadu" ? "selected" : "" %>>Tamil Nadu</option>
+                                        <option value="Karnataka" <%= address.state === "Karnataka" ? "selected" : "" %>>Karnataka</option>
+                                        <!-- Add more states as needed -->
+                                    </select>
+                                    <span class="text-danger" id="stateError"></span>
+                                </div>
+                                
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Landmark (Optional)</label>
+                                    <input type="text" class="form-control" id="landmark" value=" <%= address.landmark %>">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Alternate Phone (Optional)</label>
+                                    <input type="tel" class="form-control" id="alternatePhone" value=" <%= address.alternatePhone %>">
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label required-field">Address Type</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="addressType" id="home" value="Home" 
+                                                   <%= address.addressType === "Home" ? "checked" : "" %>>
+                                            <label class="form-check-label" for="home">Home</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="addressType" id="office" value="Office" 
+                                                   <%= address.addressType  === "Office" ? "checked" : "" %>>
+                                            <label class="form-check-label" for="office">Office</label>
+                                        </div>
+                                    </div>
+                                    <span class="text-danger" id="addressTypeError"></span>
+                                </div>
+                                
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary">Save Address</button>
+                                    <a href="javascript:history.back()" class="btn btn-outline-secondary ms-2">Cancel</a>
+                                </div>
+                            </div>
+                         
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('addressForm');
+            const addressId = "<%= address._id %>"; 
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // // Reset all error messages
+                // document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
+                
+                // Get form values
+                const formData = {
+                    name: document.getElementById('name').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    pincode: document.getElementById('pincode').value.trim(),
+                    locality: document.getElementById('locality').value.trim(),
+                    address: document.getElementById('address').value.trim(),
+                    place: document.getElementById('place').value.trim(),
+                    state: document.getElementById('state').value,
+                    landmark: document.getElementById('landmark').value.trim(),
+                    alternatePhone: document.getElementById('alternatePhone').value.trim(),
+                    addressType: document.querySelector('input[name="addressType"]:checked')?.value
+                };
+
+                // Validation
+                let isValid = true;
+                
+                // Phone validation
+                const phoneRegex = /^[0-9]{10}$/;
+                if (!phoneRegex.test(formData.phone)) {
+                    document.getElementById('phoneError').textContent = 'Please enter a valid 10-digit phone number';
+                    isValid = false;
+                }
+
+                // Pincode validation
+                const pincodeRegex = /^[0-9]{6}$/;
+                if (!pincodeRegex.test(formData.pincode)) {
+                    document.getElementById('pincodeError').textContent = 'Please enter a valid 6-digit pincode';
+                    isValid = false;
+                }
+
+                // Required field validation
+                if (!formData.name) {
+                    document.getElementById('nameError').textContent = 'Name is required';
+                    isValid = false;
+                }
+                if (!formData.locality) {
+                    document.getElementById('localityError').textContent = 'Locality is required';
+                    isValid = false;
+                }
+                if (!formData.address) {
+                    document.getElementById('addressError').textContent = 'Address is required';
+                    isValid = false;
+                }
+                if (!formData.place) {
+                    document.getElementById('placeError').textContent = 'City/District/Town is required';
+                    isValid = false;
+                }
+                if (!formData.state) {
+                    document.getElementById('stateError').textContent = 'Please select a state';
+                    isValid = false;
+                }
+                if (!formData.addressType) {
+                    document.getElementById('addressTypeError').textContent = 'Please select an address type';
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    try {
+                        const response = await fetch(`/edit-address/${addressId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(formData)
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok && result.success) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Address Edited successfully!',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // window.location.href= '/update-profile';
+                                window.history.back();
+
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: result.message || 'Failed to Edit address',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'An error occurred while saving the address',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,15 +1,11 @@
 const userSchema = require('../models/userSchema');
 
 const checkUserStatus = async (req, res, next) => {
-    console.log('req.session : -->');
-    console.log(req.session);
-    console.log('req.user : ==>');
-    console.log(req.user);
+
     
     if (req.session.userData) {
         // User is logged in, validate their status
         try {
-
             const user = await userSchema.findOne({ email: req.session.userData.email });
             if (!user) {
                 // User does not exist in the database (account deleted)

@@ -1,64 +1,148 @@
-const mongoose=require("mongoose");
-const {Schema}=mongoose;
-const {v4:uuidv4}=require('uuid');
-const Product = require("./productSchema");
-const orderSchema=new Schema({
-    orderId:{
-        type:String,
-        default:()=>uuidv4(),
-        unique:true
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
+const orderSchema = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  orderedId: {
+    type: String,
+    required: true
+  },
+  paymentId: {
+    type: String,
+    required: false
+  },
+  currency: {
+    type: String,
+    required: false
+  },
+  receipt: {
+    type: String,
+    required: false
+  },
+  address: {
+    name: {
+      type: String,
+      required: true
     },
-    orderedItems:[{
-        Product:{
-            type:Schema.Types.ObjectId,
-            ref:'Product',
-            required:true
-        },
-        qunatity:{
-            type:Number,
-            required:true
-        },
-        price:{
-            type:Number,
-            default:0
-        }
-    }],
-    totalPrice:{
-        type:Number,
-        required:true
+    phone: {
+      type: String,
+      required: true
     },
-    discount:{
-        type:Number,
-        default:0
+    pincode: {
+      type: String,
+      required: true
     },
-    finalAmount:{
-        type:Number,
-        required:true
+    locality: {
+      type: String,
+      required: true
     },
-    address:{
-        type:Schema.Types.ObjectId,
-        ref:'User',
-        required:true
+    address: {
+      type: String,
+      required: true
     },
-    invoiceDate:{
-        type:Date,
+    place: {
+      type: String,
+      required: true
     },
-    status:{
-        type:String,
-        required:true,
-        enum:['pending','Processing','Shipped','Delivered','Cancelled','Return Request','Returned']
+    state: {
+      type: String,
+      required: true
     },
-    createdOn:{
-        type:Date,
-        default:Date.now,
-        required:true
+    landmark: {
+      type: String,
+      default: ''
     },
-    coupenApplied:{
-        type:Boolean,
-        default:false
+    alternatePhone: {
+      type: String,
+      default: ''
+    },
+    addressType: {
+      type: String,
+      required: true
     }
+  },
+  items: [
+    {
+      productId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+        min: 1,
+      },
+      image: {
+        type: String,
+        required: true
+      },
+      price: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      isCanceled: {
+        type: Boolean,
+        default: false,
+      },
+      canceledItems: {
+        type: Number,
+        required: false
+      }
+    },
+  ],
+  paymentStatus: {
+    type: String,
+    enum: ['Pending', 'Paid', 'Failed', 'Canceled', 'Refunded'],
+    required: true,
+  },
+  paymentMethod: {
+    type: String,
+    enum: ['cod', 'netbanking', 'upi'],
+    required: true,
+  },
+  orderStatus: {
+    type: String,
+    enum: ['Pending', 'Confirmed', 'Shipped', 'Delivered', 'Canceled', 'Returned'],
+    default: 'Pending',
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  cancelReason: {
+    type: String, // Add this field for storing cancellation reason
+    default: '', // Default value as an empty string
+  },
+  payableAmount: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  shippingFee: {
+    type: Number,
+    required: true,
+    default: 0,
+    min: 0,
+  },
+  appliedCoupon: {
+    couponId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Coupon',
+    },
+    discountPrice: {
+      type: Number
+    }
+  }
 
-}) 
+}, { timestamps: true });
 
-const Order=mongoose.model("Order",orderSchema);
-module.exports=Order;
+const Order = mongoose.model('Order', orderSchema);
+
+module.exports = Order;

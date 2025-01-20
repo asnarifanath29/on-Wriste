@@ -1,132 +1,6 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
-    <link rel="stylesheet" href="/styles/style.css">
-    <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #a3485a;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 18px;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        /* Products Grid Layout */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .product-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            background-color: white;
-            padding: 10px;
-        }
-
-        .product-image {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .view-details-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #a3485a;
-            color: white;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-
-        .view-details-btn:hover {
-            background-color: #a3485a;
-        }
-
-        p {
-            color: #555;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .products-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Header Section -->
-    <!-- <header>
-        <h1>Shop</h1>
-        <nav>
-            <a href="/">Home</a>
-        </nav>
-    </header>
-
-    <!-- Main Section for Product Listings -->
-    <!-- <main>
-        <div class="products-grid">
-            <% if (products.length === 0) { %>
-                <p>No products available at the moment.</p>
-            <% } else { %>
-                <% products.forEach(product => { %>
-                    <div class="product-card">
-                        <!-- <a href="/product/<%= product._id %>"> -->
-                            <!-- <img src="<%= product.images[0] || 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.quotev.com%2Fstory%2F7244632%2FError-Loading-Refresh-page-If-doesnt-load-dont-read-this-story-&psig=AOvVaw0bAFHH8_4-xIoBRzvZFuKh&ust=1735955592639000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCICF6Nm42IoDFQAAAAAdAAAAABAE' %>" alt="<%= product.name %>" class="product-image">
-                            <h2><%= product.name %></h2>
-                        <!-- </a> -->
-                        <!-- <p>Price: $<%= product.offerPrice || product.price %></p>
-                        <p><%= product.description.substring(0, 50) %>...</p>
-                        <a href="/product/<%= product._id %>" class="view-details-btn">View Details</a>
-                    </div>
-                <% }) %>
-            <% } %>
-        </div>
-    </main>
-
-</body>
-
-</html>  -->
 <!doctype html>
 <html class="no-js" lang="zxx">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -149,35 +23,40 @@
     <link rel="stylesheet" href="assets/css/nice-select.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <!-- Additional Custom CSS -->
     <style>
         .rating {
             color: #ffc107;
             margin: 10px 0;
         }
-        
+
         .rating-count {
             color: #6c757d;
             font-size: 0.9em;
             margin-left: 5px;
         }
-        
+
         .product-meta {
             font-size: 0.9em;
             color: #6c757d;
         }
-        
-        .brand, .category {
+
+        .brand,
+        .category {
             margin: 0 5px;
         }
-        
+
         .tags {
             display: flex;
             gap: 5px;
             justify-content: center;
             flex-wrap: wrap;
         }
-        
+
         .tag {
             background: #f8f9fa;
             padding: 2px 8px;
@@ -185,21 +64,21 @@
             font-size: 0.8em;
             color: #6c757d;
         }
-        
+
         .description {
             color: #6c757d;
             font-size: 0.9em;
             line-height: 1.5;
             margin: 10px 0;
         }
-        
+
         .original-price {
             text-decoration: line-through;
             color: #999;
             margin-left: 10px;
             font-size: 0.9em;
         }
-        
+
         .view-details-btn {
             display: inline-block;
             padding: 8px 20px;
@@ -209,7 +88,7 @@
             border-radius: 4px;
             transition: all 0.3s;
         }
-        
+
         .view-details-btn:hover {
             background-color: #333;
             color: #fff;
@@ -240,29 +119,32 @@
 
 
 
-         /* Updated and new image-related styles */
-         .popular-img {
+        /* Updated and new image-related styles */
+        .popular-img {
             position: relative;
-            width: 300px;  /* Fixed width container */
-            height: 300px; /* Fixed height container */
+            width: 300px;
+            /* Fixed width container */
+            height: 300px;
+            /* Fixed height container */
             margin: 0 auto;
             overflow: hidden;
             background-color: #f8f9fa;
         }
-        
+
         .popular-img img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* This ensures the image covers the area without distortion */
+            object-fit: cover;
+            /* This ensures the image covers the area without distortion */
             object-position: center;
             transition: transform 0.3s ease;
         }
-        
+
         /* Hover effect for images */
         .popular-img:hover img {
             transform: scale(1.05);
         }
-        
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .popular-img {
@@ -270,21 +152,21 @@
                 height: 250px;
             }
         }
-        
+
         @media (max-width: 480px) {
             .popular-img {
                 width: 200px;
                 height: 200px;
             }
         }
-        
+
         /* Ensure product cards align properly */
         .single-popular-items {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
+
         .popular-caption {
             width: 100%;
             padding: 20px;
@@ -308,6 +190,98 @@
 
 
 
+        /* Filter Panel Styles */
+        .filter-section {
+            background-color: #f8f9fa;
+        }
+
+        .filter-panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            z-index: 1000;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .filter-row {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Button Group Styles */
+        .btn-group {
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .btn-outline-dark {
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn-check:checked+.btn-outline-dark {
+            background-color: #212529;
+            color: white;
+        }
+
+        /* Active Filters Styles */
+        .active-filters .badge {
+            background-color: #212529;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin: 2px;
+        }
+
+        .active-filters .badge button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Form Control Styles */
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #212529;
+            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
+        }
+
+        /* Animation */
+        .filter-panel {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-outline-dark {
+                width: 100%;
+                margin: 2px 0;
+            }
+
+            .filter-row .row {
+                margin-bottom: 10px;
+            }
+        }
 
 
 
@@ -317,7 +291,294 @@
 
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Product Card Styles */
+        .product-card {
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img-container {
+            overflow: hidden;
+        }
+
+        .product-overlay {
+            background: rgba(255, 255, 255, 0.9);
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .product-overlay {
+            opacity: 1 !important;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            line-height: 1.4;
+            height: 2.8em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+
+
+
+
+
+        /* Filter Styles */
+        .filter-section {
+            background-color: #f8f9fa;
+        }
+
+        .filter-sidebar {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+        }
+
+        .filter-group {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .form-check-input:checked {
+            background-color: #212529;
+            border-color: #212529;
+        }
+
+        .active-filters .badge {
+            background-color: #212529;
+            color: #fff;
+            font-weight: normal;
+            padding: 0.5rem 0.75rem;
+            margin: 0.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .active-filters .badge button {
+            background: none;
+            border: none;
+            color: #fff;
+            padding: 0;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991.98px) {
+            .filter-sidebar {
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Animation for filter updates */
+        .filter-sidebar {
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus,
+        .form-control:focus {
+            border-color: #212529;
+            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
+        }
+
+        /* Button Hover Effects */
+        .btn-dark:hover {
+            background-color: #343a40;
+            transform: translateY(-1px);
+            transition: all 0.3s ease;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .product-card {
+            transition: transform 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img-container {
+            overflow: hidden;
+        }
+
+        .product-overlay {
+            background: rgba(255, 255, 255, 0.9);
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .product-overlay {
+            opacity: 1 !important;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            line-height: 1.4;
+            height: 2.8em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991.98px) {
+            .col-md-6 {
+                /* On medium screens, show 2 products per row */
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .col-12 {
+                /* On small screens, show 1 product per row */
+                max-width: 100%;
+            }
+
+            .product-img-container {
+                height: 250px;
+            }
+        }
+
+        /* Ensure consistent card heights in each row */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* Add proper gutters between cards */
+        .col-lg-4 {
+            padding: 0 15px;
+        }
+
+        /* Clear margin bottom for last row */
+        .row>div:nth-last-child(-n+3) .product-card {
+            margin-bottom: 0;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Product Name Styles */
+        .popular-product-name {
+            margin: 15px 0;
+            min-height: 48px;
+            /* Maintains consistent height for 2 lines of text */
+        }
+
+        .popular-product-name a {
+            color: #444444;
+            font-weight: 500;
+            font-size: 18px;
+            text-decoration: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .popular-product-name a:hover {
+            color: #000000;
+        }
+
+        /* Caption Styles */
+        .popular-caption {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Price Styles */
+        .price {
+            font-size: 18px;
+            font-weight: 500;
+            color: #444444;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #777;
+            margin-left: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .popular-product-name a {
+                font-size: 16px;
+            }
+
+            .price {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .popular-product-name {
+                min-height: 40px;
+            }
+
+            .popular-product-name a {
+                font-size: 15px;
+            }
+        }
     </style>
 </head>
 
@@ -334,8 +595,8 @@
                         </div>
                         <!-- Main-menu -->
                         <div class="main-menu d-none d-lg-block">
-                            <nav>                                                
-                                <ul id="navigation">  
+                            <nav>
+                                <ul id="navigation">
                                     <li><a href="/">Home</a></li>
                                     <li><a href="/shop">shop</a></li>
                                     <li><a href="about.html">about</a></li>
@@ -351,8 +612,8 @@
                                         <span class="flaticon-search"></span>
                                     </div>
                                 </li>
-                                <li><a href="login.html"><span class="flaticon-user"></span></a></li>
-                                <li><a href="cart.html"><span class="flaticon-shopping-cart"></span></a></li>
+                                <li><a href="/update-profile"><span class="flaticon-user"></span></a></li>
+                                <li><a href="/cart"><span class="flaticon-shopping-cart"></span></a></li>
                             </ul>
                         </div>
                     </div>
@@ -382,107 +643,254 @@
             </div>
         </div>
         <!-- Hero Area End-->
-
-        <!-- Product Grid Start -->
-        <section class="popular-items latest-padding">
+        <section class="filter-section py-4 position-relative">
             <div class="container">
-                <div class="row product-btn justify-content-between mb-40">
-                    <div class="properties__button">
-                        <nav>                                                      
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">NewestArrivals</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Price high to low</a>
-                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Most populer</a>
-                            </div>
-                        </nav>
+                <!-- Top Bar with Filter Button and Search -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <button class="btn btn-dark d-flex align-items-center" id="filterToggle" style="padding: 5px 10px; font-size: 0.85rem;">
+                            <i class="fas fa-filter me-2"></i>
+                            Filters
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search products..." id="searchInput" style="padding: 5px; font-size: 0.85rem;">
+                            <button class="btn btn-dark " id="searchBtn" style="padding: 5px 10px; font-size: 0.85rem;">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Product Grid -->
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="row">
-                            <% if (products.length === 0 || products.every(product => product.isDeleted)) { %>
-                                <div class="col-12 text-center">
-                                    <p>No products available at the moment.</p>
-                                </div>
-                            <% } else { %>
-                                <% products.filter(product => !product.isDeleted).forEach(product => { %>
-                                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                        <div class="single-popular-items mb-50 text-center">
-                                            <div class="popular-img">
-                                                <img src="<%= product.images[0] || '/assets/img/default-product.png' %>" alt="<%= product.name %>">
-                                                <div class="img-cap">
-                                                    <span>Add to cart</span>
-                                                </div>
-                                                <div class="favorit-items">
-                                                    <span class="flaticon-heart"></span>
-                                                </div>
-                                            </div>
-                                            <div class="popular-caption">
-                                                <h3><a href="/product/<%= product._id %>"><%= product.name %></a></h3>
-                                                
-                                                <!-- Price Display -->
-                                                <div class="pricing">
-                                                    <% if (product.offerPrice && product.offerPrice < product.price) { %>
-                                                        <span class="price">Price<%= product.offerPrice.toFixed(2) %></span>
-                                                        <span class="original-price">Price<%= product.price.toFixed(2) %></span>
-                                                    <% } else { %>
-                                                        <span class="price">Price<%= product.price.toFixed(2) %></span>
-                                                    <% } %>
-                                                </div>
+                <!-- Filter Panel -->
+                <div class="filter-panel shadow" id="filterPanel" style="display: none;">
+                    <!-- Price Range Filter Row -->
+                    <div class="filter-row">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <h5 class="mb-0">Price Range</h5>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="price-range-options">
+                                    <div class="btn-group" role="group">
+                                        <input type="radio" class="btn-check" name="priceRange" id="price1"
+                                            value="$0.00 - $999.00">
+                                        <label  for="price1">$0 - $999</label>
 
-                                                <!-- Rating Display -->
-                                                <div class="rating mt-2">
-                                                    <% for(let i = 1; i <= 5; i++) { %>
-                                                        <% if (i <= Math.round(product.rating)) { %>
-                                                            <i class="fas fa-star"></i>
-                                                        <% } else { %>
-                                                            <i class="far fa-star"></i>
-                                                        <% } %>
-                                                    <% } %>
-                                                    <span class="rating-count">
-                                                        (<%= product.reviews.length %> reviews)
-                                                    </span>
-                                                </div>
+                                        <input type="radio" class="btn-check" name="priceRange" id="price2"
+                                            value="$1000.00 - $2999.00">
+                                        <label for="price2">$1,000 - $2,999</label>
 
-                                                <!-- Brand & Category -->
-                                                <% if (product.brand || (product.category && product.category.name)) { %>
-                                                    <div class="product-meta mt-2">
-                                                        <% if (product.brand) { %>
-                                                            <span class="brand"><%= product.brand %></span>
-                                                        <% } %>
-                                                        <% if (product.category && product.category.name) { %>
-                                                            <span class="category">| <%= product.category.name %></span>
-                                                        <% } %>
-                                                    </div>
-                                                <% } %>
+                                        <input type="radio" class="btn-check" name="priceRange" id="price3"
+                                            value="$3000.00 - $6999.00">
+                                        <label  for="price3">$3,000 - $6,999</label>
 
-                                                <!-- Description -->
-                                                <!-- <p class="description mt-2">
-                                                    <%= product.description.substring(0, 100) %>...
-                                                </p> -->
+                                        <input type="radio" class="btn-check" name="priceRange" id="price4"
+                                            value="$7000.00 - $9999.00">
+                                        <label  for="price4">$7,000 - $9,999</label>
 
-                                                <!-- Tags -->
-                                                <% if (product.tags && product.tags.length > 0) { %>
-                                                    <div class="tags mt-2">
-                                                        <% product.tags.slice(0, 3).forEach(tag => { %>
-                                                            <span class="tag"><%= tag %></span>
-                                                        <% }) %>
-                                                    </div>
-                                                <% } %>
-
-                                                <a href="/product/<%= product._id %>" class="view-details-btn mt-3">View Details</a>
-                                            </div>
-                                        </div>
+                                        <input type="radio" class="btn-check" name="priceRange" id="price5"
+                                            value="$10000.00+">
+                                        <label  for="price5">$10,000+</label>
                                     </div>
-                                <% }) %>
-                            <% } %>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- Sort By Filter Row -->
+                    <div class="filter-row">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <h5 class="mb-0">Sort By</h5>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-select" id="sortBy">
+                                    <option value="">Select Option</option>
+                                    <option value="Price: Low to High">Price: Low to High</option>
+                                    <option value="Price: High to Low">Price: High to Low</option>
+                                    <option value="aA - zZ">Name: A to Z</option>
+                                    <option value="zZ - aA">Name: Z to A</option>
+                                    <option value="Newness">Newest First</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Filter Row -->
+                    <!-- <div class="filter-row">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <h5 class="mb-0">Category</h5>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-select" id="category">
+                                    <option value="*">All Categories</option>
+                                    <option value="Luxury">Luxury</option>
+                                    <option value="Sport">Sport</option>
+                                    <option value="Smart">Smart</option>
+                                    <option value="Classic">Classic</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="filter-row">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <h5 class="mb-0">Category</h5>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-select" id="category">
+                                    <option value="*">All Categories</option>
+                                    <!-- Dynamically populated category options will go here -->
+                                    <% categories.forEach(category => { %>
+                                        <option value="<%= category.name %>"><%= category.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Availability Filter Row -->
+                    <div class="filter-row">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <h5 class="mb-0">Availability</h5>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="excludeOutOfStock">
+                                    <label class="form-check-label" for="excludeOutOfStock">
+                                        Show only in-stock items
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Actions -->
+                    <div class="filter-actions mt-3">
+                        <div class="row">
+                            <div class="col-md-12 text-end">
+                                <button class="btn btn-dark me-2" id="clearFilters" style="padding: 15px 10px;font-size: 0.85rem;">Clear All</button>
+                                <button class="btn btn-dark" id="applyFilters" style="padding: 15px 10px;font-size: 0.85rem;">Apply Filters</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Filters Display -->
+                <div class="active-filters mt-3" style="display: none;">
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <span class="fw-bold me-2">Active Filters:</span>
+                        <!-- Active filters will be added here dynamically -->
                     </div>
                 </div>
             </div>
         </section>
+
+
+        <!-- Product Grid Section -->
+        <section class="product-grid py-5">
+            <div class="container">
+                <div class="row">
+                    <% if (products.length===0 || products.every(product=> product.isDeleted)) { %>
+                        <div class="col-12 text-center">
+                            <p>No products available at the moment.</p>
+                        </div>
+                        <% } else { %>
+                            <% products.filter(product=> !product.isDeleted).forEach((product, index) => { %>
+                                <!-- Each product takes up exactly 1/3 of the row -->
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                    <div class="single-popular-items mb-50 text-center">
+                                        <div class="popular-img">
+                                            <img src="<%= product.images[0] || '/assets/img/default-product.png' %>"
+                                                alt="<%= product.name %>">
+                                            <div class="img-cap">
+                                                <span>Add to cart</span>
+                                            </div>
+                                            <div class="favorit-items">
+                                                <span class="flaticon-heart"></span>
+                                            </div>
+                                        </div>
+                                        <div class="popular-caption">
+                                            <h3 class="popular-product-name">
+                                                <a href="/product/<%= product._id %>">
+                                                    <%= product.name %>
+                                                </a>
+                                            </h3>
+
+                                            <!-- Price Display -->
+                                            <div class="pricing">
+                                                <% if (product.offerPrice && product.offerPrice < product.price) { %>
+                                                    <span class="price">$<%= product.offerPrice.toFixed(2) %></span>
+                                                    <span class="original-price">$<%= product.price.toFixed(2) %></span>
+                                                    <% } else { %>
+                                                        <span class="price">$<%= product.price.toFixed(2) %></span>
+                                                        <% } %>
+                                            </div>
+
+                                            <!-- Rating Display -->
+                                            <div class="rating mt-2">
+                                                <% for(let i=1; i <=5; i++) { %>
+                                                    <% if (i <=Math.round(product.rating)) { %>
+                                                        <i class="fas fa-star"></i>
+                                                        <% } else { %>
+                                                            <i class="far fa-star"></i>
+                                                            <% } %>
+                                                                <% } %>
+                                                                    <span class="rating-count">
+                                                                        (<%= product.reviews.length %> reviews)
+                                                                    </span>
+                                            </div>
+
+                                            <!-- Brand & Category -->
+                                            <% if (product.brand || (product.category && product.category.name)) { %>
+                                                <div class="product-meta mt-2">
+                                                    <% if (product.brand) { %>
+                                                        <span class="brand">
+                                                            <%= product.brand %>
+                                                        </span>
+                                                        <% } %>
+                                                            <% if (product.category && product.category.name) { %>
+                                                                <span class="category">| <%= product.category.name %>
+                                                                        </span>
+                                                                <% } %>
+                                                </div>
+                                                <% } %>
+
+                                                    <!-- Tags -->
+                                                    <% if (product.tags && product.tags.length> 0) { %>
+                                                        <div class="tags mt-2">
+                                                            <% product.tags.slice(0, 3).forEach(tag=> { %>
+                                                                <span class="tag">
+                                                                    <%= tag %>
+                                                                </span>
+                                                                <% }) %>
+                                                        </div>
+                                                        <% } %>
+
+                                                            <a href="/product/<%= product._id %>"
+                                                                class="view-details-btn mt-3">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Add clearfix after every 3rd item to force new row -->
+                                <% if ((index + 1) % 3===0) { %>
+                                    <div class="clearfix d-none d-lg-block"></div>
+                                    <% } %>
+                                        <% }) %>
+                                            <% } %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Grid Start -->
+
         <!-- Product Grid End -->
     </main>
 
@@ -521,5 +929,382 @@
     <script src="./assets/js/jquery.nice-select.min.js"></script>
     <script src="./assets/js/jquery.sticky.js"></script>
     <script src="./assets/js/main.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Close buttons for active filters
+            document.querySelectorAll('.active-filters .btn-close').forEach(button => {
+                button.addEventListener('click', function () {
+                    this.closest('.badge').remove();
+                });
+            });
+
+            // Sort option selection
+            document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
+                radio.addEventListener('change', function () {
+                    console.log('Sort option selected:', this.id);
+                    // Add your sorting logic here
+                });
+            });
+
+            // Price range inputs
+            const minPrice = document.querySelector('input[placeholder="Min"]');
+            const maxPrice = document.querySelector('input[placeholder="Max"]');
+
+            [minPrice, maxPrice].forEach(input => {
+                input.addEventListener('change', function () {
+                    console.log('Price range updated:', {
+                        min: minPrice.value,
+                        max: maxPrice.value
+                    });
+                    // Add your price filter logic here
+                });
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    function updateProductList(products) {
+        const productGrid = document.querySelector('.product-grid .row');
+        
+        // Clear existing products
+        productGrid.innerHTML = '';
+    
+        if (products.length === 0) {
+            productGrid.innerHTML = `
+                <div class="col-12 text-center">
+                    <p>No products available matching your filters.</p>
+                </div>`;
+            return;
+        }
+    
+        // Loop through products and create HTML for each
+        products.filter(product => !product.isDeleted).forEach((product, index) => {
+            const productHTML = `
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                    <div class="single-popular-items mb-50 text-center">
+                        <div class="popular-img">
+                            <img src="${product.images[0] || '/assets/img/default-product.png'}" 
+                                 alt="${product.name}">
+                            <div class="img-cap">
+                                <span>Add to cart</span>
+                            </div>
+                            <div class="favorit-items">
+                                <span class="flaticon-heart"></span>
+                            </div>
+                        </div>
+                        <div class="popular-caption">
+                            <h3 class="popular-product-name">
+                                <a href="/product/${product._id}">${product.name}</a>
+                            </h3>
+                            
+                            <div class="pricing">
+                                ${product.offerPrice && product.offerPrice < product.price 
+                                    ? `<span class="price">$${product.offerPrice.toFixed(2)}</span>
+                                       <span class="original-price">$${product.price.toFixed(2)}</span>`
+                                    : `<span class="price">$${product.price.toFixed(2)}</span>`
+                                }
+                            </div>
+    
+                            <div class="rating mt-2">
+                                ${generateRatingStars(product.rating)}
+                                <span class="rating-count">(${product.reviews.length} reviews)</span>
+                            </div>
+    
+                            ${(product.brand || (product.category && product.category.name)) 
+                                ? `<div class="product-meta mt-2">
+                                     ${product.brand ? `<span class="brand">${product.brand}</span>` : ''}
+                                     ${product.category && product.category.name 
+                                         ? `<span class="category">| ${product.category.name}</span>` 
+                                         : ''}
+                                   </div>`
+                                : ''
+                            }
+    
+                            ${product.tags && product.tags.length > 0 
+                                ? `<div class="tags mt-2">
+                                     ${product.tags.slice(0, 3).map(tag => 
+                                         `<span class="tag">${tag}</span>`
+                                     ).join('')}
+                                   </div>`
+                                : ''
+                            }
+    
+                            <a href="/product/${product._id}" class="view-details-btn mt-3">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                ${(index + 1) % 3 === 0 ? '<div class="clearfix d-none d-lg-block"></div>' : ''}
+            `;
+            
+            productGrid.insertAdjacentHTML('beforeend', productHTML);
+        });
+    }
+    
+    // Helper function to generate rating stars
+    function generateRatingStars(rating) {
+        let starsHtml = '';
+        const roundedRating = Math.round(rating);
+        
+        for (let i = 1; i <= 5; i++) {
+            if (i <= roundedRating) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            } else {
+                starsHtml += '<i class="far fa-star"></i>';
+            }
+        }
+        
+        return starsHtml;
+    }
+    </script>
+
+<script>
+    // Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+    // Elements
+    const filterToggle = document.getElementById('filterToggle');
+    const filterPanel = document.getElementById('filterPanel');
+    const applyFiltersBtn = document.getElementById('applyFilters');
+    const clearFiltersBtn = document.getElementById('clearFilters');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const activeFilters = document.querySelector('.active-filters');
+    
+    let searchTimeout;
+
+    // Toggle Filter Panel
+    filterToggle.addEventListener('click', function () {
+        const isVisible = filterPanel.style.display === 'block';
+        filterPanel.style.display = isVisible ? 'none' : 'block';
+        filterToggle.classList.toggle('active');
+    });
+
+    // Search Implementation
+    async function performSearch() {
+        const searchTerm = searchInput.value.trim();
+        const excludeOutOfStock = document.getElementById('excludeOutOfStock').checked;
+
+        if (searchTerm === '') {
+            // If search is empty, revert to filter results
+            applyFiltersBtn.click();
+            return;
+        }
+
+        try {
+            const response = await fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    search: searchTerm,
+                    excludeOutOfStock: excludeOutOfStock
+                })
+            });
+
+            const data = await response.json();
+            if (data.products) {
+                updateProductList(data.products);
+                // Show search as an active filter
+                updateActiveFilters({
+                    searchTerm: `Search: ${searchTerm}`
+                });
+                activeFilters.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Search error:', error);
+        }
+    }
+
+    // Filter Implementation
+    async function applyFilters() {
+        const filters = {
+            sortBy: document.getElementById('sortBy').value,
+            priceRange: Array.from(document.querySelectorAll('input[name="priceRange"]'))
+                .find(input => input.checked)?.value,
+            category: document.getElementById('category').value,
+            excludeOutOfStock: document.getElementById('excludeOutOfStock').checked
+        };
+
+        try {
+            const response = await fetch('/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(filters)
+            });
+
+            const data = await response.json();
+            if (data.products) {
+                updateProductList(data.products);
+                updateActiveFilters(filters);
+                filterPanel.style.display = 'none';
+                activeFilters.style.display = Object.values(filters).some(value => value) ? 'block' : 'none';
+            }
+        } catch (error) {
+            console.error('Filter error:', error);
+        }
+    }
+
+    // Update Active Filters Display
+    function updateActiveFilters(filters) {
+        const activeFiltersContainer = document.querySelector('.active-filters > div');
+        activeFiltersContainer.innerHTML = '<span class="fw-bold me-2">Active Filters:</span>';
+
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value && value !== '*' && value !== '') {
+                const badge = document.createElement('span');
+                badge.className = 'badge';
+                badge.innerHTML = `
+                    ${key === 'searchTerm' ? value : `${key}: ${value}`}
+                    <button onclick="removeFilter('${key}')">&times;</button>
+                `;
+                activeFiltersContainer.appendChild(badge);
+            }
+        });
+    }
+
+    // Event Listeners
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(performSearch, 500); // Debounce search
+    });
+
+    searchBtn.addEventListener('click', performSearch);
+
+    applyFiltersBtn.addEventListener('click', applyFilters);
+
+    clearFiltersBtn.addEventListener('click', function() {
+        // Clear all filters
+        document.getElementById('sortBy').value = '';
+        document.querySelectorAll('input[name="priceRange"]')
+            .forEach(input => input.checked = false);
+        document.getElementById('category').value = '*';
+        document.getElementById('excludeOutOfStock').checked = false;
+        searchInput.value = '';
+
+        // Reset to all products
+        applyFilters();
+        
+        // Hide active filters
+        activeFilters.style.display = 'none';
+        document.querySelector('.active-filters > div').innerHTML = 
+            '<span class="fw-bold me-2">Active Filters:</span>';
+    });
+
+    // Remove Individual Filter
+    window.removeFilter = function(filterKey) {
+        switch (filterKey) {
+            case 'sortBy':
+                document.getElementById('sortBy').value = '';
+                break;
+            case 'priceRange':
+                document.querySelectorAll('input[name="priceRange"]')
+                    .forEach(input => input.checked = false);
+                break;
+            case 'category':
+                document.getElementById('category').value = '*';
+                break;
+            case 'excludeOutOfStock':
+                document.getElementById('excludeOutOfStock').checked = false;
+                break;
+            case 'searchTerm':
+                searchInput.value = '';
+                break;
+        }
+
+        if (filterKey === 'searchTerm') {
+            applyFilters();
+        } else {
+            // Reapply filters
+            const currentSearchTerm = searchInput.value.trim();
+            if (currentSearchTerm) {
+                performSearch();
+            } else {
+                applyFilters();
+            }
+        }
+    };
+
+    // Click outside to close filter panel
+    document.addEventListener('click', function(event) {
+        if (!filterPanel.contains(event.target) && 
+            !filterToggle.contains(event.target) && 
+            filterPanel.style.display === 'block') {
+            filterPanel.style.display = 'none';
+        }
+    });
+});
+</script>
+
 </body>
+
 </html>

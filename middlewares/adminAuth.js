@@ -1,9 +1,5 @@
-// middleware/adminAuth.js
-
 
 const adminAuth = (req, res, next) => {
-    console.log('req.file');
-    console.log(req.file);
     if (req.session.isAdmin) {
         return next();
     }

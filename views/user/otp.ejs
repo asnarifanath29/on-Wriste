@@ -4,47 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Verification</title>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- Template CSS -->
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
   <link rel="stylesheet" href="/assets/css/flaticon.css">
@@ -57,25 +16,11 @@
   <link rel="stylesheet" href="/assets/css/nice-select.css">
   <link rel="stylesheet" href="/assets/css/style.css">
 
-
-
-
-
-
-
-
-
-
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-
     <style>
         body {
             background-color: #f8f9fa;
-            /* height: 100vh;
-            display: flex;
-            align-items: center; */
+           
         }
         .otp-card {
             background: white;
@@ -114,7 +59,6 @@
     </style>
 </head>
 <body>
-     <!-- Include Header -->
 <%- include('../partials/user/header') %>
 <section class="otp-section">
     <div class="container">
@@ -152,9 +96,7 @@
         
     </div>
 </section>    
-  <!-- Include Footer -->
     <%- include('../partials/user/footer') %>
-     <!-- Template Scripts -->
      <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
      <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
      <script src="/assets/js/popper.min.js"></script>
@@ -168,23 +110,9 @@
      <script src="/assets/js/jquery.nice-select.min.js"></script>
      <script src="/assets/js/jquery.sticky.js"></script>
      <script src="/assets/js/main.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Global variables
         const otpForm = document.getElementById('otpForm');
         const otpInput = document.getElementById('otpInput');
         const otpError = document.getElementById('otpError');
@@ -199,18 +127,15 @@
         let isResendEnabled = false;
 
         function startMainTimer() {
-            // Clear any existing timer
             if(timerInterval) {
                 clearInterval(timerInterval);
             }
             
-            // Reset time
             remainingTime = 120;
             countdownElement.textContent = formatTime(remainingTime);
             verifyBtn.disabled = false;
             verifyBtn.classList.replace('btn-danger', 'btn-primary');
             
-            // Start new timer
             timerInterval = setInterval(() => {
                 remainingTime--;
                 countdownElement.textContent = formatTime(remainingTime);
@@ -316,17 +241,12 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // Start new timer
                     startMainTimer();
-                    
-                    // Start resend cooldown
                     startResendCooldown();
                     
-                    // Clear input and error
                     otpInput.value = '';
                     otpError.style.display = 'none';
                     
-                    // alert('New OTP sent successfully');
                     Swal.fire({
                     icon: 'success',
                     title: 'OTP Sent!',
@@ -335,7 +255,6 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
-                // alert('Failed to resend OTP');
                 Swal.fire({
                 icon: 'error',
                 title: 'Failed',
@@ -377,8 +296,6 @@
                 }
             }, 1000);
         }
-
-        // Initialize timers
         startMainTimer();
         startResendCooldown();
         verifyBtn.disabled = true;

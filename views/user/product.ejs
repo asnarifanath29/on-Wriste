@@ -1,438 +1,418 @@
-<!DOCTYPE html>
-<html lang="en">
 
+
+
+<!doctype html>
+<html class="no-js" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= product.name %> Details
-    </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title><%= product.name %> Details</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/css/flaticon.css">
+    <link rel="stylesheet" href="/assets/css/slicknav.css">
+    <link rel="stylesheet" href="/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/assets/css/slick.css">
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
+        :root {
+            --primary-color: #973a4d;
+            --secondary-color: #a3485a;
         }
 
-        header {
-            background-color: #973a4d;
-            color: white;
-            padding: 20px;
-            text-align: center;
+        .navbar-custom {
+            background-color: var(--primary-color);
         }
 
-        nav a {
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
             color: white;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .breadcrumb-item a {
+            color: var(--secondary-color);
             text-decoration: none;
-            margin: 0 15px;
-            font-size: 18px;
         }
 
-        nav a:hover {
-            text-decoration: underline;
+        .breadcrumb-item.active {
+            color: var(--secondary-color);
         }
 
-        .product-details {
-            padding: 20px;
-            margin-top: 20px;
-        }
-
-        .product-info {
-            text-align: center;
-        }
-
-        .product-info h2 {
-            margin: 10px 0;
-        }
-
-        .product-info .price {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #a3485a;
-        }
-
-        .image-gallery {
-            display: flex;
-            margin-top: 20px;
+        .product-gallery {
+            position: relative;
         }
 
         .thumbnails {
             display: flex;
             flex-direction: column;
+            gap: 10px;
+            width: 80px;
         }
 
         .thumbnail-img {
             width: 70px;
             height: 70px;
             object-fit: cover;
-            margin-bottom: 10px;
             cursor: pointer;
             border: 2px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s;
         }
 
         .thumbnail-img.selected {
-            border: 2px solid #a3485a;
+            border-color: var(--secondary-color);
         }
 
-        .main-image img {
-            width: 500px;
-            height: 500px;
-            object-fit: cover;
-            border-radius: 5px;
+        .main-image-container {
+            position: relative;
             margin-left: 20px;
         }
 
-        .product-details-section {
-            margin-top: 30px;
+        #mainImage {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        .reviews-section {
-            margin-top: 30px;
-        }
-
-        .review {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
-
-        .review h4 {
-            margin: 0;
-        }
-
-        .review p {
-            color: #555;
-        }
-
-        .action-buttons {
-            margin-top: 20px;
-        }
-
-        .action-buttons button {
-            padding: 10px 20px;
-            background-color: #a3485a;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .action-buttons button:hover {
-            background-color: #8a3450;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         .magnifier-lens {
             position: absolute;
-            border: 1px solid #000;
+            border: 2px solid #fff;
             border-radius: 50%;
             cursor: crosshair;
-            box-shadow: 0 0 5px #000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             pointer-events: none;
             visibility: hidden;
-            background-repeat: no-repeat;
         }
 
-        .main-image {
-            position: relative;
-            display: inline-block;
+        .price-tag {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
         }
 
-        #mainImage {
-            display: block;
-            max-width: 100%;
+        .original-price {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .stock-badge {
+            font-size: 0.9rem;
+            padding: 0.5em 1em;
+        }
+
+        .review-card {
+            border-left: 4px solid var(--secondary-color);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .btn-custom {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .btn-custom:hover {
+            background-color: var(--primary-color);
+            color: white;
         }
     </style>
 </head>
 
 <body>
-    <!-- Header Section -->
-    <header>
-        <h1>Product Details</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/shop">Shop</a>
+    <%- include('../partials/user/header') %>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <%= product.name %>
+                </li>
+            </ol>
         </nav>
-    </header>
 
-    <!-- Product Details Section -->
-    <div class="container product-details">
-        <!-- Product Name -->
-        <div class="product-info">
-            <h2>
-                <%= product.name %>
-            </h2>
-        </div>
+        <!-- Product Title -->
+        <h1 class="text-center mb-4">
+            <%= product.name %>
+        </h1>
 
-        <div class="container">
-            <nav aria-label="breadcrumb" class="pt-3">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="/home" class="text-danger">Home</a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a href="/shop"  class="text-danger">Shop</a>
-                    </li>
-                    <li class="breadcrumb-item active text-danger" aria-current="page">
-                        <%= product.name %>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-
-
-        <!-- Image Gallery -->
-        <div class="image-gallery">
-            <!-- Thumbnails -->
-            <div class="thumbnails">
-                <% product.images.forEach((image, index)=> { %>
-                    <img src="<%= image %>" alt="<%= product.name %> Thumbnail"
-                        class="thumbnail-img <%= index === 0 ? 'selected' : '' %>" data-index="<%= index %>">
-                    <% }) %>
+        <div class="row">
+            <!-- Product Gallery -->
+            <div class="col-md-6">
+                <div class="product-gallery d-flex">
+                    <div class="thumbnails">
+                        <% product.images.forEach((image, index)=> { %>
+                            <img src="<%= image %>" alt="<%= product.name %> Thumbnail"
+                                class="thumbnail-img <%= index === 0 ? 'selected' : '' %>" data-index="<%= index %>">
+                            <% }) %>
+                    </div>
+                    <div class="main-image-container">
+                        <img id="mainImage" src="<%= product.images[0] %>" alt="<%= product.name %> Main Image">
+                    </div>
+                </div>
             </div>
-            <!-- Main Image -->
-            <div class="main-image">
-                <img id="mainImage" src="<%= product.images[0] %>" alt="<%= product.name %> Main Image">
+
+            <!-- Product Info -->
+            <div class="col-md-6">
+                <div class="card border-0 bg-light">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="original-price me-2">
+                                <%= product.price %>
+                            </span>
+                            <span class="price-tag fw-bold">
+                                <%= product.salesPrice %>
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <h5 class="mb-2">Brand</h5>
+                            <p class="text-muted">
+                                <%= product.brand %>
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h5 class="mb-2">Category</h5>
+                            <p class="text-muted">
+                                <%= product.category ? product.category.name : 'Not Available' %>
+                            </p>
+                        </div>
+
+                        <div class="mb-3">
+                            <h5 class="mb-2">Stock</h5>
+                            <% if (product.stock && product.stock> 0) { %>
+                                <span class="badge bg-success stock-badge"> in stock</span>
+                                <% } else { %>
+                                    <span class="badge bg-danger stock-badge">Out of stock</span>
+                                    <% } %>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 class="mb-2">Description</h5>
+                            <p class="text-muted">
+                                <%= product.description %>
+                            </p>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <a href="#" class="btn btn-custom btn-lg" id="addToCartBtn"
+                                data-product-id="<%= product._id %>">
+                                <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                            </a>
+                            <button class="btn btn-custom btn-lg">
+                                <i class="fas fa-heart me-2"></i>Add to Wishlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- Product Details Section -->
-        <div class="product-details-section">
-            <h3>Product Details</h3>
-
-            <p class="price"><strong>Price:</strong><span style="text-decoration: line-through;">&nbsp;&nbsp;<%=
-                        product.price %></span>
-                <%= product.salesPrice %>
-            </p>
-            <p><strong>Brand:</strong>
-                <%= product.brand %>
-            </p>
-            <p><strong>Category:</strong>
-                <%= product.category ? product.category.name : 'Not Available' %>
-            </p>
-            <p>
-                <strong>Stock:</strong>
-                <% if (product.stock && product.stock> 0) { %>
-                    <%= product.stock %>
-                        <% } else { %>
-                            <span style="color: red;">Out of stock</span>
-                            <% } %>
-            </p>
-            <p><strong>Description:</strong>
-                <%= product.description %>
-            </p>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="action-buttons text-center">
-            <a href="/add-to-cart" class="btn btn-warning">Add to Cart</a>
-            <button>Add to Wishlist</button>
         </div>
 
         <!-- Reviews Section -->
-        <div class="reviews-section">
-            <h3>Customer Reviews</h3>
-            <% if (product.reviews.length===0) { %>
-                <p>No reviews yet.</p>
-                <% } else { %>
-                    <% product.reviews.forEach(review=> { %>
-                        <div class="review">
-                            <h4>
-                                <%= review.user.name %>
-                            </h4>
-                            <p>
-                                <%= review.comment %>
-                            </p>
-                            <p><strong>Rating:</strong>
-                                <%= review.rating %>/5
-                            </p>
-                        </div>
-                        <% }) %>
-                            <% } %>
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4">Customer Reviews</h3>
+                <% if (product.reviews.length===0) { %>
+                    <p class="text-muted">No reviews yet.</p>
+                    <% } else { %>
+                        <% product.reviews.forEach(review=> { %>
+                            <div class="review-card">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h5 class="mb-0">
+                                        <%= review.user.name %>
+                                    </h5>
+                                    <div>
+                                        <% for(let i=0; i < 5; i++) { %>
+                                            <i
+                                                class="fas fa-star <%= i < review.rating ? 'text-warning' : 'text-muted' %>"></i>
+                                            <% } %>
+                                    </div>
+                                </div>
+                                <p class="mb-0">
+                                    <%= review.comment %>
+                                </p>
+                            </div>
+                            <% }) %>
+                                <% } %>
+            </div>
         </div>
     </div>
 
-    <!-- JavaScript -->
-    <script>
+    <%- include('../partials/user/footer') %>
 
+    <!-- JS here -->
+    <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.slicknav.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/slick.min.js"></script>
+    <script src="/assets/js/wow.min.js"></script>
+    <script src="/assets/js/animated.headline.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.js"></script>
+    <script src="/assets/js/jquery.scrollUp.min.js"></script>
+    <script src="/assets/js/jquery.nice-select.min.js"></script>
+    <script src="/assets/js/jquery.sticky.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/main.js"></script>
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Image Gallery & Magnifier functionality
         document.querySelectorAll('.thumbnail-img').forEach((thumbnail) => {
             thumbnail.addEventListener('click', function () {
-                // Change the main image source to the clicked thumbnail's source
                 document.getElementById('mainImage').src = this.src;
-
-                // Update selected class
                 document.querySelectorAll('.thumbnail-img').forEach((img) => img.classList.remove('selected'));
                 this.classList.add('selected');
             });
         });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Create the Magnifier Lens
-        var magnifierLens = document.createElement('div');
+        // Magnifier Lens
+        const magnifierLens = document.createElement('div');
         magnifierLens.classList.add('magnifier-lens');
-        document.body.appendChild(magnifierLens); // Append it to the body or a specific container
+        document.body.appendChild(magnifierLens);
 
         function setupMagnifier(imageElement) {
-            var magnificationFactor = 3; // Adjust magnification level as needed
-            var magnifierSize = 200; // Starting size of the magnifier lens
+            let magnificationFactor = 3;
+            let magnifierSize = 200;
 
-            // Ensure the magnifier lens is styled and prepared
-            magnifierLens.style.backgroundRepeat = 'no-repeat';
-            magnifierLens.style.pointerEvents = 'none';
-            magnifierLens.style.position = 'absolute';
-            magnifierLens.style.border = '1px solid #000';
-            magnifierLens.style.borderRadius = '50%';
-            magnifierLens.style.width = magnifierSize + 'px'; // Diameter of the lens
-            magnifierLens.style.height = magnifierSize + 'px'; // Diameter of the lens
-            magnifierLens.style.visibility = 'hidden'; // Initially hidden
-            magnifierLens.style.boxShadow = '0 0 5px #000';
-            magnifierLens.style.cursor = 'crosshair';
+            magnifierLens.style.width = magnifierSize + 'px';
+            magnifierLens.style.height = magnifierSize + 'px';
 
-            // Function to update magnifier lens size
             function updateMagnifierSize(deltaY) {
-                // Update magnifier size
                 magnifierSize += deltaY > 0 ? -20 : 20;
                 magnifierSize = Math.max(100, Math.min(magnifierSize, 400));
-
-                // Adjust magnification factor based on lens size
                 magnificationFactor = 2 + (magnifierSize - 100) * (5 - 2) / (400 - 100);
-
                 magnifierLens.style.width = magnifierSize + 'px';
                 magnifierLens.style.height = magnifierSize + 'px';
-
-                // Update lens styling for new magnification
                 updateLensMagnification();
             }
 
             function updateLensMagnification() {
-                if (!imageElement) return; // Ensure there's an image element to work on
-
-                var bounds = imageElement.getBoundingClientRect();
-                var bgPosX = -(magnifierLens.offsetLeft - bounds.left) * magnificationFactor - magnifierLens.offsetWidth / 2;
-                var bgPosY = -(magnifierLens.offsetTop - bounds.top) * magnificationFactor - magnifierLens.offsetHeight / 2;
-
+                if (!imageElement) return;
+                const bounds = imageElement.getBoundingClientRect();
+                const bgPosX = -(magnifierLens.offsetLeft - bounds.left) * magnificationFactor - magnifierLens.offsetWidth / 2;
+                const bgPosY = -(magnifierLens.offsetTop - bounds.top) * magnificationFactor - magnifierLens.offsetHeight / 2;
                 magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
                 magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
-
-                // Trigger reflow
-                magnifierLens.offsetHeight;
             }
 
             imageElement.addEventListener('mousemove', function (e) {
                 magnifierLens.style.visibility = 'visible';
-                var bounds = e.target.getBoundingClientRect();
-                var mouseX = e.clientX - bounds.left;
-                var mouseY = e.clientY - bounds.top;
+                const bounds = e.target.getBoundingClientRect();
+                const mouseX = e.clientX - bounds.left;
+                const mouseY = e.clientY - bounds.top;
 
-                var lensX = mouseX - (magnifierLens.offsetWidth / 2);
-                var lensY = mouseY - (magnifierLens.offsetHeight / 2);
+                const lensX = mouseX - (magnifierLens.offsetWidth / 2);
+                const lensY = mouseY - (magnifierLens.offsetHeight / 2);
 
                 magnifierLens.style.left = (bounds.left + window.pageXOffset + lensX) + 'px';
                 magnifierLens.style.top = (bounds.top + window.pageYOffset + lensY) + 'px';
 
-                var bgPosX = -((mouseX * magnificationFactor) - magnifierLens.offsetWidth / 2);
-                var bgPosY = -((mouseY * magnificationFactor) - magnifierLens.offsetHeight / 2);
+                const bgPosX = -((mouseX * magnificationFactor) - magnifierLens.offsetWidth / 2);
+                const bgPosY = -((mouseY * magnificationFactor) - magnifierLens.offsetHeight / 2);
 
                 magnifierLens.style.backgroundImage = `url('${imageElement.src}')`;
                 magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
                 magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
 
-                imageElement.style.cursor = 'none'; // Hide the cursor when magnifier is active
+                imageElement.style.cursor = 'none';
             });
 
             imageElement.addEventListener('wheel', function (e) {
-                e.preventDefault(); // Prevent the page from scrolling
-                updateMagnifierSize(e.deltaY); // Adjust the magnifier size based on scroll direction
+                e.preventDefault();
+                updateMagnifierSize(e.deltaY);
             }, { passive: false });
 
             imageElement.addEventListener('mouseleave', function () {
                 magnifierLens.style.visibility = 'hidden';
-                imageElement.style.cursor = 'default'; // Reset the cursor when the mouse leaves
+                imageElement.style.cursor = 'default';
             });
         }
 
-        // Setup the magnifier on the image
-        var imageElement = document.getElementById('mainImage');
+        const imageElement = document.getElementById('mainImage');
         setupMagnifier(imageElement);
     </script>
-</body>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script>
+        document.getElementById('addToCartBtn').addEventListener('click', function (event) {
+            event.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+
+            // First, add to cart without confirmation
+            fetch('/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // If successfully added, show the cart navigation confirmation
+                        Swal.fire({
+                            title: 'Product Added to Cart!',
+                            text: "Would you like to view your cart or continue shopping?",
+                            icon: 'success',
+                            showCancelButton: true,
+                            confirmButtonText: 'View Cart',
+                            cancelButtonText: 'Continue Shopping',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/cart';
+                            }
+                        });
+                    } else {
+                        // Handle specific error cases
+                        if (data.message === 'Stock limit reached') {
+                            Swal.fire({
+                                title: 'Stock Limit Reached',
+                                text: `Sorry, only ${data.availableStock} items are available in stock.`,
+                                icon: 'warning',
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            Swal.fire('Error', data.message || 'Could not add product to cart.', 'error');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                });
+        });
+    </script>
+</body>
 </html>
