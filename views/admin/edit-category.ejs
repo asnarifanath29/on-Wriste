@@ -203,7 +203,8 @@
     </div>
 </div>
 
-        
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
 
 
 
@@ -233,25 +234,58 @@
             });
     
             // Submit if valid
-            if (isValid) {
-                try {
-                    const response = await fetch('/admin/categories/edit', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(formData),
-                    });
+            // if (isValid) {
+            //     try {
+            //         const response = await fetch('/admin/categories/edit', {
+            //             method: 'POST',
+            //             headers: { 'Content-Type': 'application/json' },
+            //             body: JSON.stringify(formData),
+            //         });
     
-                    if (response.ok) {
-                        alert('Category updated successfully!');
-                        window.location.href='/admin/categories'
-                    } else {
-                        alert('Error updating category!');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Something went wrong. Please try again.');
-                }
-            }
+            //         if (response.ok) {
+            //             alert('Category updated successfully!');
+            //             window.location.href='/admin/categories'
+            //         } else {
+            //             alert('Error updating category!');
+            //         }
+            //     } catch (error) {
+            //         console.error('Error:', error);
+            //         alert('Something went wrong. Please try again.');
+            //     }
+            // }
+            if (isValid) {
+    try {
+        const response = await fetch('/admin/categories/edit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Category updated successfully!',
+            }).then(() => {
+                window.location.href = '/admin/categories';
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error updating category!',
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong. Please try again.',
+        });
+    }
+}
+
         });
     
         // Dynamic Removal of Invalid Class

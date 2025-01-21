@@ -1,4 +1,5 @@
 const { name } = require("ejs")
+const mongoose = require('mongoose');
 const User = require("../../models/userSchema")
 const Otp = require("../../models/otpSchema");
 const Product = require("../../models/productSchema");
@@ -297,7 +298,6 @@ const productDetails = async (req, res) => {
         res.render('product', { product, userData });
     } catch (error) {
         console.error("Error fetching product details:", error);
-        res.status(500).render('500', { message: "An unexpected error occurred.", userData: null });
     }
 };
 

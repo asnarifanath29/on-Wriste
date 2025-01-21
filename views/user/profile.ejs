@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/assets/css/nice-select.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         .modal-backdrop {
             z-index: 1040;
@@ -98,10 +99,14 @@
                     <!-- Sidebar -->
                     <div class="col-lg-3 col-md-4 sidebar py-4">
                         <div class="text-center mb-4">
-                            <img src="/api/placeholder/150/150" alt="Profile Picture" class="rounded-circle mb-3"
-                                style="width: 150px; height: 150px;">
-                            <h5>John Doe</h5>
-                            <p class="text-muted">john.doe@example.com</p>
+                            <i class="fa-regular fa-user"></i>
+
+                            <h5>
+                                <%= userData.name %>
+                            </h5>
+                            <p class="text-muted">
+                                <%= userData.email %>
+                            </p>
                         </div>
                         <nav class="nav flex-column">
                             <a class="nav-link active" data-section="profile">
@@ -155,167 +160,6 @@
                             </div>
                         </div>
 
-                        <!-- Orders Section -->
-                        <!-- <div id="orders" class="section">
-                        <h3>My Orders</h3>
-                        <div class="order-card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <span>Order #12345</span>
-                                <span class="badge bg-success">Delivered</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <img src="/api/placeholder/100/100" alt="Product" class="img-fluid">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h6>Premium Watch XYZ</h6>
-                                        <p class="text-muted">Quantity: 1</p>
-                                        <p class="text-muted">Delivered on: 01 Jan 2025</p>
-                                    </div>
-                                    <div class="col-md-3 text-end">
-                                        <h6>$299.99</h6>
-                                        <button class="btn btn-sm btn-outline-primary mt-2">Track Order</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <!-- <div id="orders" class="section">
-                        <h3>My Orders</h3>
-                        <% if (order && order.length > 0) { %>
-                            <% order.forEach(function(orderItem) { %>
-                                <div class="order-card mb-4">
-                                    <div class="card-header d-flex justify-content-between align-items-center p-3">
-                                        <div>
-                                            <span class="fw-bold">Order #<%= orderItem.orderedId %></span>
-                                            <span class="text-muted ms-3 small">
-                                                <%= new Date(orderItem.createdAt).toLocaleDateString() %>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <% orderItem.items.forEach(function(item) { %>
-                                            <div class="row mb-3 align-items-center">
-                                                <div class="col-md-2">
-                                                    <img src="<%= item.image %>" 
-                                                         alt="Product Image" 
-                                                         class="img-fluid rounded">
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <h6 class="mb-1"><%= item.productId.name %></h6>
-                                                    <p class="text-muted mb-1">Quantity: <%= item.quantity %></p>
-                                                    <% if (item.isCanceled) { %>
-                                                        <span class="badge bg-danger">Cancelled</span>
-                                                        <% if (item.canceledItems) { %>
-                                                            <span class="text-muted">(<%=item.canceledItems%> items)</span>
-                                                        <% } %>
-                                                    <% } %>
-                                                </div>
-                                                <div class="col-md-4 text-end">
-                                                    <h6 class="mb-1">₹<%= item.price.toFixed(2) %></h6>
-                                                    <small class="text-muted">
-                                                        <%= orderItem.paymentMethod.toUpperCase() %>
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        <% }); %>
-                                        
-                                        <div class="border-top pt-3 mt-3">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h6>Delivery Address:</h6>
-                                                    <p class="mb-1"><%= orderItem.address.name %></p>
-                                                    <p class="mb-1"><%= orderItem.address.address %></p>
-                                                    <p class="mb-1">
-                                                        <%= orderItem.address.locality %>, 
-                                                        <%= orderItem.address.place %>, 
-                                                        <%= orderItem.address.state %> - 
-                                                        <%= orderItem.address.pincode %>
-                                                    </p>
-                                                    <p class="mb-1">Phone: <%= orderItem.address.phone %></p>
-                                                </div>
-                                                <div class="col-md-6 text-end">
-                                                    <div class="mb-2">
-                                                        <span class="text-muted">Items Total:</span>
-                                                        <span class="ms-2">₹<%= orderItem.totalAmount.toFixed(2) %></span>
-                                                    </div>
-                                                   
-                                                    <div class="fw-bold">
-                                                        <span>Total Payable:</span>
-                                                        <span class="ms-2">₹<%= orderItem.payableAmount.toFixed(2) %></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer d-flex justify-content-end p-3">
-                                        <% if (!['Delivered', 'Canceled', 'Returned'].includes(orderItem.orderStatus)) { %>
-                                            <button class="btn btn-sm btn-outline-danger me-2" 
-                                                    onclick="cancelOrder('<%= orderItem._id %>')">
-                                                Cancel Order
-                                            </button>
-                                        <% } %>
-                                        <button class="btn btn-sm btn-primary" 
-                                                onclick="trackOrder('<%= orderItem._id %>')">
-                                            Track Order
-                                        </button>
-                                    </div>
-                                </div>
-                            <% }); %>
-                        <% } else { %>
-                            <div class="empty-orders text-center py-5">
-                                <i class="fas fa-shopping-bag mb-3" style="font-size: 3rem; color: #ccc;"></i>
-                                <h5>No Orders Yet</h5>
-                                <p class="text-muted">Start shopping to see your orders here!</p>
-                                <a href="/shop" class="btn btn-primary mt-3">Start Shopping</a>
-                            </div>
-                        <% } %>
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- -->
-
 
                         <!-- Order Summary Card -->
                         <div id="orders" class="section">
@@ -326,7 +170,7 @@
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <h6 class="mb-1">Order #<%= orderItem.orderedId %>
+                                                    <h6 class="mb-1">Order ID: <%= orderItem.orderedId %>
                                                     </h6>
                                                     <p class="text-muted mb-0 small">
                                                         <%= new Date(orderItem.createdAt).toLocaleDateString() %>
@@ -349,7 +193,7 @@
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Order Details #<%= orderItem.orderedId %>
+                                                    <h5 class="modal-title">Order Details ID: <%= orderItem.orderedId %>
                                                     </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
@@ -463,38 +307,6 @@
                             <a href="/add-address" class="btn btn-primary mb-3">
                                 <i class="fas fa-plus"></i> Add New Address
                             </a>
-                            <!-- <div class="row">
-                            <div class="col-md-6">
-                                <div class="address-card">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <h6>Home</h6>
-                                        <div>
-                                            <a href="#" class="text-primary me-2"><i class="fas fa-edit"></i></a>
-                                            <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
-                                        </div>
-                                    </div>
-                                    <p class="mb-1">John Doe</p>
-                                    <p class="mb-1">123 Main Street</p>
-                                    <p class="mb-1">New York, NY 10001</p>
-                                    <p class="mb-1">Phone: +1 234 567 890</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="address-card">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <h6>Office</h6>
-                                        <div>
-                                            <a href="#" class="text-primary me-2"><i class="fas fa-edit"></i></a>
-                                            <a href="#" class="text-danger"><i class="fas fa-trash"></i></a>
-                                        </div>
-                                    </div>
-                                    <p class="mb-1">John Doe</p>
-                                    <p class="mb-1">456 Business Ave</p>
-                                    <p class="mb-1">New York, NY 10002</p>
-                                    <p class="mb-1">Phone: +1 234 567 891</p>
-                                </div>
-                            </div>
-                        </div> -->
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                     aria-labelledby="nav-home-tab">
@@ -618,26 +430,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <%- include('../partials/user/footer') %>
 
             <!-- Your existing scripts -->
@@ -655,15 +447,8 @@
             <script src="/assets/js/jquery.sticky.js"></script>
             <script src="/assets/js/main.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
-
-
-            <!-- Required JS -->
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-            <!-- Add this new script for handling section switching -->
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     const navLinks = document.querySelectorAll('.nav-link');
@@ -671,14 +456,11 @@
 
                     navLinks.forEach(link => {
                         link.addEventListener('click', function (e) {
-                            // Remove active class from all links and sections
                             navLinks.forEach(l => l.classList.remove('active'));
                             sections.forEach(s => s.classList.remove('active'));
 
-                            // Add active class to clicked link
                             this.classList.add('active');
 
-                            // Show corresponding section
                             const sectionId = this.getAttribute('data-section');
                             document.getElementById(sectionId).classList.add('active');
                         });
@@ -694,28 +476,24 @@
                     const phoneError = document.getElementById("phoneError");
 
                     form.addEventListener("submit", async function (event) {
-                        event.preventDefault(); // Prevent default form submission
+                        event.preventDefault(); 
 
                         let isValid = true;
 
-                        // Reset previous error messages
                         firstNameError.textContent = "";
                         phoneError.textContent = "";
 
-                        // Validate First Name
                         if (firstName.value.trim() === "") {
                             firstNameError.textContent = "First Name is required.";
                             isValid = false;
                         }
 
-                        // Validate Phone Number (basic check for 10-digit numbers)
                         const phoneRegex = /^[0-9]{10}$/;
                         if (!phoneRegex.test(phone.value.trim())) {
                             phoneError.textContent = "Phone number must be a valid 10-digit number.";
                             isValid = false;
                         }
 
-                        // If form is valid, submit via fetch
                         if (isValid) {
                             const formData = {
                                 name: firstName.value.trim(),
@@ -734,18 +512,15 @@
                                 const result = await response.json();
 
                                 if (response.ok && result.success) {
-                                    // SweetAlert for success
                                     Swal.fire({
                                         title: "Success!",
                                         text: "Profile updated successfully!",
                                         icon: "success",
                                         confirmButtonText: "OK",
                                     }).then(() => {
-                                        // Redirect after success confirmation
                                         window.location.href = "/update-profile";
                                     });
                                 } else {
-                                    // SweetAlert for failure
                                     Swal.fire({
                                         title: "Failed!",
                                         text: result.message || "Failed to update profile. Please try again.",
@@ -755,8 +530,6 @@
                                 }
                             } catch (error) {
                                 console.error("Error:", error);
-
-                                // SweetAlert for error
                                 Swal.fire({
                                     title: "Error!",
                                     text: "An error occurred while submitting the form. Please try again.",
@@ -769,7 +542,6 @@
                         }
                     });
                 });
-
             </script>
 
             <script>
@@ -781,7 +553,6 @@
                             event.preventDefault();
                             const addressId = button.getAttribute('data-id');
 
-                            // Show confirmation dialog
                             Swal.fire({
                                 title: 'Are you sure?',
                                 text: "You won't be able to revert this!",
@@ -792,9 +563,8 @@
                                 confirmButtonText: 'Yes, delete it!'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    // Perform deletion via Fetch API
                                     fetch(`/delete-address/${addressId}`, {
-                                        method: 'DELETE', // Use DELETE method
+                                        method: 'DELETE', 
                                     })
                                         .then((response) => {
                                             if (response.ok) {
@@ -803,11 +573,9 @@
                                                     'The address has been deleted.',
                                                     'success'
                                                 ).then(() => {
-                                                    // Reload or redirect to update the UI
                                                     window.location.reload();
                                                 });
                                             } else {
-                                                // Show error alert
                                                 Swal.fire(
                                                     'Error!',
                                                     'There was a problem deleting the address.',
@@ -832,26 +600,21 @@
 
             <script>
                 document.getElementById('passwordForm').addEventListener('submit', async function (e) {
-                    e.preventDefault(); // Prevent form submission
-
-                    // Get input values
+                    e.preventDefault();
                     const currentPassword = document.getElementByIdA('currentPassword').value.trim();
                     const newPassword = document.getElementById('newPassword').value.trim();
                     const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
 
-                    // Get error message elements
                     const currentPasswordError = document.getElementById('currentPasswordError');
                     const newPasswordError = document.getElementById('newPasswordError');
                     const confirmNewPasswordError = document.getElementById('confirmNewPasswordError');
 
-                    // Reset error messages
                     currentPasswordError.textContent = '';
                     newPasswordError.textContent = '';
                     confirmNewPasswordError.textContent = '';
 
                     let isValid = true;
 
-                    // Validate current password
                     if (!currentPassword) {
                         currentPasswordError.textContent = 'Current password is required.';
                         isValid = false;
@@ -860,7 +623,6 @@
                         isValid = false;
                     }
 
-                    // Validate new password
                     if (!newPassword) {
                         newPasswordError.textContent = 'New password is required.';
                         isValid = false;
@@ -869,7 +631,6 @@
                         isValid = false;
                     }
 
-                    // Validate confirm new password
                     if (!confirmNewPassword) {
                         confirmNewPasswordError.textContent = 'Please confirm your new password.';
                         isValid = false;
@@ -878,7 +639,6 @@
                         isValid = false;
                     }
 
-                    // Submit form if all validations pass
                     if (isValid) {
                         try {
                             const response = await fetch("/update-password", {
@@ -892,7 +652,6 @@
                             const result = await response.json();
 
                             if (response.ok && result.success) {
-                                // SweetAlert for success
                                 Swal.fire({
                                     title: "Success!",
                                     text: "Password updated successfully!",
@@ -902,7 +661,6 @@
                                     window.location.reload();
                                 });
                             } else {
-                                // SweetAlert for failure
                                 Swal.fire({
                                     title: "Failed!",
                                     text: result.message || "Failed to update password. Please try again.",
@@ -912,8 +670,6 @@
                             }
                         } catch (error) {
                             console.error("Error:", error);
-
-                            // SweetAlert for error
                             Swal.fire({
                                 title: "Error!",
                                 text: "An error occurred while submitting the form. Please try again.",
@@ -924,15 +680,6 @@
                     }
                 });
             </script>
-
-
-
-
-
-
-
-
-
             <script>
                 app.locals.getStatusColor = function (status) {
                     const statusColors = {
@@ -956,18 +703,6 @@
                     };
                     return statusColors[status] || 'secondary';
                 };
-
-
-
-
-
-
-
-                // Add these client-side functions:
-                function trackOrder(orderId) {
-                    window.location.href = `/track-order/${orderId}`;
-                }
-
             </script>
 
             <script>
@@ -975,10 +710,8 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     cancelOrderModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
 
-                    // Handle form submission
                     document.getElementById('confirmCancelBtn').addEventListener('click', handleCancelOrder);
 
-                    // Reset form when modal is hidden
                     document.getElementById('cancelOrderModal').addEventListener('hidden.bs.modal', function () {
                         document.getElementById('cancelOrderForm').reset();
                         document.getElementById('reasonError').style.display = 'none';
@@ -997,24 +730,20 @@
                     const reasonInput = document.getElementById('cancelReason');
                     const reasonError = document.getElementById('reasonError');
 
-                    // Validate reason
                     if (!reason || reason.length < 10) {
                         reasonInput.classList.add('is-invalid');
                         reasonError.style.display = 'block';
                         return;
                     }
 
-                    // Clear validation state
                     reasonInput.classList.remove('is-invalid');
                     reasonError.style.display = 'none';
 
-                    // Show loading state
                     const confirmBtn = document.getElementById('confirmCancelBtn');
                     const originalText = confirmBtn.innerHTML;
                     confirmBtn.disabled = true;
                     confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
 
-                    // Send cancellation request
                     fetch(`/update-profile/cancel/${orderId}`, {
                         method: 'POST',
                         headers: {
@@ -1024,11 +753,9 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            // Hide the cancel order modal first
                             cancelOrderModal.hide();
 
                             if (data.success) {
-                                // Show success message using SweetAlert2
                                 Swal.fire({
                                     title: 'Success!',
                                     text: 'Your order has been successfully cancelled.',
@@ -1045,10 +772,8 @@
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            // Hide the cancel order modal
                             cancelOrderModal.hide();
 
-                            // Show error message using SweetAlert2
                             Swal.fire({
                                 title: 'Error!',
                                 text: error.message || 'An error occurred while canceling the order.',
@@ -1057,7 +782,6 @@
                             });
                         })
                         .finally(() => {
-                            // Reset button state
                             confirmBtn.disabled = false;
                             confirmBtn.innerHTML = originalText;
                         });

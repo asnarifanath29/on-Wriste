@@ -40,9 +40,11 @@ const addtocart = async (req, res) => {
         const productId = req.body.productId;
         const userId = req.session.userData.id;
 
-        if (!userId) {
-            return res.status(401).json({ success: false, message: 'User not authenticated' });
-        }
+        // This is the part of your API that checks if the user is logged in
+      if (!userId) {
+      return res.status(401).json({ success: false, message: 'Please log in to add items to the cart.' });
+      }
+
 
         // Validate if the product exists and get its stock
         const product = await Product.findById(productId);
