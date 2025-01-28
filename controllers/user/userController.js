@@ -4,6 +4,7 @@ const User = require("../../models/userSchema")
 const Otp = require("../../models/otpSchema");
 const Product = require("../../models/productSchema");
 const Category = require('../../models/categorySchema')
+const Wallet = require('../../models/walletSchema')
 const bcrypt = require('bcrypt');
 const nodemailer = require("nodemailer")
 
@@ -36,8 +37,9 @@ const loadHomepage = async (req, res) => {
 
 const loadSignup = async (req, res) => {
     try {
+        const referralCode = req.query.ref || null;
         const userData = req.session.user || null;
-        res.render("signup", { userData })
+        res.render("signup", { userData ,referralCode})
     }
     catch (error) {
         console.log('Signup not loading', error)
@@ -59,15 +61,15 @@ async function sendVerificationEmail(email, otp, session) {
             secure: false,
             requireTLS: true,
             auth: {
-                user: "asnarifanath@gmail.com",
-                pass: "trza lilt qrus unaa"
+                user: process.env.MAIL_USER,
+                pass: process.env.MAIL_PASS
             }
 
         })
         console.log("Sending OTP email to:", email);
 
         const info = await transporter.sendMail({
-            from: "asnarifanath@gmail.com",
+            from: process.env.MAIL_USER,
             to: email,
             subject: "Your OTP for Verification",
             text: `Your OTP is: ${otp}`,
@@ -87,13 +89,28 @@ async function sendVerificationEmail(email, otp, session) {
 const signup = async (req, res) => {
     try {
 
-        const { email, password, phone, name } = req.body;
+        const { email, password, phone, name ,referralcode} = req.body;
+
+        
+        
 
         const findUser = await User.findOne({ email });
 
         if (findUser) {
             return res.status(401).json({ success: false, message: "User with this email already exists" })
         }
+
+       
+        if (referralcode) {
+            const referrer = await User.findOne({ referralCode : referralcode });
+            console.log("referrer : "+referrer);
+            
+            if (referrer) {
+                req.session.referredBy = referrer._id;
+                console.log("Referred By id :", req.session.referredBy); 
+            }
+        }
+       
 
         const otp = generateOtp()
         const otpExpiry = Date.now() + 300000;
@@ -120,7 +137,11 @@ const signup = async (req, res) => {
             email: email,
             phone: phone,
             password: hashedPassword,
+            
         }
+        
+        console.log("am here:::")
+        console.log(req.session)
 
         return res.status(200).json({ success: true, message: "OTP sented, pls enter the otp" })
     }
@@ -187,13 +208,13 @@ const verifyOtp = async (req, res) => {
             name: req.session.userData.name,
             email: req.session.userData.email,
             phone: req.session.userData.phone,
-            password: req.session.userData.password
+            password: req.session.userData.password,
+            referredBy: req.session.referredBy
         })
 
         delete req.session.userData.password
 
         await newUser.save();
-
 
         req.session.userData = {
             id: newUser._id,
@@ -201,7 +222,52 @@ const verifyOtp = async (req, res) => {
             email: newUser.email,
             phone: newUser.phone,
         };
-       
+
+        await new Wallet({
+            userId: newUser._id, 
+            balance: 0, 
+            transactions: [] 
+        }).save();
+
+
+
+
+        if (req.session.referredBy) {
+            
+            const referrerWallet = await Wallet.findOne({ userId: req.session.referredBy });
+        
+            if (referrerWallet) {
+                referrerWallet.balance += 100; 
+                referrerWallet.transactions.push({
+                    amount: 100,
+                    type: 'Credit',
+                    description:` Referral bonus for referring ${newUser.email}`
+                });
+        
+                await referrerWallet.save(); 
+            }
+        
+            
+            const userWallet = await Wallet.findOne({ userId: newUser._id });
+        
+            if (userWallet) {
+                userWallet.balance += 100; 
+                userWallet.transactions.push({
+                    amount: 100,
+                    type: 'Credit',
+                    description: 'Signup bonus from referral' 
+                });
+        
+                await userWallet.save();
+            }
+            
+        
+            
+            await User.findByIdAndUpdate(req.session.referredBy, {
+                $inc: { referralCount: 1 } 
+            });
+        }
+
       
 
         return res.status(200).json({ success: true, message: "OTP verified. Account successfully created." });

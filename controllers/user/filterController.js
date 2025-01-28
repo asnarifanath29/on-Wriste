@@ -5,19 +5,16 @@ const filter = async (req, res) => {
     try {
         const { sortBy, priceRange, excludeOutOfStock, category } = req.body;
 
-         // First, get all listed categories
-         const listedCategories = await Category.find({ status: 'listed' });
-         const listedCategoryIds = listedCategories.map(cat => cat._id);
- 
-         let query = {
-             isDeleted: false,
-             // Only include products from listed categories
-             category: { $in: listedCategoryIds }
-         };
-        let sort = {};
-        
+        const listedCategories = await Category.find({ status: 'listed' });
+        const listedCategoryIds = listedCategories.map(cat => cat._id);
 
-        // 1. **Price Range Filter**
+        let query = {
+            isDeleted: false,
+            category: { $in: listedCategoryIds },
+        };
+
+        let sort = {};
+
         if (priceRange) {
             switch (priceRange) {
                 case '$0.00 - $999.00':
@@ -38,12 +35,10 @@ const filter = async (req, res) => {
             }
         }
 
-        // 2. **Availability Filter**
         if (excludeOutOfStock) {
-            query.stockManagement = { $elemMatch: { quantity: { $gt: 0 } } };
+            query.stock = { $gt: 0 };
         }
 
-        // 3. **Category Filter**
 
         if (category && category !== "*") {
             const foundCategory = await Category.findOne({ name: category });
@@ -52,11 +47,9 @@ const filter = async (req, res) => {
                 return res.status(400).json({ error: 'Category not found' });
             }
 
-            // Add the category ObjectId to the query
             query.category = foundCategory._id;
         }
 
-        // 4. **Sort By Filter**
         if (sortBy) {
             switch (sortBy) {
                 case 'Price: Low to High':
@@ -83,7 +76,7 @@ const filter = async (req, res) => {
 
         const products = await Product.find(query).sort(sort).populate('category');
 
-        res.json({ products: products }); 
+        res.json({ products: products });
     } catch (error) {
         console.error('Error fetching products:', error);
         res.status(500).json({ error: 'An error occurred while fetching products.' });
@@ -96,15 +89,13 @@ const search = async (req, res) => {
     try {
         const searchTerm = req.body.search;
         const excludeOutOfStock = req.body.excludeOutOfStock;
-        
-           // Get listed categories
-           const listedCategories = await Category.find({ status: 'listed' });
-           const listedCategoryIds = listedCategories.map(cat => cat._id);
+
+        const listedCategories = await Category.find({ status: 'listed' });
+        const listedCategoryIds = listedCategories.map(cat => cat._id);
         let query = {
             name: { $regex: searchTerm, $options: "i" },
             isDeleted: false,
-             // Only include products from listed categories
-             category: { $in: listedCategoryIds }
+            category: { $in: listedCategoryIds }
         };
 
         if (excludeOutOfStock) {
@@ -114,21 +105,13 @@ const search = async (req, res) => {
                 }
             };
         }
-
         const products = await Product.find(query);
-
-        
         res.json({ products });
     } catch (error) {
         console.error("Search error:", error);
         res.status(500).json({ error: "Server error" });
     }
 };
-
-
-
-
-
 
 module.exports = {
     filter,

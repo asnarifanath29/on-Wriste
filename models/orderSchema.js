@@ -108,7 +108,7 @@ const orderSchema = new Schema({
   },
   orderStatus: {
     type: String,
-    enum: ['Pending', 'Confirmed', 'Shipped', 'Delivered', 'Canceled', 'Returned'],
+    enum: ['Pending', 'Confirmed', 'Shipped', 'Delivered', 'Canceled', 'Returned','Rejected'],
     default: 'Pending',
   },
   totalAmount: {
@@ -117,8 +117,12 @@ const orderSchema = new Schema({
     min: 0,
   },
   cancelReason: {
-    type: String, // Add this field for storing cancellation reason
-    default: '', // Default value as an empty string
+    type: String,
+    default: '',
+  },
+  returnReason: {
+    type: String,
+    default: '', 
   },
   payableAmount: {
     type: Number,
@@ -139,7 +143,15 @@ const orderSchema = new Schema({
     discountPrice: {
       type: Number
     }
-  }
+  },
+  couponDiscount: {
+    type: Number,
+    default: 0
+},
+appliedCoupon: {
+    type: String,
+    default: null
+}
 
 }, { timestamps: true });
 

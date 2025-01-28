@@ -27,7 +27,6 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-    <!-- Additional Custom CSS -->
     <style>
         .rating {
             color: #ffc107;
@@ -94,32 +93,6 @@
             color: #fff;
             transform: translateY(-2px);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* Updated and new image-related styles */
         .popular-img {
             position: relative;
             width: 300px;
@@ -135,17 +108,14 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* This ensures the image covers the area without distortion */
             object-position: center;
             transition: transform 0.3s ease;
         }
 
-        /* Hover effect for images */
         .popular-img:hover img {
             transform: scale(1.05);
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .popular-img {
                 width: 250px;
@@ -160,7 +130,6 @@
             }
         }
 
-        /* Ensure product cards align properly */
         .single-popular-items {
             display: flex;
             flex-direction: column;
@@ -173,24 +142,6 @@
             margin-top: 15px;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* Filter Panel Styles */
         .filter-section {
             background-color: #f8f9fa;
         }
@@ -216,7 +167,6 @@
             border-bottom: none;
         }
 
-        /* Button Group Styles */
         .btn-group {
             flex-wrap: wrap;
             gap: 5px;
@@ -233,7 +183,6 @@
             color: white;
         }
 
-        /* Active Filters Styles */
         .active-filters .badge {
             background-color: #212529;
             color: white;
@@ -254,19 +203,16 @@
             cursor: pointer;
         }
 
-        /* Form Control Styles */
         .form-select:focus,
         .form-control:focus {
             border-color: #212529;
             box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
         }
 
-        /* Animation */
         .filter-panel {
             transition: all 0.3s ease-in-out;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 768px) {
             .btn-group {
                 flex-direction: column;
@@ -283,28 +229,6 @@
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* Product Card Styles */
         .product-card {
             transition: transform 0.3s ease;
         }
@@ -336,12 +260,6 @@
             -webkit-box-orient: vertical;
         }
 
-
-
-
-
-
-        /* Filter Styles */
         .filter-section {
             background-color: #f8f9fa;
         }
@@ -385,14 +303,12 @@
             font-size: 0.875rem;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 991.98px) {
             .filter-sidebar {
                 margin-bottom: 2rem;
             }
         }
 
-        /* Animation for filter updates */
         .filter-sidebar {
             transition: all 0.3s ease;
         }
@@ -403,25 +319,11 @@
             box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
         }
 
-        /* Button Hover Effects */
         .btn-dark:hover {
             background-color: #343a40;
             transform: translateY(-1px);
             transition: all 0.3s ease;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
         .product-card {
             transition: transform 0.3s ease;
             margin-bottom: 30px;
@@ -454,17 +356,14 @@
             -webkit-box-orient: vertical;
         }
 
-        /* Responsive Adjustments */
         @media (max-width: 991.98px) {
             .col-md-6 {
-                /* On medium screens, show 2 products per row */
                 max-width: 50%;
             }
         }
 
         @media (max-width: 767.98px) {
             .col-12 {
-                /* On small screens, show 1 product per row */
                 max-width: 100%;
             }
 
@@ -473,54 +372,22 @@
             }
         }
 
-        /* Ensure consistent card heights in each row */
         .row {
             display: flex;
             flex-wrap: wrap;
         }
 
-        /* Add proper gutters between cards */
         .col-lg-4 {
             padding: 0 15px;
         }
 
-        /* Clear margin bottom for last row */
         .row>div:nth-last-child(-n+3) .product-card {
             margin-bottom: 0;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* Product Name Styles */
         .popular-product-name {
             margin: 15px 0;
             min-height: 48px;
-            /* Maintains consistent height for 2 lines of text */
         }
 
         .popular-product-name a {
@@ -540,13 +407,11 @@
             color: #000000;
         }
 
-        /* Caption Styles */
         .popular-caption {
             padding: 20px;
             text-align: center;
         }
 
-        /* Price Styles */
         .price {
             font-size: 18px;
             font-weight: 500;
@@ -559,7 +424,6 @@
             margin-left: 10px;
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .popular-product-name a {
                 font-size: 16px;
@@ -675,24 +539,24 @@
                                 <div class="price-range-options">
                                     <div class="btn-group" role="group">
                                         <input type="radio" class="btn-check" name="priceRange" id="price1"
-                                            value="$0.00 - $999.00">
-                                        <label  for="price1">$0 - $999</label>
+                                            value="₹0.00 - ₹999.00">
+                                        <label  for="price1">₹0 - ₹999</label>
 
                                         <input type="radio" class="btn-check" name="priceRange" id="price2"
-                                            value="$1000.00 - $2999.00">
-                                        <label for="price2">$1,000 - $2,999</label>
+                                            value="₹1000.00 - ₹2999.00">
+                                        <label for="price2">₹1,000 - ₹2,999</label>
 
                                         <input type="radio" class="btn-check" name="priceRange" id="price3"
-                                            value="$3000.00 - $6999.00">
-                                        <label  for="price3">$3,000 - $6,999</label>
+                                            value="₹3000.00 - ₹6999.00">
+                                        <label  for="price3">₹3,000 - ₹6,999</label>
 
                                         <input type="radio" class="btn-check" name="priceRange" id="price4"
-                                            value="$7000.00 - $9999.00">
-                                        <label  for="price4">$7,000 - $9,999</label>
+                                            value="₹7000.00 - ₹9999.00">
+                                        <label  for="price4">₹7,000 - ₹9,999</label>
 
                                         <input type="radio" class="btn-check" name="priceRange" id="price5"
-                                            value="$10000.00+">
-                                        <label  for="price5">$10,000+</label>
+                                            value="₹10000.00+">
+                                        <label  for="price5">₹10,000+</label>
                                     </div>
                                 </div>
                             </div>
@@ -718,24 +582,6 @@
                         </div>
                     </div>
 
-                    <!-- Category Filter Row -->
-                    <!-- <div class="filter-row">
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                <h5 class="mb-0">Category</h5>
-                            </div>
-                            <div class="col-md-9">
-                                <select class="form-select" id="category">
-                                    <option value="*">All Categories</option>
-                                    <option value="Luxury">Luxury</option>
-                                    <option value="Sport">Sport</option>
-                                    <option value="Smart">Smart</option>
-                                    <option value="Classic">Classic</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div> -->
-
                     <div class="filter-row">
                         <div class="row align-items-center">
                             <div class="col-md-3">
@@ -744,7 +590,6 @@
                             <div class="col-md-9">
                                 <select class="form-select" id="category">
                                     <option value="*">All Categories</option>
-                                    <!-- Dynamically populated category options will go here -->
                                     <% categories.forEach(category => { %>
                                         <option value="<%= category.name %>"><%= category.name %></option>
                                     <% }) %>
@@ -753,7 +598,6 @@
                         </div>
                     </div>
                     
-
                     <!-- Availability Filter Row -->
                     <div class="filter-row">
                         <div class="row align-items-center">
@@ -826,10 +670,10 @@
                                             <!-- Price Display -->
                                             <div class="pricing">
                                                 <% if (product.offerPrice && product.offerPrice < product.price) { %>
-                                                    <span class="price">$<%= product.offerPrice.toFixed(2) %></span>
-                                                    <span class="original-price">$<%= product.price.toFixed(2) %></span>
+                                                    <span class="price">₹<%= product.offerPrice.toFixed(2) %></span>
+                                                    <span class="original-price">₹<%= product.price.toFixed(2) %></span>
                                                     <% } else { %>
-                                                        <span class="price">$<%= product.price.toFixed(2) %></span>
+                                                        <span class="price">₹<%= product.price.toFixed(2) %></span>
                                                         <% } %>
                                             </div>
 
@@ -889,9 +733,6 @@
             </div>
         </section>
 
-        <!-- Product Grid Start -->
-
-        <!-- Product Grid End -->
     </main>
 
     <footer>
@@ -929,44 +770,6 @@
     <script src="./assets/js/jquery.nice-select.min.js"></script>
     <script src="./assets/js/jquery.sticky.js"></script>
     <script src="./assets/js/main.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Close buttons for active filters
@@ -977,26 +780,26 @@
             });
 
             // Sort option selection
-            document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
-                radio.addEventListener('change', function () {
-                    console.log('Sort option selected:', this.id);
-                    // Add your sorting logic here
-                });
-            });
+            // document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
+            //     radio.addEventListener('change', function () {
+            //         console.log('Sort option selected:', this.id);
+            //         // Add your sorting logic here
+            //     });
+            // });
 
-            // Price range inputs
-            const minPrice = document.querySelector('input[placeholder="Min"]');
-            const maxPrice = document.querySelector('input[placeholder="Max"]');
+            // // Price range inputs
+            // const minPrice = document.querySelector('input[placeholder="Min"]');
+            // const maxPrice = document.querySelector('input[placeholder="Max"]');
 
-            [minPrice, maxPrice].forEach(input => {
-                input.addEventListener('change', function () {
-                    console.log('Price range updated:', {
-                        min: minPrice.value,
-                        max: maxPrice.value
-                    });
-                    // Add your price filter logic here
-                });
-            });
+            // [minPrice, maxPrice].forEach(input => {
+            //     input.addEventListener('change', function () {
+            //         console.log('Price range updated:', {
+            //             min: minPrice.value,
+            //             max: maxPrice.value
+            //         });
+            //         // Add your price filter logic here
+            //     });
+            // });
         });
     </script>
 
@@ -1034,7 +837,6 @@
     function updateProductList(products) {
         const productGrid = document.querySelector('.product-grid .row');
         
-        // Clear existing products
         productGrid.innerHTML = '';
     
         if (products.length === 0) {
@@ -1045,7 +847,6 @@
             return;
         }
     
-        // Loop through products and create HTML for each
         products.filter(product => !product.isDeleted).forEach((product, index) => {
             const productHTML = `
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
@@ -1067,9 +868,9 @@
                             
                             <div class="pricing">
                                 ${product.offerPrice && product.offerPrice < product.price 
-                                    ? `<span class="price">$${product.offerPrice.toFixed(2)}</span>
-                                       <span class="original-price">$${product.price.toFixed(2)}</span>`
-                                    : `<span class="price">$${product.price.toFixed(2)}</span>`
+                                    ? `<span class="price">₹${product.offerPrice.toFixed(2)}</span>
+                                       <span class="original-price">₹${product.price.toFixed(2)}</span>`
+                                    : `<span class="price">₹${product.price.toFixed(2)}</span>`
                                 }
                             </div>
     
@@ -1123,12 +924,10 @@
         
         return starsHtml;
     }
-    </script>
+</script>
 
 <script>
-    // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function () {
-    // Elements
     const filterToggle = document.getElementById('filterToggle');
     const filterPanel = document.getElementById('filterPanel');
     const applyFiltersBtn = document.getElementById('applyFilters');
@@ -1139,25 +938,23 @@ document.addEventListener('DOMContentLoaded', function () {
     
     let searchTimeout;
 
-    // Toggle Filter Panel
     filterToggle.addEventListener('click', function () {
         const isVisible = filterPanel.style.display === 'block';
         filterPanel.style.display = isVisible ? 'none' : 'block';
         filterToggle.classList.toggle('active');
     });
 
-    // Search Implementation
     async function performSearch() {
         const searchTerm = searchInput.value.trim();
         const excludeOutOfStock = document.getElementById('excludeOutOfStock').checked;
 
         if (searchTerm === '') {
-            // If search is empty, revert to filter results
             applyFiltersBtn.click();
             return;
         }
 
         try {
+
             const response = await fetch('/search', {
                 method: 'POST',
                 headers: {
@@ -1172,7 +969,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             if (data.products) {
                 updateProductList(data.products);
-                // Show search as an active filter
                 updateActiveFilters({
                     searchTerm: `Search: ${searchTerm}`
                 });
@@ -1183,7 +979,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Filter Implementation
     async function applyFilters() {
         const filters = {
             sortBy: document.getElementById('sortBy').value,
@@ -1192,6 +987,8 @@ document.addEventListener('DOMContentLoaded', function () {
             category: document.getElementById('category').value,
             excludeOutOfStock: document.getElementById('excludeOutOfStock').checked
         };
+        
+        
 
         try {
             const response = await fetch('/filter', {
@@ -1214,7 +1011,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Update Active Filters Display
     function updateActiveFilters(filters) {
         const activeFiltersContainer = document.querySelector('.active-filters > div');
         activeFiltersContainer.innerHTML = '<span class="fw-bold me-2">Active Filters:</span>';
@@ -1232,10 +1028,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Event Listeners
     searchInput.addEventListener('input', function() {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(performSearch, 500); // Debounce search
+        searchTimeout = setTimeout(performSearch, 500); 
     });
 
     searchBtn.addEventListener('click', performSearch);
@@ -1243,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', function () {
     applyFiltersBtn.addEventListener('click', applyFilters);
 
     clearFiltersBtn.addEventListener('click', function() {
-        // Clear all filters
+
         document.getElementById('sortBy').value = '';
         document.querySelectorAll('input[name="priceRange"]')
             .forEach(input => input.checked = false);
@@ -1251,16 +1046,14 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('excludeOutOfStock').checked = false;
         searchInput.value = '';
 
-        // Reset to all products
         applyFilters();
         
-        // Hide active filters
+
         activeFilters.style.display = 'none';
         document.querySelector('.active-filters > div').innerHTML = 
             '<span class="fw-bold me-2">Active Filters:</span>';
     });
 
-    // Remove Individual Filter
     window.removeFilter = function(filterKey) {
         switch (filterKey) {
             case 'sortBy':
@@ -1284,7 +1077,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (filterKey === 'searchTerm') {
             applyFilters();
         } else {
-            // Reapply filters
             const currentSearchTerm = searchInput.value.trim();
             if (currentSearchTerm) {
                 performSearch();
@@ -1294,7 +1086,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    // Click outside to close filter panel
     document.addEventListener('click', function(event) {
         if (!filterPanel.contains(event.target) && 
             !filterToggle.contains(event.target) && 

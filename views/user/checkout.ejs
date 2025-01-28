@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="assets/css/nice-select.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -205,7 +205,7 @@
             <div class="container">
                 <div class="row">
                     <!-- Left Column - Addresses and Payment -->
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <!-- Delivery Addresses -->
                         <div class="card mb-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
@@ -285,56 +285,97 @@
 
                                 <div class="payment-method">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment" id="razorpay">
-                                        <label class="form-check-label" for="razorpay">
-                                            <h6 class="mb-1">Razorpay</h6>
-                                            <p class="mb-0 text-muted">Pay securely with Razorpay</p>
+                                        <input class="form-check-input" type="radio" name="payment" id="netbanking">
+                                        <label class="form-check-label" for="netbanking">
+                                            <h6 class="mb-1">netbanking</h6>
+                                            <p class="mb-0 text-muted">Pay securely with netbanking</p>
                                         </label>
+                                    </div>
+                                </div>
+                                <!-- <div class="payment-method">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment" id="upi">
+                                        <label class="form-check-label" for="upi">
+                                            <h6 class="mb-1">upi</h6>
+                                            <p class="mb-0 text-muted">Pay securely with upi</p>
+                                        </label>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container mt-5">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Apply Coupon</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="coupon-container">
+                                            <div class="input-group">
+                                                <select class="form-select" id="couponSelect">
+                                                    <option value="">Select a Coupon</option>
+                                                    <% coupons.forEach((coupon)=>{ %>
+                                                        <option value="<%= coupon.couponCode %>"
+                                                            data-percentage="<%= coupon.discountPercentage %>">
+                                                            <%= `${coupon.couponCode} - ${coupon.discountPercentage}%
+                                                                off` %>
+                                                        </option>
+                                                        <% }) %>
+                                                </select>
+                                                <button class="btn btn-danger" id="applyCouponBtn">Apply Coupon</button>
+                                            </div>
+                                            <div id="couponMessage" class="text-muted mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card mt-3">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Order Summary</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="order-summary">
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Subtotal</span>
+                                                <span id="subtotalAmount">₹<%= subtotal.toFixed(2) %></span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>Shipping</span>
+                                                <span>₹10.00</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-2" id="couponDiscountRow"
+                                                style="display:none;">
+                                                <span>Coupon Discount</span>
+                                                <span id="couponDiscountAmount">-₹0.00</span>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex justify-content-between mb-4">
+                                                <strong>Total Amount</strong>
+                                                <strong class="text-danger" id="totalAmount">₹<%= (subtotal +
+                                                        10.00).toFixed(2) %></strong>
+                                            </div>
+                                            <a href="javascript:void(0);" class="btn btn-danger w-100"
+                                                onclick="placeOrder()">Place Order</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column - Order Summary -->
-                    <div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">Order Summary</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="order-summary">
-                                    <!-- <div class="d-flex justify-content-between mb-2">
-                                    <span>Subtotal</span>
-                                    <span>$4567</span>
-                                </div> -->
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Subtotal</span>
-                                        <% if (typeof subtotal !=='undefined' ) { %>
-                                            <span>$<%= subtotal.toFixed(2) %></span>
-                                            <% } else { %>
-                                                <span>$0.00</span>
-                                                <% } %>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Shipping</span>
-                                        <span>$10.00</span>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex justify-content-between mb-4">
-                                        <strong>Total Amount</strong>
-                                        <% const shippingCost=10.00; const subtotalAmount=typeof subtotal !=='undefined'
-                                            ? parseFloat(subtotal) : 0; const totalAmount=subtotalAmount + shippingCost;
-                                            %>
-                                            <strong class="text-danger">$<%= totalAmount.toFixed(2) %></strong>
-                                    </div>
-                                    <!-- <a href="/order" class="btn btn-danger w-100">Place Order</a> -->
-                                    <a href="javascript:void(0);" class="btn btn-danger w-100"
-                                        onclick="placeOrder()">Place Order</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
         </section>
@@ -444,7 +485,7 @@
     <!-- Jquery, Popper, Bootstrap -->
     <script src="./assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="./assets/js/popper.min.js"></script>
-    <script src="./assets/js/bootstrap.min.js"></script>
+    <!-- <script src="./assets/js/bootstrap.min.js"></script> -->
     <!-- Jquery Mobile Menu -->
     <script src="./assets/js/jquery.slicknav.min.js"></script>
 
@@ -525,7 +566,11 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+
+        // 1. First modify your placeOrder function in your checkout page JavaScript:
+
         async function placeOrder() {
             try {
                 // Get selected address
@@ -550,20 +595,35 @@
                     return;
                 }
 
-                // Get the full address object from the selected address card
-                const selectedAddressCard = selectedAddressInput.closest('.address-card');
 
+
+                const addressId = selectedAddressInput.value;
+
+
+                // Get the total amount and any coupon discount
+                const subtotal = parseFloat(document.getElementById('subtotalAmount').textContent.replace('₹', ''));
+                const totalAmountElement = document.getElementById('totalAmount');
+                const totalAmountWithShipping = parseFloat(totalAmountElement.textContent.replace('₹', ''));
+                const couponSelect = document.getElementById('couponSelect');
+                const couponCode = couponSelect.value;
+                const couponDiscount = couponCode ? (subtotal + 10 - totalAmountWithShipping) : 0;
+                const finalAmount = totalAmountWithShipping - couponDiscount;
+            
                 // Helper function to safely extract text content
                 const getTextContent = (element, selector) => {
                     const el = element.querySelector(selector);
                     return el ? el.textContent.trim() : '';
                 };
 
-                // Extract address details more safely
+                // Get selected address card
+                const selectedAddressCard = selectedAddressInput.closest('.address-card');
+
+                // Extract address details
                 const addressDetails = {
+                    addressId: selectedAddressInput.value, // Get the address ID from the radio input value
                     name: getTextContent(selectedAddressCard, 'label p:nth-child(1)'),
                     locality: getTextContent(selectedAddressCard, 'label p:nth-child(2)'),
-                    address: getTextContent(selectedAddressCard, 'label p:nth-child(3)')
+                    address: getTextContent(selectedAddressCard, 'label p:nth-child(3)'),
                 };
 
                 // Extract place, state, and pincode from the combined text
@@ -610,49 +670,180 @@
                     return;
                 }
 
-                // Show loading state
-                Swal.fire({
-                    title: 'Processing',
-                    text: 'Please wait while we process your order...',
-                    allowOutsideClick: false,
-                    showConfirmButton: false,
-                    willOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
 
-                // Send order details to backend
-
-                console.log('selectedPaymentInput : => ');
-                console.log(selectedPaymentInput);
-                
-
-                const response = await fetch('/place-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+                const orderDetails = {
+                    userId: '<%= userData.id %>', // This should be populated from your server-side template
+                    addressDetails: {
+                        addressId: addressId,
+                        name: addressDetails.name,
+                        locality: addressDetails.locality,
+                        address: addressDetails.address,
+                        place: addressDetails.place,
+                        state: addressDetails.state,
+                        pincode: addressDetails.pincode,
+                        phone: addressDetails.phone,
+                        alternatePhone: addressDetails.alternatePhone || null,
+                        landmark: addressDetails.landmark || null,
+                        addressType: addressDetails.addressType
                     },
-                    body: JSON.stringify({
-                        selectedAddress: addressDetails,
-                        paymentMethod: selectedPaymentInput.id     //cod
-                    }),
-                });
+                    paymentMethod: selectedPaymentInput.id,
+                    orderAmount: {
+                        subtotal: subtotal,
+                        shippingCost: 10.00,
+                        couponDiscount: couponDiscount,
+                        payableAmount: finalAmount
+                    },
+                    appliedCoupon: couponCode || null
+                };
 
-                const data = await response.json();
 
-                // Close loading state
-                Swal.close();
 
-                if (response.ok) {
-                    await Swal.fire({
-                        icon: 'success',
-                        title: 'Order Placed Successfully!',
-                        text: data.message,
-                        showConfirmButton: true
-                    });
-                    window.location.href = `/order-confirmation/${data.orderId}`;
-                } else {
-                    throw new Error(data.message || 'Failed to place order');
+                if (selectedPaymentInput.id === 'cod') {
+                    try {
+                        Swal.fire({
+                            title: 'Processing',
+                            text: 'Placing your order...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            willOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        const response = await fetch('/place-order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(orderDetails)
+                        });
+
+                        const data = await response.json();
+                        Swal.close();
+
+                        if (response.ok) {
+                            await Swal.fire({
+                                icon: 'success',
+                                title: 'Order Placed Successfully!',
+                                text: data.message,
+                                showConfirmButton: true
+                            });
+                            window.location.href = `/order-confirmation/${data.orderId}`;
+                        }
+                    } catch (error) {
+                        console.error('Error placing COD order:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Order Failed',
+                            text: error.message || 'Failed to place your order. Please try again.'
+                        });
+                    }
+                }
+
+                // For Netbanking
+                else if (selectedPaymentInput.id === 'netbanking') {
+                    try {
+                        Swal.fire({
+                            title: 'Processing',
+                            text: 'Initializing payment...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            willOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        const paymentResponse = await fetch('/razorpay/initiate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(orderDetails)
+                        });
+
+                        if (!paymentResponse.ok) {
+                            throw new Error('Failed to initialize payment');
+                        }
+
+                        const { razorpayKey, razorpayOrderId } = await paymentResponse.json();
+                        Swal.close();
+
+                        const razorpayOptions = {
+                            key: razorpayKey,
+                            amount: finalAmount * 100, // Amount in paise
+                            currency: "INR",
+                            order_id: razorpayOrderId,
+                            name: "Watch Shop",
+                            description: "Watch Purchase Payment",
+                            handler: async function (response) {
+                                try {
+                                    Swal.fire({
+                                        title: 'Processing',
+                                        text: 'Completing your order...',
+                                        allowOutsideClick: false,
+                                        showConfirmButton: false,
+                                        willOpen: () => {
+                                            Swal.showLoading();
+                                        }
+                                    });
+
+                                    const verifyResponse = await fetch('/place-order', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            ...orderDetails,
+                                            razorpayPaymentId: response.razorpay_payment_id,
+                                            razorpayOrderId: response.razorpay_order_id,
+                                            razorpaySignature: response.razorpay_signature
+                                        })
+                                    });
+
+                                    const result = await verifyResponse.json();
+
+                                    if (result.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Payment Successful!',
+                                            text: 'Your order has been placed successfully.',
+                                            showConfirmButton: true
+                                        }).then(() => {
+                                            window.location.href = `/order-confirmation/${result.orderId}`;
+                                        });
+                                    } else {
+                                        throw new Error(result.message || 'Payment verification failed');
+                                    }
+                                } catch (error) {
+                                    console.error('Payment verification error:', error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Payment Failed',
+                                        text: error.message || 'There was an error processing your payment. Please try again.'
+                                    });
+                                }
+                            },
+                            prefill: {
+                                name: orderDetails.addressDetails.name,
+                                email: "", // Add email if available
+                                contact: orderDetails.addressDetails.phone
+                            },
+                            theme: {
+                                color: "#ff2020"
+                            }
+                        };
+
+                        const razorpay = new Razorpay(razorpayOptions);
+                        razorpay.open();
+
+                    } catch (error) {
+                        console.error('Razorpay error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Payment Failed',
+                            text: error.message || 'Failed to initialize payment. Please try again.'
+                        });
+                    }
                 }
 
             } catch (error) {
@@ -664,6 +855,104 @@
                 });
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const couponSelect = document.getElementById('couponSelect');
+            const applyCouponBtn = document.getElementById('applyCouponBtn');
+            const couponMessage = document.getElementById('couponMessage');
+            const couponDiscountRow = document.getElementById('couponDiscountRow');
+            const couponDiscountAmount = document.getElementById('couponDiscountAmount');
+            const subtotalElement = document.getElementById('subtotalAmount');
+            const totalAmountElement = document.getElementById('totalAmount');
+
+
+            // Apply coupon with enhanced validation
+            async function applyCoupon() {
+                const selectedOption = couponSelect.options[couponSelect.selectedIndex];
+                const couponCode = couponSelect.value;
+                const subtotal = parseFloat(subtotalElement.textContent.replace('₹', ''));
+                const shippingCost = 10.00;
+
+                // Comprehensive input validation
+                if (!couponCode) {
+                    showCouponMessage('Please select a valid coupon', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/apply-coupon', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            couponCode,
+                            subtotal
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        showCouponMessage('Coupon applied successfully!', 'success');
+                        updateCouponDisplay(result.discountAmount);
+                    } else {
+                        showCouponMessage(result.message || 'Coupon application failed', 'error');
+                        resetCouponDisplay();
+                    }
+                } catch (error) {
+                    console.error('Error applying coupon:', error);
+                    showCouponMessage('Network error. Please try again.', 'error');
+                }
+            }
+
+            // Unified message display function
+            function showCouponMessage(message, type) {
+                couponMessage.textContent = message;
+                couponMessage.style.color = type === 'error' ? 'red' : 'green';
+            }
+
+           
+            // Update coupon and total amount display
+            function updateCouponDisplay(discountAmount) {
+                const subtotal = parseFloat(subtotalElement.textContent.replace('₹', ''));
+                const shippingCost = 10.00;
+
+                couponDiscountAmount.textContent = `-₹${discountAmount.toFixed(2)}`;
+                couponDiscountRow.style.display = 'flex';
+
+                const totalAmount = subtotal + shippingCost - discountAmount;
+                totalAmountElement.textContent = `₹${totalAmount.toFixed(2)}`;
+            }
+
+            // Reset coupon display
+            function resetCouponDisplay() {
+                const subtotal = parseFloat(subtotalElement.textContent.replace('₹', ''));
+                const shippingCost = 10.00;
+
+                couponDiscountRow.style.display = 'none';
+                couponDiscountAmount.textContent = '-₹0.00';
+                totalAmountElement.textContent = `₹${(subtotal + shippingCost).toFixed(2)}`;
+                couponSelect.selectedIndex = 0;
+            }
+
+            // fetchAvailableCoupons();
+
+            applyCouponBtn.addEventListener('click', applyCoupon);
+
+            // Initial fetch of coupons
+        });
     </script>
 
 </body>

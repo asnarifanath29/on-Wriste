@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report - E-Shop Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css"
+        rel="stylesheet">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background: #343a40;
+            padding-top: 60px;
+            z-index: 1;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 2;
+            background: #343a40;
+            padding: 0.5rem 1rem;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 80px 20px 20px;
+        }
+
+        .sales-summary {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sales-summary .card {
+            border: none;
+            background-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .download-section {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar (Same as previous HTML) -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <button class="navbar-toggler text-white border-white" type="button" id="sidebarToggle">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="navbar-brand text-white d-flex align-items-center" href="#">
+                <i class="bi bi-shop fs-4 me-2"></i>
+                E-Shop Admin
+            </a>
+            <div class="dropdown ms-auto">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown">
+                    <div class="profile-img me-2">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="d-none d-md-block">
+                        <strong>John Doe</strong>
+                        <small class="d-block text-light">Admin</small>
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#profile"><i class="bi bi-person"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="#settings"><i class="bi bi-gear"></i>Settings</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#" id="logout-btn"><i
+                                class="bi bi-box-arrow-right"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar (Same as previous HTML) -->
+    <div class="sidebar" id="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#dashboard">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/products">
+                    <i class="bi bi-box-seam"></i>
+                    Products
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/userManagement">
+                    <i class="bi bi-people"></i>
+                    User Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/categories">
+                    <i class="bi bi-grid"></i>
+                    Categories Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/order">
+                    <i class="bi bi-box-seam-fill"></i>
+                    Order Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/coupen">
+                    <i class="bi bi-coin"></i>
+                    Coupen Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/salesReport">
+                    <i class="bi bi-reception-4"></i>
+                    Sales Report
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/referal">
+                    <i class="bi bi-gift"></i>
+                    Referal Management
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2 class="mb-4">Sales Report</h2>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Report Filters</h5>
+                        <form action="/admin/generateReport" method="GET">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <select class="form-select" name="type" id="reportType">
+                                        <option value="daily" <%=reportType==='daily' ? 'selected' : '' %>>Daily
+                                        </option>
+                                        <option value="weekly" <%=reportType==='weekly' ? 'selected' : '' %>>Weekly
+                                        </option>
+                                        <option value="monthly" <%=reportType==='monthly' ? 'selected' : '' %>>Monthly
+                                        </option>
+                                        <option value="yearly" <%=reportType==='yearly' ? 'selected' : '' %>>Yearly
+                                        </option>
+                                        <option value="custom" <%=reportType==='custom' ? 'selected' : '' %>>Custom Date
+                                            Range</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3" id="dateRangeContainer" style="display:none;">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control datepicker" name="startDate"
+                                            id="startDate" placeholder="Start Date">
+                                        <input type="text" class="form-control datepicker" name="endDate" id="endDate"
+                                            placeholder="End Date">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary">Generate Report</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Download Options -->
+        <div class="row download-section">
+            <div class="col-12">
+                <div class="btn-group" role="group">
+                    <button id="downloadPDF" class="btn btn-danger">
+                        <i class="bi bi-file-pdf"></i> Download PDF
+                    </button>
+                    <button id="downloadExcel" class="btn btn-success">
+                        <i class="bi bi-file-excel"></i> Download Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row sales-summary">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Sales</h5>
+                        <p class="card-text display-6">
+                            ₹<%= summaryMetrics ? summaryMetrics.totalSales.toFixed(2) : '0.00' %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Orders</h5>
+                        <p class="card-text display-6">
+                            <%= summaryMetrics ? summaryMetrics.totalOrders : '0' %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Discounts</h5>
+                        <p class="card-text display-6">
+                            ₹<%= summaryMetrics ? summaryMetrics.totalDiscounts.toFixed(2) : '0.00' %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Net Revenue</h5>
+                        <p class="card-text display-6">
+                            ₹<%= summaryMetrics ? summaryMetrics.netRevenue.toFixed(2) : '0.00' %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sales Details</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="salesTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order Date</th>
+                                        <th>Order ID</th>
+                                        <th>Customer Name</th>
+                                        <th>Subtotal</th>
+                                        <th>Coupon Discount</th>
+                                        <th>Offer Discount</th>
+                                        <th>Total Amount</th>
+                                        <th>Order Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (orders && orders.length> 0) { %>
+                                        <% orders.forEach(function(order,index) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= index + 1 %>
+                                                </td>
+                                                <td>
+                                                    <%= new Date(order.createdAt).toLocaleDateString('en-IN', {
+                                                        weekday: 'short' , year: 'numeric' , month: 'short' ,
+                                                        day: 'numeric' }) %>
+                                                </td>
+                                                <td>
+                                                    <%= order.orderedId %>
+                                                </td>
+                                                <td>
+                                                    <%= order.customerName %>
+                                                </td>
+                                                <td>₹<%= order.totalAmount ? order.totalAmount.toFixed(2) : '0.00' %>
+                                                </td>
+                                                <td>₹<%= order.couponDiscount ? order.couponDiscount.toFixed(2) : '0.00'
+                                                        %>
+                                                </td>
+                                                <td>₹<%= order.offerDiscount ? order.offerDiscount.toFixed(2) : '0.00'
+                                                        %>
+                                                </td>
+                                                <td>₹<%= order.payableAmount ? order.payableAmount.toFixed(2) : '0.00'
+                                                        %>
+                                                </td>
+                                                <td>
+                                                    <%= order.orderStatus %>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">No orders found</td>
+                                                    </tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Sidebar Toggle (same as previous HTML)
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+        document.getElementById('reportType').addEventListener('change', function () {
+            const dateRangeContainer = document.getElementById('dateRangeContainer');
+            dateRangeContainer.style.display = this.value === 'custom' ? 'block' : 'none';
+        });
+
+        // Date Picker Initialization
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the form and report type select element
+            const reportForm = document.querySelector('form[action="/admin/generateReport"]');
+            const reportTypeSelect = document.getElementById('reportType');
+            const dateRangeContainer = document.getElementById('dateRangeContainer');
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+
+            // Add event listener to form submission
+            reportForm.addEventListener('submit', function (event) {
+                // Prevent default form submission
+                event.preventDefault();
+
+                // Validate report type selection
+                const reportType = reportTypeSelect.value;
+
+                // If custom date range is selected, perform additional validation
+                if (reportType === 'custom') {
+                    // Check if both start and end dates are filled
+                    if (!startDateInput.value || !endDateInput.value) {
+                        // Show error using SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Incomplete Date Range',
+                            text: 'Please select both start and end dates for custom report',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
+
+                    // Validate date range (start date should be before or equal to end date)
+                    const startDate = new Date(startDateInput.value);
+                    const endDate = new Date(endDateInput.value);
+
+                    if (startDate > endDate) {
+                        // Show error using SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Invalid Date Range',
+                            text: 'Start date must be before or equal to end date',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
+                }
+
+                // If all validations pass, show confirmation and submit the form
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Generate Report',
+                    text: `Are you sure you want to generate a ${reportType} report?`,
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Generate Report'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Show loading indicator
+                        Swal.fire({
+                            title: 'Generating Report...',
+                            text: 'Please wait',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        // Submit the form
+                        reportForm.submit();
+                    }
+                });
+            });
+
+            // Existing report type change event listener
+            reportTypeSelect.addEventListener('change', function () {
+                const dateRangeContainer = document.getElementById('dateRangeContainer');
+                dateRangeContainer.style.display = this.value === 'custom' ? 'block' : 'none';
+            });
+
+
+        });
+
+
+    </script>
+
+    <script>
+
+        // Get the download buttons
+        const downloadPDFButton = document.getElementById('downloadPDF');
+        const downloadExcelButton = document.getElementById('downloadExcel');
+
+        // Function to get the current filter parameters
+        function getFilterParameters() {
+            const reportType = document.getElementById('reportType').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            let params = new URLSearchParams();
+            params.append('type', reportType);
+
+            if (reportType === 'custom' && startDate && endDate) {
+                params.append('startDate', startDate);
+                params.append('endDate', endDate);
+            }
+
+            return params.toString();
+        }
+
+        // Function to handle downloads
+        async function handleDownload(format) {
+            try {
+                // Show loading indicator
+                Swal.fire({
+                    title: `Generating ${format.toUpperCase()} Report...`,
+                    text: 'Please wait',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                const params = getFilterParameters();
+                const response = await fetch(`/admin/download${format}?${params}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': format === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Get the filename from the Content-Disposition header if available
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = `sales-report.${format}`;
+                if (contentDisposition) {
+                    const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        filename = matches[1].replace(/['"]/g, '');
+                    }
+                }
+
+                // Convert the response to blob
+                const blob = await response.blob();
+
+                // Create a download link and trigger the download
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                // Close loading indicator and show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: `${format.toUpperCase()} report has been downloaded successfully!`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+            } catch (error) {
+                console.error('Download error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Download Failed',
+                    text: 'There was an error generating your report. Please try again.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+
+        // Add click event listeners to download buttons
+        downloadPDFButton.addEventListener('click', () => {
+            // Validate date range if custom type is selected
+            const reportType = document.getElementById('reportType').value;
+            if (reportType === 'custom') {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+
+                if (!startDate || !endDate) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Incomplete Date Range',
+                        text: 'Please select both start and end dates for custom report',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+
+                if (new Date(startDate) > new Date(endDate)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Date Range',
+                        text: 'Start date must be before or equal to end date',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+            }
+
+            handleDownload('pdf');
+        });
+
+        downloadExcelButton.addEventListener('click', () => {
+            // Validate date range if custom type is selected
+            const reportType = document.getElementById('reportType').value;
+            if (reportType === 'custom') {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+
+                if (!startDate || !endDate) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Incomplete Date Range',
+                        text: 'Please select both start and end dates for custom report',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+
+                if (new Date(startDate) > new Date(endDate)) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid Date Range',
+                        text: 'Start date must be before or equal to end date',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+            }
+
+            handleDownload('excel');
+        });
+
+    </script>
+
+
+
+
+</body>
+
+</html>

@@ -44,41 +44,56 @@ const userSchema = new Schema({
         ref: 'Cart',
     },
 
-
-
-
-
-
-
-
-
-
-
-    referalCode: {
-        type: String
-    },
-    redeemed: {
-        type: Boolean
-    },
-    redeemedUsers: [{
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }],
-    searchHistory: [{
-        category: {
-            type: Schema.Types.ObjectId,
-            ref: "Category",
+    usedCoupons: [{
+        couponId: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Coupon' 
         },
-        brand: {
-            type: String
-        },
-        searchOn: {
-            type: Date,
-            default: Date.now
+        usedAt: { 
+            type: Date, 
+            default: Date.now 
         }
-    }]
+    }],
+    referralCode:{type:String,unique:true},
+    referredBy:{type:mongoose.Schema.Types.ObjectId,ref:'users'},
+    referralCount:{type:Number,default:0}
 
-})
+});
 
-const User = mongoose.model("User", userSchema)
+async function generateUniqueCode() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const codeLength = 8;
+    let isUnique = false;
+    let code;
+
+    while (!isUnique) {
+        // Generate a random code
+        code = '';
+        for (let i = 0; i < codeLength; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            code += characters[randomIndex];
+        }
+
+        // Check if the code exists in the database
+        const existingUser = await mongoose.model('users').findOne({ referralCode: code });
+        if (!existingUser) {
+            isUnique = true;
+        }
+    }
+
+    console.log('Generated referral code:', code);
+    return code;
+}
+
+// Add pre-save middleware to generate referralCode
+userSchema.pre('save', async function (next) {
+    if (!this.referralCode) {
+        this.referralCode = await generateUniqueCode();
+    }
+    next();
+});
+
+
+
+const User = mongoose.model("users", userSchema)
 module.exports = User

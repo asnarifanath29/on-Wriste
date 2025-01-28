@@ -10,11 +10,11 @@ const otpSchema = new mongoose.Schema({
         required: true,
     },
     otp: {
-        type: String,  // OTP stored as a string
+        type: String, 
         default: null
     },
     otpExpiry: {
-        type: Date,  // Store OTP expiry time
+        type: Date, 
         default: null,
         expires: 0
     }

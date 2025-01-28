@@ -6,8 +6,13 @@ const profileController=require("../controllers/user/profileController")
 const cartController=require("../controllers/user/cartController")
 const filterController=require("../controllers/user/filterController")
 const orderController=require("../controllers/user/orderController")
+const coupenController=require("../controllers/user/coupenController")
+const wishlistController=require("../controllers/user/wishlistController")
 const User = require("../models/userSchema")
 const userAuth = require('../middlewares/userAuth');
+const coupenSchema = require('../models/coupenSchema')
+
+
 router.get("/pageNotFound", userController.pageNotFound)
 router.get("/", userController.loadHomepage)
 router.get("/home", userController.loadHomepage)
@@ -73,7 +78,7 @@ router.post("/update-password",userAuth,profileController.updatepassword)
 
 
 router.get("/cart", userAuth,cartController.loadCartpage);
-router.post("/cart", userAuth,cartController.addtocart);
+router.post("/cart",cartController.addtocart);
 router.post("/cart-update", userAuth,cartController.updatecart);
 
 router.get("/checkout", userAuth,cartController.loadCheckoutpage);
@@ -81,7 +86,10 @@ router.post("/checkout", userAuth,cartController.Checkout);
 
        
 router.get("/order-confirmation/:id", userAuth,cartController.confirmationPage);
+router.post('/razorpay/initiate',userAuth,cartController.initiatePayment);
 router.post("/place-order", userAuth,cartController.placeOrder);
+
+
 
 router.delete("/delete-product",userAuth,cartController.deleteProduct)
 
@@ -90,6 +98,16 @@ router.post("/filter",filterController.filter)
 router.post("/search",filterController.search)
 
 router.post('/update-profile/cancel/:orderId',orderController.cancelOrder);
+router.post("/update-profile/return/:orderId",orderController.returnOrder);
+
+
+router.get('/coupons',coupenController.availableCoupen)
+router.post('/apply-coupon',coupenController.applyCoupen)
+
+
+router.get('/wishlist',userAuth,wishlistController.loadwishlist)
+router.post('/wishlist',userAuth,wishlistController.addToWishlist)
+router.delete('/wishlist/remove/:productId',userAuth,wishlistController.deletewishlist)
 
 module.exports = router
 

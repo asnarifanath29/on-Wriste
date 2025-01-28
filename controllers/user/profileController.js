@@ -1,6 +1,7 @@
-const User = require("../../models/userSchema")
+const User = require("../../models/userSchema");
 const Address = require("../../models/addressSchema");
-const Order = require("../../models/orderSchema")
+const Order = require("../../models/orderSchema");
+const Wallet = require("../../models/walletSchema");
 const bcrypt = require('bcrypt');
 
 const loadprofilepage = async (req, res) => {
@@ -11,21 +12,41 @@ const loadprofilepage = async (req, res) => {
     }
 
     try {
+        // Fetch user addresses
         const addresses = await Address.find({ userId: userData.id });
+        const user = await User.findOne({ _id: userData.id });
+        // Fetch orders and populate product details
         const orders = await Order.find({ userId: userData.id })
             .sort({ createdAt: -1 })
-            .populate('items.productId')
+            .populate('items.productId');
 
+        // Fetch wallet details for the user, if exists
+        const wallet = await Wallet.findOne({ userId: userData.id });
+
+        // if (!wallet) {
+        //     console.warn("No wallet found for user:", userData.id);
+        // }
+
+        // Pass wallet balance as 0 if wallet doesn't exist
+        const walletBalance = wallet ? wallet.balance : 0;
+        const transactions = wallet ? wallet.transactions : [];
+
+        // Render the profile page with all the data
         res.render("profile", {
             userData,
             addresses,
-            order: orders
+            order:orders,
+            walletBalance,
+            transactions,
+            user
         });
+
     } catch (error) {
         console.error("Error loading profile page:", error);
         res.redirect("/pageNotFound");
     }
 };
+
 
 const updateprofilepage = async (req, res) => {
     try {

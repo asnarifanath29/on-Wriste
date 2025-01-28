@@ -18,6 +18,10 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         .modal-backdrop {
             z-index: 1040;
@@ -87,7 +91,118 @@
             color: #e74c3c;
             font-size: 0.875rem;
         }
+
+
+
+
+
+
+
+        .wallet-card {
+            background: linear-gradient(135deg, #5a6e83 0%, #3498db 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(188, 171, 171, 0.2);
+            max-width: 777px;
+            max-height: 225px;
+            margin: 0 auto;
+        }
+
+        .wallet-number {
+            letter-spacing: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: rgb(4, 4, 4);
+        }
+
+        .transaction-table {
+            font-size: 0.85rem;
+        }
+
+        .transaction-table {
+            background-color: white;
+        }
+
+        .transaction-table thead {
+            background-color: #f8f9fa;
+        }
+
+
+        .custom-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pagination-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            color: #495057;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .pagination-btn.active {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+
+        /* .modal-overlay {
+            background-color: rgba(0,0,0,0.5);
+        }
+        #otherReasonContainer, 
+        #otherReturnReasonContainer {
+            transition: all 0.3s ease;
+        } */
+
+
+        .card {
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .stats-container {
+        padding: 10px;
+    }
+
+        .input-group .form-control {
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            background-color: #f8f9fa;
+        }
+
+        .btn {
+            font-weight: 500;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn i {
+            font-size: 0.9rem;
+        }
     </style>
+
 </head>
 
 <body>
@@ -120,6 +235,12 @@
                             </a>
                             <a class="nav-link" data-section="password">
                                 <i class="fas fa-lock"></i> Change Password
+                            </a>
+                            <a class="nav-link" data-section="wallet">
+                                <i class="fa-solid fa-wallet"></i> Wallet
+                            </a>
+                            <a class="nav-link" data-section="referals">
+                                <i class="fa-solid fa-gift"></i> Referals
                             </a>
                         </nav>
                     </div>
@@ -270,19 +391,25 @@
                                                             </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <% if (!['Delivered', 'Canceled' , 'Returned'
+                                                    <% if (!['Canceled' , 'Returned' ,'Delivered'
                                                         ].includes(orderItem.orderStatus)) { %>
                                                         <button class="btn btn-outline-danger"
                                                             onclick="cancelOrder('<%= orderItem._id %>')">
                                                             Cancel Order
                                                         </button>
                                                         <% } %>
-                                                            <button class="btn btn-primary"
+                                                            <!-- <button class="btn btn-primary"
                                                                 onclick="trackOrder('<%= orderItem._id %>')">
                                                                 Track Order
-                                                            </button>
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Close</button>
+                                                            </button> -->
+                                                            <% if (['Delivered' ].includes(orderItem.orderStatus)) { %>
+                                                                <button class="btn btn-outline-danger"
+                                                                    onclick="returnOrder('<%= orderItem._id %>')">
+                                                                    Return Order
+                                                                </button>
+                                                                <% } %>
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -395,10 +522,217 @@
                                 </div>
                             </div>
                         </div>
+
+
+
+                        <!-- <div id="wallet" class="section">
+                            <h3>Wallet</h3>
+                            <div class="card">
+                                <div class="card-body">
+                                    
+                                </div>
+                            </div>
+                        </div> -->
+
+
+
+                        <!-- wallet.ejs -->
+                        <div id="wallet" class="section">
+                            <h3 class="mb-4">Wallet</h3>
+                            <div class="card wallet-card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4 class="mb-3">Your Wallet Balance</h4>
+                                            <h2 class="display-4 mb-3">₹ <%= walletBalance.toFixed(2) %>
+                                            </h2>
+                                            <p class="wallet-number">
+                                                Virtual Wallet **** **** 1234
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="card-title">Transaction History</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table transaction-table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Amount</th>
+                                                    <th>Type</th>
+                                                    <th>Description</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% if (transactions.length===0) { %>
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">No transactions available
+                                                        </td>
+                                                    </tr>
+                                                    <% } else { %>
+                                                        <% transactions.forEach((transaction, index)=> { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <%= index + 1 %>
+                                                                </td>
+                                                                <td>₹ <%= transaction.amount.toFixed(2) %>
+                                                                </td>
+                                                                <td>
+                                                                    <span
+                                                                        class="badge <%= transaction.type === 'Credit' ? 'bg-success' : 'bg-danger' %>">
+                                                                        <%= transaction.type %>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <%= transaction.description %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= new Date(transaction.createdAt).toLocaleString()
+                                                                        %>
+                                                                </td>
+                                                            </tr>
+                                                            <% }) %>
+                                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <nav aria-label="Transaction history pagination" class="mt-3">
+                                        <div class="custom-pagination">
+                                            <button class="pagination-btn disabled" aria-label="Previous">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </button>
+                                            <button class="pagination-btn active">1</button>
+                                            <button class="pagination-btn">2</button>
+                                            <button class="pagination-btn">3</button>
+                                            <button class="pagination-btn" aria-label="Next">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div id="referals" class="section">
+                            <h3>Your Referral Dashboard</h3>
+
+                            <!-- Stats Card -->
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="row g-4">
+                                        <div class="col-md-6">
+                                            <div class="stats-container">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <i class="fa-solid fa-users text-primary fs-4 me-2"></i>
+                                                    <h6 class="mb-0 text-muted">Total Referrals</h6>
+                                                </div>
+                                                
+                                                <%= console.log(user.referralCount ) %>
+                                                <h4 class="mb-0 fw-bold ps-4">
+                                                    <%= user.referralCount %>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="stats-container">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <i class="fa-solid fa-gift text-success fs-4 me-2"></i>
+                                                    <h6 class="mb-0 text-muted">Rewards Earned</h6>
+                                                </div>
+                                                <h4 class="mb-0 fw-bold ps-4">$<%= (user.referralCount || 0) * 100 %>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Referral Link Card -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-4">Share Your Referral Link</h5>
+                                        <div class="d-flex gap-3 mb-3">
+                                            <button class="btn btn-primary btn-sm px-3" type="button"
+                                                onclick="generateReferralLink()">
+                                                <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Link
+                                            </button>
+                                            <button class="btn btn-primary btn-sm px-3" type="button" id="copyButton"
+                                                onclick="copyReferralLink()" disabled>
+                                                <i class="fa-regular fa-copy me-2"></i>Copy Link
+                                            </button>
+                                        </div>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="referralLink"
+                                                placeholder="Click 'Generate Link' to create your referral link"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
                     </div>
                 </div>
-            </div>
         </section>
+
+
+
+
+
+
 
         <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel"
             aria-hidden="true">
@@ -430,6 +764,126 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="returnOrderModal" tabindex="-1" aria-labelledby="returnOrderModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="returnOrderModalLabel">Return Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="returnOrderForm" novalidate>
+                            <input type="hidden" id="orderIdToReturn">
+                            <div class="mb-3">
+                                <label for="returnReason" class="form-label">Please provide a reason for return</label>
+                                <textarea class="form-control" id="returnReason" rows="4" required minlength="10"
+                                    maxlength="200"
+                                    placeholder="Enter your reason for return (minimum 10 characters)"></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a detailed reason (minimum 10 characters)
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="confirmReturnBtn">Submit Return
+                            request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelOrderModalLabel">Cancel Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="cancelOrderForm" novalidate>
+                        <input type="hidden" id="orderIdToCancel">
+                        <div class="mb-3">
+                            <label for="cancelReason" class="form-label">Cancellation Reason</label>
+                            <select class="form-select" id="cancelReason">
+                                <option value="">Select a reason</option>
+                                <option value="changed_mind">Changed my mind</option>
+                                <option value="found_better_price">Found a better price</option>
+                                <option value="delivery_delay">Delivery taking too long</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a cancellation reason</div>
+                        </div>
+                        <div id="otherReasonContainer" class="mt-3" style="display:none;">
+                            <textarea 
+                                class="form-control" 
+                                id="otherCancelReason" 
+                                rows="3" 
+                                placeholder="Please provide a detailed reason"
+                                minlength="10"
+                                maxlength="200"
+                            ></textarea>
+                            <div class="invalid-feedback">Please provide a detailed reason (min 10 characters)</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Close</button>
+                    <button type="button" class="btn btn-danger" id="confirmCancelBtn">Cancel Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal fade" id="returnOrderModal" tabindex="-1" aria-labelledby="returnOrderModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnOrderModalLabel">Return Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="returnOrderForm" novalidate>
+                        <input type="hidden" id="orderIdToReturn">
+                        <div class="mb-3">
+                            <label for="returnReason" class="form-label">Return Reason</label>
+                            <select class="form-select" id="returnReason" required>
+                                <option value="">Select a reason</option>
+                                <option value="wrong_item">Wrong item received</option>
+                                <option value="damaged">Item is damaged</option>
+                                <option value="not_as_described">Not as described</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a return reason</div>
+                        </div>
+                        <div id="otherReturnReasonContainer" class="mt-3" style="display:none;">
+                            <textarea 
+                                class="form-control" 
+                                id="otherReturnReason" 
+                                rows="3" 
+                                placeholder="Please provide a detailed reason"
+                                minlength="10"
+                                maxlength="200"
+                            ></textarea>
+                            <div class="invalid-feedback">Please provide a detailed reason (min 10 characters)</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmReturnBtn">Submit Return</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
         <%- include('../partials/user/footer') %>
 
             <!-- Your existing scripts -->
@@ -476,7 +930,7 @@
                     const phoneError = document.getElementById("phoneError");
 
                     form.addEventListener("submit", async function (event) {
-                        event.preventDefault(); 
+                        event.preventDefault();
 
                         let isValid = true;
 
@@ -546,6 +1000,22 @@
 
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
+                    // Initial check for stored active section
+                    const storedSection = localStorage.getItem('activeSection');
+                    if (storedSection) {
+                        // Remove active class from all nav links
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        // Add active class to stored section
+                        const activeLink = document.querySelector(`.nav-link[data-section="${storedSection}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+                        // Clear the stored section
+                        localStorage.removeItem('activeSection');
+                    }
+
                     const deleteButtons = document.querySelectorAll('.delete-btn');
 
                     deleteButtons.forEach((button) => {
@@ -564,10 +1034,13 @@
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     fetch(`/delete-address/${addressId}`, {
-                                        method: 'DELETE', 
+                                        method: 'DELETE',
                                     })
                                         .then((response) => {
                                             if (response.ok) {
+                                                // Store the active section before reload
+                                                localStorage.setItem('activeSection', 'addresses');
+
                                                 Swal.fire(
                                                     'Deleted!',
                                                     'The address has been deleted.',
@@ -600,8 +1073,9 @@
 
             <script>
                 document.getElementById('passwordForm').addEventListener('submit', async function (e) {
+
                     e.preventDefault();
-                    const currentPassword = document.getElementByIdA('currentPassword').value.trim();
+                    const currentPassword = document.getElementById('currentPassword').value.trim();
                     const newPassword = document.getElementById('newPassword').value.trim();
                     const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
 
@@ -652,6 +1126,9 @@
                             const result = await response.json();
 
                             if (response.ok && result.success) {
+
+                                localStorage.setItem('activeSection', 'password');
+
                                 Swal.fire({
                                     title: "Success!",
                                     text: "Password updated successfully!",
@@ -677,6 +1154,23 @@
                                 confirmButtonText: "OK",
                             });
                         }
+                    }
+                });
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const storedSection = localStorage.getItem('activeSection');
+                    if (storedSection) {
+                        // Remove active class from all nav links
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        // Add active class to stored section
+                        const activeLink = document.querySelector(`.nav-link[data-section="${storedSection}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+                        // Clear the stored section
+                        localStorage.removeItem('activeSection');
                     }
                 });
             </script>
@@ -708,6 +1202,19 @@
             <script>
                 let cancelOrderModal;
                 document.addEventListener('DOMContentLoaded', function () {
+                    // Check for stored active section
+                    const storedSection = localStorage.getItem('activeSection');
+                    if (storedSection) {
+                        document.querySelectorAll('.nav-link').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        const activeLink = document.querySelector(`.nav-link[data-section="${storedSection}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+                        localStorage.removeItem('activeSection');
+                    }
+
                     cancelOrderModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
 
                     document.getElementById('confirmCancelBtn').addEventListener('click', handleCancelOrder);
@@ -756,6 +1263,9 @@
                             cancelOrderModal.hide();
 
                             if (data.success) {
+                                // Store the active section before reload
+                                localStorage.setItem('activeSection', 'orders');
+
                                 Swal.fire({
                                     title: 'Success!',
                                     text: 'Your order has been successfully cancelled.',
@@ -787,6 +1297,479 @@
                         });
                 }
             </script>
+
+
+            <script>
+                let returnOrderModal;
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Initialize the return order modal
+                    returnOrderModal = new bootstrap.Modal(document.getElementById('returnOrderModal'));
+
+                    // Add event listener to the confirm return button
+                    document.getElementById('confirmReturnBtn').addEventListener('click', handleReturnOrder);
+
+                    // Reset the form and error state when the modal is hidden
+                    document.getElementById('returnOrderModal').addEventListener('hidden.bs.modal', function () {
+                        document.getElementById('returnOrderForm').reset();
+                        document.getElementById('reasonError').style.display = 'none';
+                        document.getElementById('returnReason').classList.remove('is-invalid');
+                    });
+                });
+
+                // Function to open the return order modal and set the order ID
+                function returnOrder(orderId) {
+                    document.getElementById('orderIdToReturn').value = orderId;
+                    returnOrderModal.show();
+                }
+
+                // Handle the return order submission
+                function handleReturnOrder() {
+                    const orderId = document.getElementById('orderIdToReturn').value;
+                    const reason = document.getElementById('returnReason').value.trim();
+                    const reasonInput = document.getElementById('returnReason');
+                    const reasonError = document.getElementById('reasonError');
+
+                    // Validate the reason
+                    if (!reason || reason.length < 10) {
+                        reasonInput.classList.add('is-invalid');
+                        reasonError.style.display = 'block';
+                        return;
+                    }
+
+                    reasonInput.classList.remove('is-invalid');
+                    reasonError.style.display = 'none';
+
+                    const confirmBtn = document.getElementById('confirmReturnBtn');
+                    const originalText = confirmBtn.innerHTML;
+                    confirmBtn.disabled = true;
+                    confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+
+                    // Make the API call to handle the return request
+                    fetch(`/update-profile/return/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ returnReason: reason })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            returnOrderModal.hide();
+
+                            if (data.success) {
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Your return request has been successfully submitted.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                            } else {
+                                throw new Error(data.message || 'Failed to process return order');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            returnOrderModal.hide();
+
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error.message || 'An error occurred while processing your return request.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        })
+                        .finally(() => {
+                            confirmBtn.disabled = false;
+                            confirmBtn.innerHTML = originalText;
+                        });
+                }
+            </script>
+
+
+            <script>
+                function generateReferralLink() {
+                    const referralCode = '<%= user.referralCode %>';
+                    const referralLink = `http://localhost:5000/signup?ref=${referralCode}`;
+
+                    const linkInput = document.getElementById('referralLink');
+                    linkInput.value = referralLink;
+
+                    document.getElementById('copyButton').disabled = false;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Referral Link Generated!',
+                        text: 'Your referral link is ready to be copied and shared.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+
+                async function copyReferralLink() {
+                    const linkInput = document.getElementById('referralLink');
+
+                    try {
+                        await navigator.clipboard.writeText(linkInput.value);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Referral Link Generated!',
+                            text: 'Your referral link has been copied to clipboard.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } catch (err) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Failed to copy link to clipboard'
+                        });
+                        console.error('Failed to copy text: ', err);
+                    }
+                }
+            </script>
+
+
+
+
+
+            <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cancelReasonSelect = document.getElementById('cancelReason');
+            const otherReasonContainer = document.getElementById('otherReasonContainer');
+            const otherCancelReasonTextarea = document.getElementById('otherCancelReason');
+    
+            const returnReasonSelect = document.getElementById('returnReason');
+            const otherReturnReasonContainer = document.getElementById('otherReturnReasonContainer');
+            const otherReturnReasonTextarea = document.getElementById('otherReturnReason');
+    
+            // Cancel Order Reason Handling
+            cancelReasonSelect.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    otherReasonContainer.style.display = 'block';
+                    otherCancelReasonTextarea.required = true;
+                } else {
+                    otherReasonContainer.style.display = 'none';
+                    otherCancelReasonTextarea.required = false;
+                }
+            });
+    
+            // Return Order Reason Handling
+            returnReasonSelect.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    otherReturnReasonContainer.style.display = 'block';
+                    otherReturnReasonTextarea.required = true;
+                } else {
+                    otherReturnReasonContainer.style.display = 'none';
+                    otherReturnReasonTextarea.required = false;
+                }
+            });
+    
+            // Confirm Cancel Order
+            document.getElementById('confirmCancelBtn').addEventListener('click', function() {
+                const orderId = document.getElementById('orderIdToCancel').value;
+                const cancelReason = cancelReasonSelect.value;
+                const otherCancelReason = otherCancelReasonTextarea.value.trim();
+    
+                // Validate reason
+                if (cancelReason === '') {
+                    cancelReasonSelect.classList.add('is-invalid');
+                    return;
+                }
+    
+                // If 'other' is selected, validate custom reason
+                if (cancelReason === 'other') {
+                    if (otherCancelReason.length < 10) {
+                        otherCancelReasonTextarea.classList.add('is-invalid');
+                        return;
+                    }
+                }
+    
+                // Simulate order cancellation (replace with actual API call)
+                processOrderCancellation(orderId, cancelReason === 'other' ? otherCancelReason : cancelReason);
+            });
+    
+            // Confirm Return Order
+            document.getElementById('confirmReturnBtn').addEventListener('click', function() {
+                const orderId = document.getElementById('orderIdToReturn').value;
+                const returnReason = returnReasonSelect.value;
+                const otherReturnReason = otherReturnReasonTextarea.value.trim();
+    
+                // Validate reason
+                if (returnReason === '') {
+                    returnReasonSelect.classList.add('is-invalid');
+                    return;
+                }
+    
+                // If 'other' is selected, validate custom reason
+                if (returnReason === 'other') {
+                    if (otherReturnReason.length < 10) {
+                        otherReturnReasonTextarea.classList.add('is-invalid');
+                        return;
+                    }
+                }
+    
+                // Simulate return order (replace with actual API call)
+                processReturnOrder(orderId, returnReason === 'other' ? otherReturnReason : returnReason);
+            });
+    
+            // Order Cancellation Function
+            function processOrderCancellation(orderId, reason) {
+                // Disable button and show loading
+                const confirmBtn = document.getElementById('confirmCancelBtn');
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+    
+                // Simulated API call (replace with actual fetch)
+                setTimeout(() => {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Your order has been successfully cancelled.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Reset modal and button
+                        confirmBtn.disabled = false;
+                        confirmBtn.innerHTML = 'Cancel Order';
+                        
+                        // Close modal
+                        bootstrap.Modal.getInstance(document.getElementById('cancelOrderModal')).hide();
+                    });
+                }, 1500);
+            }
+    
+            // Return Order Function
+            function processReturnOrder(orderId, reason) {
+                // Disable button and show loading
+                const confirmBtn = document.getElementById('confirmReturnBtn');
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+    
+                // Simulated API call (replace with actual fetch)
+                setTimeout(() => {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Your return request has been successfully submitted.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Reset modal and button
+                        confirmBtn.disabled = false;
+                        confirmBtn.innerHTML = 'Submit Return';
+                        
+                        // Close modal
+                        bootstrap.Modal.getInstance(document.getElementById('returnOrderModal')).hide();
+                    });
+                }, 1500);
+            }
+    
+            // Global Modal Reset
+            document.getElementById('cancelOrderModal').addEventListener('hidden.bs.modal', function () {
+                document.getElementById('cancelOrderForm').reset();
+                otherReasonContainer.style.display = 'none';
+                cancelReasonSelect.classList.remove('is-invalid');
+                otherCancelReasonTextarea.classList.remove('is-invalid');
+            });
+    
+            document.getElementById('returnOrderModal').addEventListener('hidden.bs.modal', function () {
+                document.getElementById('returnOrderForm').reset();
+                otherReturnReasonContainer.style.display = 'none';
+                returnReasonSelect.classList.remove('is-invalid');
+                otherReturnReasonTextarea.classList.remove('is-invalid');
+            });
+        });
+    
+        // Utility Functions to Trigger Modals (for demonstration)
+        function cancelOrder(orderId) {
+            document.getElementById('orderIdToCancel').value = orderId;
+            new bootstrap.Modal(document.getElementById('cancelOrderModal')).show();
+        }
+    
+        function returnOrder(orderId) {
+            document.getElementById('orderIdToReturn').value = orderId;
+            new bootstrap.Modal(document.getElementById('returnOrderModal')).show();
+        }
+        </script>
+
+
+
+
+
+
+
+
+         -->
+
+
+            <!-- <script>
+        // Order Cancellation Modal
+    const cancelOrderModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+    const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+    const cancelReason = document.getElementById('cancelReason');
+    const cancelReasonError = document.getElementById('cancelReasonError');
+
+    window.cancelOrder = function(orderId) {
+        document.getElementById('orderIdToCancel').value = orderId;
+        cancelOrderModal.show();
+    };
+
+    confirmCancelBtn.addEventListener('click', function() {
+        const orderId = document.getElementById('orderIdToCancel').value;
+        const reason = cancelReason.value.trim();
+
+        // Validate reason
+        if (reason.length < 10) {
+            cancelReason.classList.add('is-invalid');
+            cancelReasonError.textContent = 'Please provide a detailed reason (minimum 10 characters)';
+            return;
+        }
+
+        cancelReason.classList.remove('is-invalid');
+
+        // Disable button and show loading
+        confirmCancelBtn.disabled = true;
+        confirmCancelBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+
+        fetch(`/update-profile/cancel/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cancelReason: reason })
+        })
+        .then(response => response.json())
+        .then(data => {
+            cancelOrderModal.hide();
+
+            if (data.success) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your order has been successfully cancelled.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                throw new Error(data.message || 'Failed to cancel order');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: error.message || 'An error occurred while canceling the order.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        })
+        .finally(() => {
+            confirmCancelBtn.disabled = false;
+            confirmCancelBtn.innerHTML = 'Cancel Order';
+        });
+    });
+
+    // Order Return Modal
+    const returnOrderModal = new bootstrap.Modal(document.getElementById('returnOrderModal'));
+    const confirmReturnBtn = document.getElementById('confirmReturnBtn');
+    const returnReason = document.getElementById('returnReason');
+    const returnReasonError = document.getElementById('returnReasonError');
+
+    window.returnOrder = function(orderId) {
+        document.getElementById('orderIdToReturn').value = orderId;
+        returnOrderModal.show();
+    };
+
+    confirmReturnBtn.addEventListener('click', function() {
+        const orderId = document.getElementById('orderIdToReturn').value;
+        const reason = returnReason.value.trim();
+
+        // Validate reason
+        if (reason.length < 10) {
+            returnReason.classList.add('is-invalid');
+            returnReasonError.textContent = 'Please provide a detailed reason (minimum 10 characters)';
+            return;
+        }
+
+        returnReason.classList.remove('is-invalid');
+
+        // Disable button and show loading
+        confirmReturnBtn.disabled = true;
+        confirmReturnBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+
+        fetch(`/update-profile/return/${orderId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ returnReason: reason })
+        })
+        .then(response => response.json())
+        .then(data => {
+            returnOrderModal.hide();
+
+            if (data.success) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your return request has been successfully submitted.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload();
+                    }
+                });
+            } else {
+                throw new Error(data.message || 'Failed to process return order');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: error.message || 'An error occurred while processing your return request.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        })
+        .finally(() => {
+            confirmReturnBtn.disabled = false;
+            confirmReturnBtn.innerHTML = 'Submit Return';
+        });
+    });
+
+    // Real-time textarea validation
+    cancelReason.addEventListener('input', function() {
+        const reason = this.value.trim();
+        if (reason.length < 10) {
+            this.classList.add('is-invalid');
+            cancelReasonError.textContent = 'Please provide a detailed reason (minimum 10 characters)';
+        } else {
+            this.classList.remove('is-invalid');
+        }
+    });
+
+    returnReason.addEventListener('input', function() {
+        const reason = this.value.trim();
+        if (reason.length < 10) {
+            this.classList.add('is-invalid');
+            returnReasonError.textContent = 'Please provide a detailed reason (minimum 10 characters)';
+        } else {
+            this.classList.remove('is-invalid');
+        }
+    });
+
+</script> -->
+
+            <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
 </body>
 
 </html>

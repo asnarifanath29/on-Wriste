@@ -213,25 +213,43 @@
         <li class="nav-item">
             <a class="nav-link" href="/admin/products">
                 <i class="bi bi-box-seam"></i>
-                Products
+                Product Management
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/admin/userManagement">
                 <i class="bi bi-people"></i>
-                Users
+                User Management
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="/admin/categories">
                 <i class="bi bi-grid"></i>
-                Categories
+                Category Management
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/admin/order">
                 <i class="bi bi-box-seam-fill"></i>
-                Order
+                Order Management
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/coupen">
+                <i class="bi bi-coin"></i>
+                Coupen Management
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/salesReport">
+                <i class="bi bi-reception-4"></i>
+                Sales Report
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/referal">
+                <i class="bi bi-gift"></i>
+                Referal Management
             </a>
         </li>
     </ul>
@@ -306,11 +324,11 @@
                 <thead>
                     <tr>
                         <th>S.No</th>
-                        <!-- <th>Image</th> -->
                         <th>Category</th>
                         <th>Description</th>
                         <th>Status</th>
                         <th>Actions</th>
+                        <th>Offers</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -318,16 +336,6 @@
                         <tr>
                             <!-- Serial Number -->
                             <td><%= index + 1 %></td>
-
-                            <!-- Category Image -->
-                            <!-- <td>
-                                <% if (category.image) { %>
-                                    <img src="<%= category.image %>" alt="<%= category.name %>" 
-                                         class="category-image" style="width: 50px; height: 50px; object-fit: cover;">
-                                <% } else { %>
-                                    <span>No Image</span>
-                                <% } %>
-                            </td> -->
 
                             <!-- Category Name -->
                             <td><%= category.name %></td>
@@ -353,6 +361,15 @@
                                     data-id="<%= category._id %>" <%= category.status === 'unlisted' ? 'disabled' : '' %>>
                                     <i class="bi bi-x-circle"></i> Unlist
                                 </button>
+                            </td>
+                            <td>
+                                <button 
+                        class="btn btn-sm btn-offer <%= category.offer ? 'btn-danger' : 'btn-success' %>" 
+                        onclick="toggleOffer(this, '<%= category._id %>')"
+                        data-id="<%= category._id %>">
+                        <%= category.offer ? 'Remove Offer' : 'Add Offer' %>
+                    </button>
+
                             </td>
                         </tr>
                     <% }) %>
@@ -485,6 +502,92 @@
         window.location.href = '/admin/categories/add';
     }
 </script>
+
+
+<script>
+    function toggleOffer(button, categoryId) {
+        const hasOffer = button.textContent.trim() === 'Remove Offer';
+    
+        if (!hasOffer) {
+            // Add Offer Logic
+            Swal.fire({
+                title: 'Add Offer',
+                text: 'Enter offer percentage:',
+                input: 'number',
+                inputAttributes: {
+                    min: 0,
+                    max: 100,
+                    step: 1
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Add Offer',
+                preConfirm: (offerPercentage) => {
+                    if (offerPercentage < 0 || offerPercentage > 100) {
+                        Swal.showValidationMessage('Percentage must be between 0 and 100');
+                    }
+                    return offerPercentage;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const offerPercentage = result.value;
+                    
+                  
+                    fetch(`/admin/categories/add-offer/${categoryId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ offerPercentage })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            button.textContent = 'Remove Offer';
+                            button.classList.remove('btn-success');
+                            button.classList.add('btn-danger');
+                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Offer Added',
+                                text: `${offerPercentage}% offer applied to category`
+                            });
+                        }
+                    });
+                }
+            });
+        } else {
+            // Remove Offer Logic
+            Swal.fire({
+                title: 'Remove Offer',
+                text: 'Are you sure you want to remove this offer?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove offer'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/admin/categories/remove-offer/${categoryId}`, {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            button.textContent = 'Add Offer';
+                            button.classList.remove('btn-danger');
+                            button.classList.add('btn-success');
+                            
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Offer Removed',
+                                text: 'Offer has been successfully removed'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+    </script>
 
 
 </body>

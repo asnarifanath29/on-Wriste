@@ -126,6 +126,10 @@
                                 <div id="error5" class="error">Passwords do not match</div>
                             </div>
 
+                            <div class="mb-4">
+                            <input type="hidden" id="referralcode" name="referralcode" value="<%= referralCode || '' %>">
+                            </div>
+
                             <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
 
                             <div class="text-center">
@@ -175,6 +179,7 @@
         const error4 = document.getElementById("error4");
         const error5 = document.getElementById("error5");
         const signform = document.getElementById("signform");
+        const referralcode=document.getElementById("referralcode")
 
         function nameValidateChecking() {
             const nameval = nameid.value.trim();
@@ -280,6 +285,7 @@
                         email: emailid.value.trim(),
                         phone: phoneid.value.trim(),
                         password: passid.value.trim(),
+                        referralcode:referralcode.value.trim(),
                     };
 
                     try {

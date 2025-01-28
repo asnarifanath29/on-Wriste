@@ -224,9 +224,10 @@
                                 data-product-id="<%= product._id %>">
                                 <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                             </a>
-                            <button class="btn btn-custom btn-lg">
+                            <a href="#" class="btn btn-custom btn-lg" id="addToWishlistBtn"
+                            data-product-id="<%= product._id %>">
                                 <i class="fas fa-heart me-2"></i>Add to Wishlist
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -379,7 +380,20 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
+                    if(data.notLoggedIn) {
+						Swal.fire({
+							title: "Please Log In",
+							text: "Please log in to add items to your cart",
+							icon: "info",
+							showCancelButton: true,
+							confirmButtonText: "Log In",
+							cancelButtonText: "Cancel"
+						}).then((result) => {
+							if(result.isConfirmed) {
+								window.location.href = "/login";
+							}
+						});
+					} else if (data.success) {
                         // If successfully added, show the cart navigation confirmation
                         Swal.fire({
                             title: 'Product Added to Cart!',
@@ -392,6 +406,72 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 window.location.href = '/cart';
+                            }
+                        });
+                    } else {
+                        // Handle specific error cases
+                        if (data.message === 'Stock limit reached') {
+                            Swal.fire({
+                                title: 'Stock Limit Reached',
+                                text: `Sorry, only ${data.availableStock} items are available in stock.`,
+                                icon: 'warning',
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            Swal.fire('Error', data.message || 'Could not add product to cart.', 'error');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                });
+        });
+
+
+
+
+       
+        document.getElementById('addToWishlistBtn').addEventListener('click', function (event) {
+            event.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+
+            // First, add to cart without confirmation
+            fetch('/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.notLoggedIn) {
+						Swal.fire({
+							title: "Please Log In",
+							text: "Please log in to add items to your cart",
+							icon: "info",
+							showCancelButton: true,
+							confirmButtonText: "Log In",
+							cancelButtonText: "Cancel"
+						}).then((result) => {
+							if(result.isConfirmed) {
+								window.location.href = "/login";
+							}
+						});
+					} else if (data.success) {
+                        // If successfully added, show the cart navigation confirmation
+                        Swal.fire({
+                            title: 'Product Added to Cart!',
+                            text: "Would you like to view your wishlist or continue shopping?",
+                            icon: 'success',
+                            showCancelButton: true,
+                            confirmButtonText: 'View Wishlist',
+                            cancelButtonText: 'Continue Shopping',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/wishlist';
                             }
                         });
                     } else {

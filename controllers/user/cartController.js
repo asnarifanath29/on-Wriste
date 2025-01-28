@@ -4,6 +4,10 @@ const Product = require("../../models/productSchema")
 const Address = require("../../models/addressSchema")
 const Order = require("../../models/orderSchema")
 const Category = require('../../models/categorySchema');
+const Coupon = require("../../models/coupenSchema")
+
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
 
 const loadCartpage = async (req, res) => {
     try {
@@ -38,21 +42,16 @@ const loadCartpage = async (req, res) => {
 const addtocart = async (req, res) => {
     try {
         const productId = req.body.productId;
-        const userId = req.session.userData.id;
+        const userId = req.session?.userData?.id;
+        if (!userId) {
+            return res.status(401).json({ success: false, notLoggedIn: true, message: 'Please log in to add items to the cart.' });
+        }
 
-        // This is the part of your API that checks if the user is logged in
-      if (!userId) {
-      return res.status(401).json({ success: false, message: 'Please log in to add items to the cart.' });
-      }
-
-
-        // Validate if the product exists and get its stock
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
 
-        // Find the user's cart or create a new one
         let cart = await Cart.findOne({ userId });
 
         if (!cart) {
@@ -63,7 +62,6 @@ const addtocart = async (req, res) => {
             cart.items = [];
         }
 
-        // Check if the product already exists in the cart
         const existingItemIndex = cart.items.findIndex(
             item => item.productId.toString() === productId
         );
@@ -75,7 +73,6 @@ const addtocart = async (req, res) => {
             newQuantity = 1;
         }
 
-        // Check if the new quantity exceeds stock
         if (newQuantity > product.stock) {
             return res.status(400).json({
                 success: false,
@@ -84,7 +81,6 @@ const addtocart = async (req, res) => {
             });
         }
 
-        // Update or add the item
         if (existingItemIndex !== -1) {
             cart.items[existingItemIndex].quantity = newQuantity;
         } else {
@@ -93,9 +89,6 @@ const addtocart = async (req, res) => {
 
         await cart.save();
 
-        // Decrease the product stock
-        // product.stock -= 1; // Decrease stock by 1 for each addition to the cart
-        // await product.save();
         return res.status(200).json({ success: true, message: 'Product added to cart', cart });
 
     } catch (error) {
@@ -104,141 +97,24 @@ const addtocart = async (req, res) => {
     }
 };
 
-// const updatecart = async (req, res) => {
-//     try {
-//         const { productId, quantity } = req.body;
-//         const userId = req.session.userData.id;
-
-//         // Basic validation
-//         if (!productId || quantity < 1) {
-//             return res.status(400).json({ error: 'Invalid input' });
-//         }
-
-//         // Find product and check stock
-//         const product = await Product.findById(productId);
-//         if (!product || quantity > product.stock) {
-//             return res.status(400).json({ error: 'Product unavailable or insufficient stock' });
-//         }
-
-//         // Update or create cart item
-//         const cart = await Cart.findOneAndUpdate(
-//             { userId },
-//             {
-//                 $set: {
-//                     'items.$[elem].quantity': quantity
-//                 }
-//             },
-//             {
-//                 arrayFilters: [{ 'elem.productId': productId }],
-//                 new: true,
-//                 upsert: true
-//             }
-//         );
-
-//         // If item doesn't exist in cart, add it
-//         if (!cart.items.some(item => item.productId.toString() === productId)) {
-//             cart.items.push({ productId, quantity });
-//             await cart.save();
-//         }
-
-//         res.json({ success: true, cart });
-
-//     } catch (error) {
-//         console.error('Cart update error:', error);
-//         res.status(500).json({ error: 'Update failed' });
-//     }
-// };
-
-
-// const updatecart = async (req, res) => {
-//     try {
-//         const { productId } = req.body;
-//         const userId = req.session.userData.id;
-
-//         // Basic validation
-//         if (!productId) {
-//             return res.status(400).json({ error: 'Product ID is required' });
-//         }
-
-//         // Find product and check stock
-//         const product = await Product.findById(productId);
-//         if (!product) {
-//             return res.status(400).json({ error: 'Product not found' });
-//         }
-
-//         // Find existing cart to check current quantity
-//         const existingCart = await Cart.findOne({ userId });
-//         const existingItem = existingCart?.items?.find(
-//             item => item.productId.toString() === productId
-//         );
-//         const existingQuantity = existingItem ? existingItem.quantity : 0;
-//         const newQuantity = existingQuantity + 1; // Increment by 1
-
-//         // Check if new quantity exceeds stock
-//         if (newQuantity > product.stock) {
-//             return res.status(400).json({
-//                 error: 'Insufficient stock',
-//                 availableStock: product.stock,
-//                 currentQuantity: existingQuantity
-//             });
-//         }
-
-//         // Update or create cart item
-//         const cart = await Cart.findOneAndUpdate(
-//             { userId },
-//             {
-//                 $set: {
-//                     'items.$[elem].quantity': newQuantity
-//                 }
-//             },
-//             {
-//                 arrayFilters: [{ 'elem.productId': productId }],
-//                 new: true,
-//                 upsert: true
-//             }
-//         );
-
-//         // If item doesn't exist in cart, add it
-//         if (!cart.items.some(item => item.productId.toString() === productId)) {
-//             cart.items.push({ productId, quantity: 1 }); // Start with quantity 1 for new items
-//             await cart.save();
-//         }
-
-//         res.json({
-//             success: true,
-//             cart,
-//             updatedQuantity: newQuantity,
-//             availableStock: product.stock
-//         });
-
-//     } catch (error) {
-//         console.error('Cart update error:', error);
-//         res.status(500).json({ error: 'Update failed' });
-//     }
-// };
-
 const updatecart = async (req, res) => {
     try {
         const { productId, quantity } = req.body;
         const userId = req.session.userData.id;
 
-        // Basic validation
         if (!productId || quantity === undefined) {
             return res.status(400).json({ error: 'Product ID and quantity are required' });
         }
 
-        // Validate quantity
         if (quantity < 1) {
             return res.status(400).json({ error: 'Quantity must be at least 1' });
         }
 
-        // Find product and check stock
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ error: 'Product not found' });
         }
 
-        // Find existing cart and cart item
         let cart = await Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ error: 'Cart not found' });
@@ -252,26 +128,20 @@ const updatecart = async (req, res) => {
             return res.status(404).json({ error: 'Product not found in cart' });
         }
 
-        // Get the current quantity in the cart
         const currentQuantity = cart.items[itemIndex].quantity;
 
-        // Check if the new quantity exceeds stock
-        if (quantity > product.stock + currentQuantity) { // Allow for restocking when reducing quantity
+        if (quantity > product.stock + currentQuantity) {
             return res.status(400).json({
                 error: 'Insufficient stock',
                 availableStock: product.stock
             });
         }
 
-        // Update product stock based on quantity change
-        const stockDifference = quantity - currentQuantity; // Positive if increasing, negative if decreasing
-        product.stock -= stockDifference; // Decrease or increase stock based on the difference
+        const stockDifference = quantity - currentQuantity;
+        product.stock -= stockDifference;
 
-        // Update cart with new quantity
         cart.items[itemIndex].quantity = quantity;
 
-        // Save updated product and cart
-        // await product.save();
         await cart.save();
 
         res.json({
@@ -294,7 +164,16 @@ const loadCheckoutpage = async (req, res) => {
         const subtotal = req.session.subtotal
         const userId = req.session.userData.id;
         const userAddress = await Address.find({ userId: userId });
-        res.render("checkout", { userData: req.session.userData, addresses: userAddress, subtotal })
+
+        const currentDate = new Date();
+        const validCoupons = await Coupon.find({
+            status: true,
+            isDeleted: false,
+            validFrom: { $lte: currentDate },
+            validUpto: { $gte: currentDate }
+        });
+
+        res.render("checkout", { userData: req.session.userData, addresses: userAddress, subtotal, coupons: validCoupons })
     } catch (error) {
         console.error('checkout page not loading:', error);
         res.status(500).json({ error: 'Update failed' });
@@ -307,10 +186,8 @@ const Checkout = async (req, res) => {
     if (typeof subtotal === 'number' && subtotal >= 0) {
         console.log('Received subtotal:', subtotal);
 
-        // Store the subtotal in the session or temporary storage
         req.session.subtotal = subtotal;
 
-        // Respond with success
         return res.status(200).json({ message: 'Subtotal received' });
     }
 
@@ -326,7 +203,6 @@ const Checkout = async (req, res) => {
 
 //         const cartId = req.session.cart;
 
-//         // Validate cart exists
 //         const cart = await Cart.findById(cartId).populate('items.productId');
 //         if (!cart || !cart.items.length) {
 //             return res.status(400).json({
@@ -334,42 +210,52 @@ const Checkout = async (req, res) => {
 //             });
 //         }
 
-//         // Validate address
 //         if (!selectedAddress || !selectedAddress.name) {
 //             return res.status(400).json({
 //                 message: "Please select a valid delivery address"
 //             });
 //         }
 
-//         // Validate payment method
-//         if (!paymentMethod || !['cod', 'razorpay'].includes(paymentMethod)) {
+//         if (!paymentMethod || !['cod', 'upi','netbanking'].includes(paymentMethod)) {
 //             return res.status(400).json({
 //                 message: "Please select a valid payment method"
 //             });
 //         }
 
-//         // Calculate order totals
 //         let totalAmount = 0;
-//         const orderItems = cart.items.map(item => {
-//             const itemTotal = item.productId.price * item.quantity;
+//         const orderItems = [];
+
+//         for (const item of cart.items) {
+//             const product = item.productId;
+
+//             if (item.quantity > product.stock) {
+//                 return res.status(400).json({
+//                     message: `Insufficient stock for product: ${product.name}`,
+//                     productId: product._id
+//                 });
+//             }
+
+//             product.stock -= item.quantity;
+
+//             await product.save();
+
+//             const itemTotal = product.price * item.quantity;
 //             totalAmount += itemTotal;
 
-//             return {
-//                 productId: item.productId._id,
+//             orderItems.push({
+//                 productId: product._id,
 //                 quantity: item.quantity,
-//                 price: item.productId.price,
-//                 image: item.productId.images[0], // Assuming first image is main image
+//                 price: product.price,
+//                 image: product.images[0],
 //                 isCanceled: false
-//             };
-//         });
+//             });
+//         }
 
-//         const shippingFee = 10; // Your shipping fee logic here
+//         const shippingFee = 10;
 //         const payableAmount = totalAmount + shippingFee;
 
-//         // Generate unique order ID
 //         const orderedId = 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
 
-//         // Create new order
 //         const newOrder = new Order({
 //             userId: req.session.userData.id,
 //             orderedId: orderedId,
@@ -385,7 +271,6 @@ const Checkout = async (req, res) => {
 
 //         await newOrder.save();
 
-//         // Clear cart after successful order placement
 //         await Cart.findByIdAndUpdate(cartId, { $set: { items: [] } });
 
 //         res.status(200).json({
@@ -404,105 +289,120 @@ const Checkout = async (req, res) => {
 
 const placeOrder = async (req, res) => {
     try {
-        const { selectedAddress, paymentMethod } = req.body;
+        const {
+            userId,
+            addressDetails,
+            paymentMethod,
+            orderAmount,
+            appliedCoupon,
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature
+        } = req.body;
 
-        const cartId = req.session.cart;
-
-        // Validate cart exists
-        const cart = await Cart.findById(cartId).populate('items.productId');
-        if (!cart || !cart.items.length) {
+        // Fetch user's cart
+        const cart = await Cart.findOne({ userId }).populate('items.productId');
+        if (!cart || cart.items.length === 0) {
             return res.status(400).json({
-                message: "Your cart is empty"
+                success: false,
+                message: 'Cart is empty'
             });
         }
 
-        // Validate address
-        if (!selectedAddress || !selectedAddress.name) {
-            return res.status(400).json({
-                message: "Please select a valid delivery address"
-            });
-        }
+        // Generate unique order ID
+        const orderedId = crypto.randomBytes(8).toString('hex').toUpperCase();
 
-        // Validate payment method
-        if (!paymentMethod || !['cod', 'razorpay'].includes(paymentMethod)) {
-            return res.status(400).json({
-                message: "Please select a valid payment method"
-            });
-        }
+        // Map cart items to order items format
+        const orderItems = cart.items.map(item => ({
+            productId: item.productId._id,
+            quantity: item.quantity,
+            price: item.productId.price,
+            image: item.productId.images[0], // Assuming first image is main image
+            isCanceled: false
+        }));
 
-        // Calculate order totals and prepare order items
-        let totalAmount = 0;
-        const orderItems = [];
+        // Initialize order object
+        const orderData = {
+            userId,
+            orderedId,
+            address: {
+                name: addressDetails.name,
+                phone: addressDetails.phone,
+                pincode: addressDetails.pincode,
+                locality: addressDetails.locality,
+                address: addressDetails.address,
+                place: addressDetails.place,
+                state: addressDetails.state,
+                landmark: addressDetails.landmark || '',
+                alternatePhone: addressDetails.alternatePhone || '',
+                addressType: addressDetails.addressType
+            },
+            items: orderItems,
+            paymentMethod,
+            totalAmount: orderAmount.subtotal,
+            payableAmount: orderAmount.payableAmount,
+            shippingFee: orderAmount.shippingCost,
+            couponDiscount: orderAmount.couponDiscount || 0,
+            appliedCoupon: appliedCoupon
+        };
 
-        for (const item of cart.items) {
-            const product = item.productId;
-
-            // Check if the product has enough stock
-            if (item.quantity > product.stock) {
+        // Handle payment method specific details
+        if (paymentMethod === 'cod') {
+            orderData.paymentStatus = 'Pending';
+            orderData.orderStatus = 'Confirmed';
+        } else if (paymentMethod === 'netbanking') {
+            // Verify Razorpay signature
+            if (!razorpayPaymentId || !razorpayOrderId || !razorpaySignature) {
                 return res.status(400).json({
-                    message: `Insufficient stock for product: ${product.name}`,
-                    productId: product._id
+                    success: false,
+                    message: 'Invalid payment details'
                 });
             }
 
-            // Decrease the product stock
-            product.stock -= item.quantity;
-
-            // Save the updated product stock
-            await product.save();
-
-            // Calculate total for this item
-            const itemTotal = product.price * item.quantity;
-            totalAmount += itemTotal;
-
-            // Add item to order
-            orderItems.push({
-                productId: product._id,
-                quantity: item.quantity,
-                price: product.price,
-                image: product.images[0], // Assuming first image is main image
-                isCanceled: false
-            });
+            // Add payment details
+            orderData.paymentId = razorpayPaymentId;
+            orderData.receipt = razorpayOrderId;
+            orderData.paymentStatus = 'Paid';
+            orderData.orderStatus = 'Confirmed';
+            orderData.currency = 'INR';
         }
 
-        const shippingFee = 10; // Your shipping fee logic here
-        const payableAmount = totalAmount + shippingFee;
-
-        // Generate unique order ID
-        const orderedId = 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
-
         // Create new order
-        const newOrder = new Order({
-            userId: req.session.userData.id,
-            orderedId: orderedId,
-            address: selectedAddress,
-            items: orderItems,
-            paymentStatus: paymentMethod === 'cod' ? 'Pending' : 'Pending',
-            paymentMethod: paymentMethod,
-            orderStatus: 'Pending',
-            totalAmount: totalAmount,
-            payableAmount: payableAmount,
-            shippingFee: shippingFee
-        });
+        const order = new Order(orderData);
+        await order.save();
 
-        await newOrder.save();
+        // Update coupon usage if applied
+        if (appliedCoupon) {
+            await Coupon.findOneAndUpdate(
+                { couponCode: appliedCoupon },
+                { $inc: { usageCount: 1 } }
+            );
+        }
 
-        // Clear cart after successful order placement
-        await Cart.findByIdAndUpdate(cartId, { $set: { items: [] } });
+        // Clear user's cart
+        await Cart.findOneAndUpdate(
+            { userId },
+            { $set: { items: [] } }
+        );
 
-        res.status(200).json({
-            message: "Order placed successfully!",
-            orderId: newOrder._id
+        // Update product inventory (you'll need to implement this based on your Product model)
+        // await updateProductInventory(orderItems);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Order placed successfully',
+            orderId: order._id
         });
 
     } catch (error) {
-        console.error("Error placing order:", error);
-        res.status(500).json({
-            message: "An unexpected error occurred while processing your order."
+        console.error('Error in placeOrderController:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to place order',
+            error: error.message
         });
     }
 };
-
 
 
 
@@ -514,7 +414,6 @@ const confirmationPage = async (req, res) => {
     }
 
     try {
-        // Pass userData to the view
         res.render("success", { userData });
     } catch (error) {
         console.error("Error rendering confirmation page:", error);
@@ -553,4 +452,225 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = { loadCartpage, addtocart, updatecart, loadCheckoutpage, Checkout, placeOrder, confirmationPage, deleteProduct }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Initialize Razorpay
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+const initiatePayment = async (req, res) => {
+    try {
+        const { amount, addressDetails, couponCode } = req.body;
+        const cartId = req.session.cart;
+
+        // Validate cart
+        const cart = await Cart.findById(cartId).populate('items.productId');
+        if (!cart || !cart.items.length) {
+            return res.status(400).json({
+                success: false,
+                message: "Your cart is empty"
+            });
+        }
+
+        let finalAmount = amount;
+
+        // Calculate total amount
+        // let totalAmount = 0;
+        // for (const item of cart.items) {
+        //     const product = item.productId;
+        //     if (item.quantity > product.stock) {
+        //         return res.status(400).json({
+        //             success: false,
+        //             message: `Insufficient stock for product: ${product.name}`
+        //         });
+        //     }
+        //     totalAmount += product.price * item.quantity;
+        // }
+
+        // Apply coupon if provided
+        // let finalAmount = totalAmount + 10; // Adding shipping fee
+        if (couponCode) {
+            const coupon = await Coupon.findOne({ couponCode });
+            if (coupon) {
+                const discount = (totalAmount * coupon.discountPercentage) / 100;
+                finalAmount -= discount;
+                finalAmount = Math.max(finalAmount, totalAmount * 0.1); // Ensure minimum 10% payment
+            }
+        }
+
+        // Create Razorpay order
+        const options = {
+            amount: Math.round(finalAmount * 100), // Convert to paise
+            currency: "INR",
+            receipt: `order_${Date.now()}`
+        };
+
+        const razorpayOrder = await razorpay.orders.create(options);
+
+        res.json({
+            success: true,
+            razorpayKey: process.env.RAZORPAY_KEY_ID,
+            razorpayOrderId: razorpayOrder.id
+        });
+
+    } catch (error) {
+        console.error('Error initiating payment:', error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to initiate payment"
+        });
+    }
+};
+
+const verifyPayment = async (req, res) => {
+    try {
+        const {
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature,
+            addressDetails,
+            couponCode
+        } = req.body;
+
+        console.log(req.body);
+        
+
+        // Verify signature
+        const body = razorpayOrderId + "|" + razorpayPaymentId;
+        const expectedSignature = crypto
+            .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+            .update(body.toString())
+            .digest("hex");
+
+        if (expectedSignature !== razorpaySignature) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid payment signature"
+            });
+        }
+
+        // Process the order
+        const cartId = req.session.cart;
+        const cart = await Cart.findById(cartId).populate('items.productId');
+
+        let totalAmount = 0;
+        const orderItems = [];
+
+        // Process cart items
+        for (const item of cart.items) {
+            const product = item.productId;
+            
+            // Update product stock
+            product.stock -= item.quantity;
+            await product.save();
+
+            const itemTotal = product.price * item.quantity;
+            totalAmount += itemTotal;
+
+            orderItems.push({
+                productId: product._id,
+                quantity: item.quantity,
+                price: product.price,
+                image: product.images[0],
+                isCanceled: false
+            });
+        }
+
+        // Calculate final amount with coupon
+        const shippingFee = 10;
+        let couponDiscount = 0;
+        let payableAmount = totalAmount + shippingFee;
+
+        if (couponCode) {
+            const coupon = await Coupon.findOne({ couponCode });
+            if (coupon) {
+                couponDiscount = (totalAmount * coupon.discountPercentage) / 100;
+                payableAmount -= couponDiscount;
+                payableAmount = Math.max(payableAmount, totalAmount * 0.1);
+            }
+        }
+
+        // Create order
+        const orderedId = 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
+        const newOrder = new Order({
+            userId: req.session.userData.id,
+            orderedId: orderedId,
+            address: addressDetails,
+            items: orderItems,
+            paymentStatus: 'Completed',
+            paymentMethod: 'netbanking',
+            orderStatus: 'Confirmed',
+            totalAmount: totalAmount,
+            couponDiscount: couponDiscount,
+            shippingFee: shippingFee,
+            payableAmount: payableAmount,
+            appliedCoupon: couponCode || null,
+            razorpayPaymentId,
+            razorpayOrderId
+        });
+
+        await newOrder.save();
+        await Cart.findByIdAndUpdate(cartId, { $set: { items: [] } });
+
+        res.json({
+            success: true,
+            message: "Payment verified and order placed successfully",
+            orderId: newOrder._id
+        });
+
+    } catch (error) {
+        console.error('Error verifying payment:', error);
+        res.status(500).json({
+            success: false,
+            message: "Payment verification failed"
+        });
+    }
+};
+module.exports = { loadCartpage, addtocart, updatecart, loadCheckoutpage, Checkout, placeOrder, confirmationPage, deleteProduct,initiatePayment ,verifyPayment}

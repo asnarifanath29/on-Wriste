@@ -4,7 +4,11 @@ const { adminAuth, isLogin } = require('../middlewares/adminAuth');
 const adminController = require("../controllers/admin/adminController")
 const categoryController = require("../controllers/admin/categoryController")
 const productController = require('../controllers/admin/productController');
-const orderController=require("../controllers/admin/orderController")
+const orderController=require("../controllers/admin/orderController");
+const coupenController=require("../controllers/admin/coupenController")
+const salesController=require("../controllers/admin/salesController")
+const referalController=require("../controllers/admin/referalController")
+const downloadController=require("../controllers/admin/downloadReport")
 const upload = require('../middlewares/upload');
 
 
@@ -25,6 +29,9 @@ router.get('/categories/edit/:id',adminAuth, categoryController.getEditPage);
 router.post('/categories/edit', adminAuth, categoryController.categoriesedit);
 router.patch('/categories/:id/list', adminAuth, categoryController.categorieslist)
 router.patch('/categories/:id/unlist', adminAuth, categoryController.categoriesunlist)
+
+router.post('/categories/add-offer/:categoryId', categoryController.addOffer);
+router.post('/categories/remove-offer/:categoryId', categoryController.removeOffer);
 
 
 
@@ -50,5 +57,29 @@ router.get("/order",adminAuth,orderController.getOrderPage)
 
 router.post('/update',adminAuth,orderController.updateOrderStatus);
 
+
+router.post('/update-payment-status',adminAuth,orderController.updatePaymentStatus)
+
+
+router.post('/orders/:orderId/accept-return', orderController.acceptReturn);
+router.post('/orders/:orderId/reject-return', orderController.rejectReturn);
+
+
+
+router.get("/coupen",adminAuth,coupenController.getCoupenPage)
+router.post("/coupon",adminAuth,coupenController.createCoupon)
+router.post('/coupon/:id',adminAuth,coupenController.editCoupen)
+router.patch('/coupon/status/:id',adminAuth,coupenController.statusChange)
+
+router.get("/salesReport",adminAuth,salesController.getSalesReport)
+router.get("/generateReport",adminAuth,salesController.generateReport)
+
+
+
+router.get("/referal",adminAuth,referalController.loadReferalPage)
+
+
+router.get("/downloadpdf",adminAuth,downloadController.downloadPDF)
+router.get("/downloadexcel",adminAuth,downloadController.downloadExcel)
 
 module.exports = router

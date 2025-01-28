@@ -1,0 +1,298 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>wishlist | Watch Shop</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/css/flaticon.css">
+    <link rel="stylesheet" href="/assets/css/slicknav.css">
+    <link rel="stylesheet" href="/assets/css/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/assets/css/slick.css">
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+         .popular-img {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            overflow: hidden;
+            background-color: #f8f9fa;
+        }
+
+        .popular-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        .popular-img:hover img {
+            transform: scale(1.05);
+        }
+
+        .wishlist-section {
+            padding: 50px 0;
+        }
+
+        .single-popular-items {
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .single-popular-items:hover {
+            transform: translateY(-10px);
+        }
+
+        .popular-caption {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .popular-product-name a {
+            color: #444444;
+            font-weight: 500;
+            font-size: 18px;
+            text-decoration: none;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .view-details-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .view-details-btn:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+        }
+
+        .remove-wishlist-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .remove-wishlist-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../partials/user/header') %>
+
+
+    <section class="wishlist-section">
+        <div class="container">
+            <h2 class="text-center mb-5">My Wishlist</h2>
+
+            <% if (wishlist.products.length > 0) { %>
+                <div class="row">
+                    <% wishlist.products.forEach(({ productId }) => { %>
+                        <% if (productId) { %>
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-popular-items mb-50 text-center">
+                                    <div class="popular-img">
+                                        <img src="<%= productId.images[0] || '/assets/img/default-product.png' %>" 
+                                             alt="<%= productId.name %>">
+                                        <div class="img-cap">
+                                            <span>Add to cart</span>
+                                        </div>
+                                        <div class="favorit-items">
+                                            <span class="flaticon-heart"></span>
+                                        </div>
+                                    </div>
+                                    <div class="popular-caption">
+                                        <h3 class="popular-product-name">
+                                            <a href="/product/<%= productId._id %>">
+                                                <%= productId.name %>
+                                            </a>
+                                        </h3>
+
+                                        <!-- Price Display -->
+                                        <div class="pricing">
+                                            <% if (productId.offerPrice && productId.offerPrice < productId.price) { %>
+                                                <span class="price">$<%= productId.offerPrice.toFixed(2) %></span>
+                                                <span class="original-price">$<%= productId.price.toFixed(2) %></span>
+                                            <% } else { %>
+                                                <span class="price">$<%= productId.price.toFixed(2) %></span>
+                                            <% } %>
+                                        </div>
+
+                                        <!-- Rating Display -->
+                                        <div class="rating mt-2">
+                                            <% for(let i=1; i <=5; i++) { %>
+                                                <% if (i <=Math.round(productId.rating)) { %>
+                                                    <i class="fas fa-star"></i>
+                                                <% } else { %>
+                                                    <i class="far fa-star"></i>
+                                                <% } %>
+                                            <% } %>
+                                            <span class="rating-count">
+                                                (<%= productId.reviews.length %> reviews)
+                                            </span>
+                                        </div>
+
+                                        <!-- Brand & Category -->
+                                        <% if (productId.brand || (productId.category && productId.category.name)) { %>
+                                            <div class="product-meta mt-2">
+                                                <% if (productId.brand) { %>
+                                                    <span class="brand">
+                                                        <%= productId.brand %>
+                                                    </span>
+                                                <% } %>
+                                                <% if (productId.category && productId.category.name) { %>
+                                                    <span class="category">| <%= productId.category.name %></span>
+                                                <% } %>
+                                            </div>
+                                        <% } %>
+
+                                        <!-- Tags -->
+                                        <% if (productId.tags && productId.tags.length > 0) { %>
+                                            <div class="tags mt-2">
+                                                <% productId.tags.slice(0, 3).forEach(tag => { %>
+                                                    <span class="tag">
+                                                        <%= tag %>
+                                                    </span>
+                                                <% }) %>
+                                            </div>
+                                        <% } %>
+
+                                        <div class="mt-3 d-flex justify-content-center gap-2">
+                                            <a href="/product/<%= productId._id %>" class="view-details-btn">
+                                                View Details
+                                            </a>
+                                            <a href="#" class="remove-wishlist-btn" 
+                                               onclick="removeFromWishlist('<%= productId._id %>')">
+                                                Remove
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div class="text-center">
+                    <i class="fas fa-heart-broken fa-4x text-muted mb-4"></i>
+                    <h3>Your wishlist is empty</h3>
+                    <p class="text-muted">Explore our collection and add some items!</p>
+                    <a href="/shop" class="btn btn-dark mt-3">Start Shopping</a>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    
+
+   
+    <%- include('../partials/user/footer') %>
+
+    <!-- JS here -->
+    <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/jquery.slicknav.min.js"></script>
+    <script src="/assets/js/owl.carousel.min.js"></script>
+    <script src="/assets/js/slick.min.js"></script>
+    <script src="/assets/js/wow.min.js"></script>
+    <script src="/assets/js/animated.headline.js"></script>
+    <script src="/assets/js/jquery.magnific-popup.js"></script>
+    <script src="/assets/js/jquery.scrollUp.min.js"></script>
+    <script src="/assets/js/jquery.nice-select.min.js"></script>
+    <script src="/assets/js/jquery.sticky.js"></script>
+    <script src="/assets/js/plugins.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.add-to-cart').on('click', function() {
+                const productId = $(this).data('product-id');
+                // Implement add to cart functionality
+                console.log('Adding product to cart:', productId);
+            });
+
+            $('.remove-from-wishlist').on('click', function(e) {
+                e.preventDefault();
+                const productId = $(this).data('product-id');
+                // Implement remove from wishlist functionality
+                console.log('Removing product from wishlist:', productId);
+            });
+        });
+
+
+
+        
+    
+    // Function to remove a product from the wishlist using Fetch
+    function removeFromWishlist(productId) {
+    fetch(`/wishlist/remove/${productId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Removed!',
+                text: 'Product has been removed from your wishlist.',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: data.message || 'Failed to remove product',
+            });
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred',
+        });
+    });
+}
+
+
+    </script>
+
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 const User = require("../../models/userSchema")
 const mongoose = require("mongoose")
 const Category = require("../../models/categorySchema");
+const Product= require("../../models/productSchema");
 const bcrypt = require("bcrypt")
 const categoriesget = async (req, res) => {
     try {
@@ -22,7 +23,6 @@ const getAddPage=async (req, res) => {
 
 const categories = async (req, res) => {
     const { categoryName, categoryDescription } = req.body; 
-    
     
     if (!categoryName) {
         console.log('Category name missing');
@@ -124,9 +124,84 @@ const categoriesunlist = async (req, res) => {
     }
 };
 
+const addOffer=async (req, res) => {
+    try {
+
+      const { categoryId }=req.params;
+      const { offerPercentage } = req.body;
+  
+      // Validate input
+      if (!categoryId || !offerPercentage) {
+        return res.status(400).json({ message: "Category ID and offer Percentage are required." });
+      }
+  
+      // Find products in the specified category
+      const products = await Product.find({ category: categoryId });
+  
+      // Update offer prices for each product
+      for (const product of products) {
+        const newOfferPrice = product.price - (product.price * offerPercentage / 100);
+        
+        // Only update if there's a change in offer price
+        if (!product.salesPrice || newOfferPrice !== product.salesPrice) {
+          product.prevOfferPrice = product.salesPrice || null;
+          product.salesPrice = newOfferPrice;
+          await product.save();
+        }
+      }
+  
+      // Update category offer details
+      const category = await Category.findById(categoryId);
+      if (!category) {
+        return res.status(404).json({ message: "Category not found." });
+      }
+  
+      category.offer = offerPercentage;
+      category.offerApplied = true;
+      category.updatedAt = Date.now();
+      await category.save();
+  
+      res.status(200).json({ message: "Offer prices updated successfully." });
+    } catch (error) {
+      console.error("Error updating offers:", error);
+      res.status(500).json({ message: "Internal server error." });
+    }
+  };
+
+
+  const removeOffer = async (req, res) => {
+    try {
+        const { categoryId } = req.params;
+
+        // Validate input
+        if (!categoryId) {
+            return res.status(400).json({ message: "Category ID is required." });
+        }
+
+        // Find products in the category
+        const products = await Product.find({ category: categoryId });
+
+        // Update each product's offerPrice and clear prevOfferPrice
+        for (let product of products) {
+            product.salesPrice = product.prevOfferPrice || product.salesPrice;
+            product.prevOfferPrice = null;
+            await product.save();
+        }
+
+        // Update category
+        const category = await Category.findById(categoryId);
+        category.offer = null;
+        category.offerApplied = false;
+        category.updatedAt = Date.now();
+        await category.save();
+
+        res.status(200).json({ message: "Offers removed successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error." });
+    }
+};
 
 
 
-
-
-module.exports = { categories, categoriesget, categoriesedit, categorieslist, categoriesunlist, getAddPage ,getEditPage}
+module.exports = { categories, categoriesget, categoriesedit, categorieslist, categoriesunlist, getAddPage ,getEditPage,addOffer,removeOffer}
