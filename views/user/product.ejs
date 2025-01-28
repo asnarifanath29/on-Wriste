@@ -1,12 +1,12 @@
-
-
-
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title><%= product.name %> Details</title>
+    <title>
+        <%= product.name %> Details
+    </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
@@ -142,357 +142,355 @@
 <body>
     <%- include('../partials/user/header') %>
 
-    <!-- Main Content -->
-    <div class="container py-4">
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    <%= product.name %>
-                </li>
-            </ol>
-        </nav>
+        <!-- Main Content -->
+        <div class="container py-4">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/shop">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <%= product.name %>
+                    </li>
+                </ol>
+            </nav>
 
-        <!-- Product Title -->
-        <h1 class="text-center mb-4">
-            <%= product.name %>
-        </h1>
+            <!-- Product Title -->
+            <h1 class="text-center mb-4">
+                <%= product.name %>
+            </h1>
 
-        <div class="row">
-            <!-- Product Gallery -->
-            <div class="col-md-6">
-                <div class="product-gallery d-flex">
-                    <div class="thumbnails">
-                        <% product.images.forEach((image, index)=> { %>
-                            <img src="<%= image %>" alt="<%= product.name %> Thumbnail"
-                                class="thumbnail-img <%= index === 0 ? 'selected' : '' %>" data-index="<%= index %>">
-                            <% }) %>
-                    </div>
-                    <div class="main-image-container">
-                        <img id="mainImage" src="<%= product.images[0] %>" alt="<%= product.name %> Main Image">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product Info -->
-            <div class="col-md-6">
-                <div class="card border-0 bg-light">
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <span class="original-price me-2">
-                                <%= product.price %>
-                            </span>
-                            <span class="price-tag fw-bold">
-                                <%= product.salesPrice %>
-                            </span>
+            <div class="row">
+                <!-- Product Gallery -->
+                <div class="col-md-6">
+                    <div class="product-gallery d-flex">
+                        <div class="thumbnails">
+                            <% product.images.forEach((image, index)=> { %>
+                                <img src="<%= image %>" alt="<%= product.name %> Thumbnail"
+                                    class="thumbnail-img <%= index === 0 ? 'selected' : '' %>"
+                                    data-index="<%= index %>">
+                                <% }) %>
                         </div>
-
-                        <div class="mb-3">
-                            <h5 class="mb-2">Brand</h5>
-                            <p class="text-muted">
-                                <%= product.brand %>
-                            </p>
-                        </div>
-
-                        <div class="mb-3">
-                            <h5 class="mb-2">Category</h5>
-                            <p class="text-muted">
-                                <%= product.category ? product.category.name : 'Not Available' %>
-                            </p>
-                        </div>
-
-                        <div class="mb-3">
-                            <h5 class="mb-2">Stock</h5>
-                            <% if (product.stock && product.stock> 0) { %>
-                                <span class="badge bg-success stock-badge"> in stock</span>
-                                <% } else { %>
-                                    <span class="badge bg-danger stock-badge">Out of stock</span>
-                                    <% } %>
-                        </div>
-
-                        <div class="mb-4">
-                            <h5 class="mb-2">Description</h5>
-                            <p class="text-muted">
-                                <%= product.description %>
-                            </p>
-                        </div>
-
-                        <div class="d-grid gap-2">
-                            <a href="#" class="btn btn-custom btn-lg" id="addToCartBtn"
-                                data-product-id="<%= product._id %>">
-                                <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                            </a>
-                            <a href="#" class="btn btn-custom btn-lg" id="addToWishlistBtn"
-                            data-product-id="<%= product._id %>">
-                                <i class="fas fa-heart me-2"></i>Add to Wishlist
-                            </a>
+                        <div class="main-image-container">
+                            <img id="mainImage" src="<%= product.images[0] %>" alt="<%= product.name %> Main Image">
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Reviews Section -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <h3 class="mb-4">Customer Reviews</h3>
-                <% if (product.reviews.length===0) { %>
-                    <p class="text-muted">No reviews yet.</p>
-                    <% } else { %>
-                        <% product.reviews.forEach(review=> { %>
-                            <div class="review-card">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h5 class="mb-0">
-                                        <%= review.user.name %>
-                                    </h5>
-                                    <div>
-                                        <% for(let i=0; i < 5; i++) { %>
-                                            <i
-                                                class="fas fa-star <%= i < review.rating ? 'text-warning' : 'text-muted' %>"></i>
-                                            <% } %>
-                                    </div>
-                                </div>
-                                <p class="mb-0">
-                                    <%= review.comment %>
+                <!-- Product Info -->
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <span class="original-price me-2">
+                                    <%= product.price %>
+                                </span>
+                                <span class="price-tag fw-bold">
+                                    <%= product.salesPrice %>
+                                </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <h5 class="mb-2">Brand</h5>
+                                <p class="text-muted">
+                                    <%= product.brand %>
                                 </p>
                             </div>
-                            <% }) %>
-                                <% } %>
+
+                            <div class="mb-3">
+                                <h5 class="mb-2">Category</h5>
+                                <p class="text-muted">
+                                    <%= product.category ? product.category.name : 'Not Available' %>
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h5 class="mb-2">Stock</h5>
+                                <% if (product.stock && product.stock> 0) { %>
+                                    <span class="badge bg-success stock-badge"> in stock</span>
+                                    <% } else { %>
+                                        <span class="badge bg-danger stock-badge">Out of stock</span>
+                                        <% } %>
+                            </div>
+
+                            <div class="mb-4">
+                                <h5 class="mb-2">Description</h5>
+                                <p class="text-muted">
+                                    <%= product.description %>
+                                </p>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a href="#" class="btn btn-custom btn-lg" id="addToCartBtn"
+                                    data-product-id="<%= product._id %>">
+                                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                </a>
+                                <a href="#" class="btn btn-custom btn-lg" id="addToWishlistBtn"
+                                    data-product-id="<%= product._id %>">
+                                    <i class="fas fa-heart me-2"></i>Add to Wishlist
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="mb-4">Customer Reviews</h3>
+                    <% if (product.reviews.length===0) { %>
+                        <p class="text-muted">No reviews yet.</p>
+                        <% } else { %>
+                            <% product.reviews.forEach(review=> { %>
+                                <div class="review-card">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="mb-0">
+                                            <%= review.user.name %>
+                                        </h5>
+                                        <div>
+                                            <% for(let i=0; i < 5; i++) { %>
+                                                <i
+                                                    class="fas fa-star <%= i < review.rating ? 'text-warning' : 'text-muted' %>"></i>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">
+                                        <%= review.comment %>
+                                    </p>
+                                </div>
+                                <% }) %>
+                                    <% } %>
+                </div>
             </div>
         </div>
-    </div>
 
-    <%- include('../partials/user/footer') %>
+        <%- include('../partials/user/footer') %>
 
-    <!-- JS here -->
-    <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="/assets/js/popper.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/jquery.slicknav.min.js"></script>
-    <script src="/assets/js/owl.carousel.min.js"></script>
-    <script src="/assets/js/slick.min.js"></script>
-    <script src="/assets/js/wow.min.js"></script>
-    <script src="/assets/js/animated.headline.js"></script>
-    <script src="/assets/js/jquery.magnific-popup.js"></script>
-    <script src="/assets/js/jquery.scrollUp.min.js"></script>
-    <script src="/assets/js/jquery.nice-select.min.js"></script>
-    <script src="/assets/js/jquery.sticky.js"></script>
-    <script src="/assets/js/plugins.js"></script>
-    <script src="/assets/js/main.js"></script>
-
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Image Gallery & Magnifier functionality
-        document.querySelectorAll('.thumbnail-img').forEach((thumbnail) => {
-            thumbnail.addEventListener('click', function () {
-                document.getElementById('mainImage').src = this.src;
-                document.querySelectorAll('.thumbnail-img').forEach((img) => img.classList.remove('selected'));
-                this.classList.add('selected');
-            });
-        });
-
-        // Magnifier Lens
-        const magnifierLens = document.createElement('div');
-        magnifierLens.classList.add('magnifier-lens');
-        document.body.appendChild(magnifierLens);
-
-        function setupMagnifier(imageElement) {
-            let magnificationFactor = 3;
-            let magnifierSize = 200;
-
-            magnifierLens.style.width = magnifierSize + 'px';
-            magnifierLens.style.height = magnifierSize + 'px';
-
-            function updateMagnifierSize(deltaY) {
-                magnifierSize += deltaY > 0 ? -20 : 20;
-                magnifierSize = Math.max(100, Math.min(magnifierSize, 400));
-                magnificationFactor = 2 + (magnifierSize - 100) * (5 - 2) / (400 - 100);
-                magnifierLens.style.width = magnifierSize + 'px';
-                magnifierLens.style.height = magnifierSize + 'px';
-                updateLensMagnification();
-            }
-
-            function updateLensMagnification() {
-                if (!imageElement) return;
-                const bounds = imageElement.getBoundingClientRect();
-                const bgPosX = -(magnifierLens.offsetLeft - bounds.left) * magnificationFactor - magnifierLens.offsetWidth / 2;
-                const bgPosY = -(magnifierLens.offsetTop - bounds.top) * magnificationFactor - magnifierLens.offsetHeight / 2;
-                magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
-                magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
-            }
-
-            imageElement.addEventListener('mousemove', function (e) {
-                magnifierLens.style.visibility = 'visible';
-                const bounds = e.target.getBoundingClientRect();
-                const mouseX = e.clientX - bounds.left;
-                const mouseY = e.clientY - bounds.top;
-
-                const lensX = mouseX - (magnifierLens.offsetWidth / 2);
-                const lensY = mouseY - (magnifierLens.offsetHeight / 2);
-
-                magnifierLens.style.left = (bounds.left + window.pageXOffset + lensX) + 'px';
-                magnifierLens.style.top = (bounds.top + window.pageYOffset + lensY) + 'px';
-
-                const bgPosX = -((mouseX * magnificationFactor) - magnifierLens.offsetWidth / 2);
-                const bgPosY = -((mouseY * magnificationFactor) - magnifierLens.offsetHeight / 2);
-
-                magnifierLens.style.backgroundImage = `url('${imageElement.src}')`;
-                magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
-                magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
-
-                imageElement.style.cursor = 'none';
-            });
-
-            imageElement.addEventListener('wheel', function (e) {
-                e.preventDefault();
-                updateMagnifierSize(e.deltaY);
-            }, { passive: false });
-
-            imageElement.addEventListener('mouseleave', function () {
-                magnifierLens.style.visibility = 'hidden';
-                imageElement.style.cursor = 'default';
-            });
-        }
-
-        const imageElement = document.getElementById('mainImage');
-        setupMagnifier(imageElement);
-    </script>
+            <!-- JS here -->
+            <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+            <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+            <script src="/assets/js/popper.min.js"></script>
+            <script src="/assets/js/bootstrap.min.js"></script>
+            <script src="/assets/js/jquery.slicknav.min.js"></script>
+            <script src="/assets/js/owl.carousel.min.js"></script>
+            <script src="/assets/js/slick.min.js"></script>
+            <script src="/assets/js/wow.min.js"></script>
+            <script src="/assets/js/animated.headline.js"></script>
+            <script src="/assets/js/jquery.magnific-popup.js"></script>
+            <script src="/assets/js/jquery.scrollUp.min.js"></script>
+            <script src="/assets/js/jquery.nice-select.min.js"></script>
+            <script src="/assets/js/jquery.sticky.js"></script>
+            <script src="/assets/js/plugins.js"></script>
+            <script src="/assets/js/main.js"></script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <script>
-        document.getElementById('addToCartBtn').addEventListener('click', function (event) {
-            event.preventDefault();
-            const productId = this.getAttribute('data-product-id');
-
-            // First, add to cart without confirmation
-            fetch('/cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ productId: productId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.notLoggedIn) {
-						Swal.fire({
-							title: "Please Log In",
-							text: "Please log in to add items to your cart",
-							icon: "info",
-							showCancelButton: true,
-							confirmButtonText: "Log In",
-							cancelButtonText: "Cancel"
-						}).then((result) => {
-							if(result.isConfirmed) {
-								window.location.href = "/login";
-							}
-						});
-					} else if (data.success) {
-                        // If successfully added, show the cart navigation confirmation
-                        Swal.fire({
-                            title: 'Product Added to Cart!',
-                            text: "Would you like to view your cart or continue shopping?",
-                            icon: 'success',
-                            showCancelButton: true,
-                            confirmButtonText: 'View Cart',
-                            cancelButtonText: 'Continue Shopping',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/cart';
-                            }
-                        });
-                    } else {
-                        // Handle specific error cases
-                        if (data.message === 'Stock limit reached') {
-                            Swal.fire({
-                                title: 'Stock Limit Reached',
-                                text: `Sorry, only ${data.availableStock} items are available in stock.`,
-                                icon: 'warning',
-                                confirmButtonText: 'OK'
-                            });
-                        } else {
-                            Swal.fire('Error', data.message || 'Could not add product to cart.', 'error');
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+            <!-- Scripts -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                // Image Gallery & Magnifier functionality
+                document.querySelectorAll('.thumbnail-img').forEach((thumbnail) => {
+                    thumbnail.addEventListener('click', function () {
+                        document.getElementById('mainImage').src = this.src;
+                        document.querySelectorAll('.thumbnail-img').forEach((img) => img.classList.remove('selected'));
+                        this.classList.add('selected');
+                    });
                 });
-        });
 
+                // Magnifier Lens
+                const magnifierLens = document.createElement('div');
+                magnifierLens.classList.add('magnifier-lens');
+                document.body.appendChild(magnifierLens);
 
+                function setupMagnifier(imageElement) {
+                    let magnificationFactor = 3;
+                    let magnifierSize = 200;
 
+                    magnifierLens.style.width = magnifierSize + 'px';
+                    magnifierLens.style.height = magnifierSize + 'px';
 
-       
-        document.getElementById('addToWishlistBtn').addEventListener('click', function (event) {
-            event.preventDefault();
-            const productId = this.getAttribute('data-product-id');
-
-            // First, add to cart without confirmation
-            fetch('/wishlist', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ productId: productId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.notLoggedIn) {
-						Swal.fire({
-							title: "Please Log In",
-							text: "Please log in to add items to your cart",
-							icon: "info",
-							showCancelButton: true,
-							confirmButtonText: "Log In",
-							cancelButtonText: "Cancel"
-						}).then((result) => {
-							if(result.isConfirmed) {
-								window.location.href = "/login";
-							}
-						});
-					} else if (data.success) {
-                        // If successfully added, show the cart navigation confirmation
-                        Swal.fire({
-                            title: 'Product Added to Cart!',
-                            text: "Would you like to view your wishlist or continue shopping?",
-                            icon: 'success',
-                            showCancelButton: true,
-                            confirmButtonText: 'View Wishlist',
-                            cancelButtonText: 'Continue Shopping',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/wishlist';
-                            }
-                        });
-                    } else {
-                        // Handle specific error cases
-                        if (data.message === 'Stock limit reached') {
-                            Swal.fire({
-                                title: 'Stock Limit Reached',
-                                text: `Sorry, only ${data.availableStock} items are available in stock.`,
-                                icon: 'warning',
-                                confirmButtonText: 'OK'
-                            });
-                        } else {
-                            Swal.fire('Error', data.message || 'Could not add product to cart.', 'error');
-                        }
+                    function updateMagnifierSize(deltaY) {
+                        magnifierSize += deltaY > 0 ? -20 : 20;
+                        magnifierSize = Math.max(100, Math.min(magnifierSize, 400));
+                        magnificationFactor = 2 + (magnifierSize - 100) * (5 - 2) / (400 - 100);
+                        magnifierLens.style.width = magnifierSize + 'px';
+                        magnifierLens.style.height = magnifierSize + 'px';
+                        updateLensMagnification();
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+
+                    function updateLensMagnification() {
+                        if (!imageElement) return;
+                        const bounds = imageElement.getBoundingClientRect();
+                        const bgPosX = -(magnifierLens.offsetLeft - bounds.left) * magnificationFactor - magnifierLens.offsetWidth / 2;
+                        const bgPosY = -(magnifierLens.offsetTop - bounds.top) * magnificationFactor - magnifierLens.offsetHeight / 2;
+                        magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
+                        magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
+                    }
+
+                    imageElement.addEventListener('mousemove', function (e) {
+                        magnifierLens.style.visibility = 'visible';
+                        const bounds = e.target.getBoundingClientRect();
+                        const mouseX = e.clientX - bounds.left;
+                        const mouseY = e.clientY - bounds.top;
+
+                        const lensX = mouseX - (magnifierLens.offsetWidth / 2);
+                        const lensY = mouseY - (magnifierLens.offsetHeight / 2);
+
+                        magnifierLens.style.left = (bounds.left + window.pageXOffset + lensX) + 'px';
+                        magnifierLens.style.top = (bounds.top + window.pageYOffset + lensY) + 'px';
+
+                        const bgPosX = -((mouseX * magnificationFactor) - magnifierLens.offsetWidth / 2);
+                        const bgPosY = -((mouseY * magnificationFactor) - magnifierLens.offsetHeight / 2);
+
+                        magnifierLens.style.backgroundImage = `url('${imageElement.src}')`;
+                        magnifierLens.style.backgroundSize = `${imageElement.width * magnificationFactor}px ${imageElement.height * magnificationFactor}px`;
+                        magnifierLens.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
+
+                        imageElement.style.cursor = 'none';
+                    });
+
+                    imageElement.addEventListener('wheel', function (e) {
+                        e.preventDefault();
+                        updateMagnifierSize(e.deltaY);
+                    }, { passive: false });
+
+                    imageElement.addEventListener('mouseleave', function () {
+                        magnifierLens.style.visibility = 'hidden';
+                        imageElement.style.cursor = 'default';
+                    });
+                }
+
+                const imageElement = document.getElementById('mainImage');
+                setupMagnifier(imageElement);
+            </script>
+
+
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+            <script>
+                document.getElementById('addToCartBtn').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('data-product-id');
+
+                    // First, add to cart without confirmation
+                    fetch('/cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ productId: productId })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.notLoggedIn) {
+                                Swal.fire({
+                                    title: "Please Log In",
+                                    text: "Please log in to add items to your cart",
+                                    icon: "info",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Log In",
+                                    cancelButtonText: "Cancel"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "/login";
+                                    }
+                                });
+                            } else if (data.success) {
+                                // If successfully added, show the cart navigation confirmation
+                                Swal.fire({
+                                    title: 'Product Added to Cart!',
+                                    text: "Would you like to view your cart or continue shopping?",
+                                    icon: 'success',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'View Cart',
+                                    cancelButtonText: 'Continue Shopping',
+                                    reverseButtons: true
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/cart';
+                                    }
+                                });
+                            } else {
+                                // Handle specific error cases
+                                if (data.message === 'Stock limit reached') {
+                                    Swal.fire({
+                                        title: 'Stock Limit Reached',
+                                        text: `Sorry, only ${data.availableStock} items are available in stock.`,
+                                        icon: 'warning',
+                                        confirmButtonText: 'OK'
+                                    });
+                                } else {
+                                    Swal.fire('Error', data.message || 'Could not add product to cart.', 'error');
+                                }
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                        });
                 });
-        });
-    </script>
+
+
+
+
+
+                document.getElementById('addToWishlistBtn').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('data-product-id');
+
+                    // First, add to cart without confirmation
+                    fetch('/wishlist', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ productId: productId })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.notLoggedIn) {
+                                Swal.fire({
+                                    title: "Please Log In",
+                                    text: "Please log in to add items to your wishlist",
+                                    icon: "info",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Log In",
+                                    cancelButtonText: "Cancel"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "/login";
+                                    }
+                                });
+                            } else if (data.success) {
+                                // If successfully added, show the cart navigation confirmation
+                                Swal.fire({
+                                    title: 'Product Added to Cart!',
+                                    text: "Would you like to view your wishlist or continue shopping?",
+                                    icon: 'success',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'View Wishlist',
+                                    cancelButtonText: 'Continue Shopping',
+                                    reverseButtons: true
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = '/wishlist';
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                        title: 'Information',
+                                        text: data.message || 'Could not add product to cart.',
+                                        icon: 'info',
+                                        confirmButtonText: 'OK',
+                                        confirmButtonColor: '#3085d6'
+                                    });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                        });
+                });
+            </script>
 </body>
+
 </html>

@@ -106,7 +106,7 @@ router.post('/apply-coupon',coupenController.applyCoupen)
 
 
 router.get('/wishlist',userAuth,wishlistController.loadwishlist)
-router.post('/wishlist',userAuth,wishlistController.addToWishlist)
+router.post('/wishlist',wishlistController.addToWishlist)
 router.delete('/wishlist/remove/:productId',userAuth,wishlistController.deletewishlist)
 
 module.exports = router

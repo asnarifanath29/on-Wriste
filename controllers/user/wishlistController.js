@@ -35,11 +35,12 @@ const loadwishlist = async (req, res) => {
 const addToWishlist = async (req, res) => {
     try {
 
-
-        const userId = req.session.userData.id;
-        // if (!userId) {
-        //     return res.status(401).json({ success: false, notLoggedIn: true, message: 'Please log in to add items to the cart.' });
-        // }
+       
+        const userId = req.session?.userData?.id;
+        
+        if (!userId) {
+            return res.status(401).json({ success: false, notLoggedIn: true, message: 'Please log in to add items to the cart.' });
+        }
 
         const { productId } = req.body;
 
@@ -52,6 +53,16 @@ const addToWishlist = async (req, res) => {
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found.' });
+        }
+        // Check if product is already in cart
+        const cart = await Cart.findOne({ userId });
+        const productInCart = cart?.items.some(item => item.productId.toString() === productId);
+        
+        if (productInCart) {
+            return res.status(200).json({ 
+                success: false, 
+                message: 'Product is already in your cart. Cannot add to wishlist.' 
+            });
         }
 
         // Find the user's wishlist
@@ -69,13 +80,7 @@ const addToWishlist = async (req, res) => {
             return res.status(200).json({ success: false, message: 'Product is already in your wishlist.' });
         }
 
-        // Check if the product is already in the cart
-        // const productExistsInCart = Cart.items.some(item => item.productId.toString() === productId);
-
-        // if (productExistsInCart) {
-        //     return res.status(200).json({ success: false, message: 'Product is already in your wishlist.' });
-        // }
-
+      
         // Add the product to the wishlist
         wishlist.products.push({ productId });
         await wishlist.save();
