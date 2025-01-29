@@ -358,7 +358,7 @@
                                                         10.00).toFixed(2) %></strong>
                                             </div>
                                             <a href="javascript:void(0);" class="btn btn-danger w-100"
-                                                onclick="placeOrder()">Place Order</a>
+                                                onclick=" placeOrder()">Place Order</a>
                                         </div>
                                     </div>
                                 </div>
@@ -607,8 +607,12 @@
                 const couponSelect = document.getElementById('couponSelect');
                 const couponCode = couponSelect.value;
                 const couponDiscount = couponCode ? (subtotal + 10 - totalAmountWithShipping) : 0;
-                const finalAmount = totalAmountWithShipping - couponDiscount;
-            
+                const finalAmount = totalAmountWithShipping 
+                console.log("totalAmountWithShipping"+totalAmountWithShipping)
+                console.log("couponDiscount"+couponDiscount)
+                console.log("finalAmount"+finalAmount)
+
+
                 // Helper function to safely extract text content
                 const getTextContent = (element, selector) => {
                     const el = element.querySelector(selector);
@@ -752,14 +756,21 @@
                                 Swal.showLoading();
                             }
                         });
-
+                        console.log("payable:",orderDetails.orderAmount.payableAmount)
+                       console.log("hello")
                         const paymentResponse = await fetch('/razorpay/initiate', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(orderDetails)
+                            body: JSON.stringify({ amount: orderDetails.orderAmount.payableAmount })
                         });
+
+                        console.log("==============================");
+                        console.log("paymentResponse : ");
+                        console.log(paymentResponse);
+                        console.log("==============================");
+
 
                         if (!paymentResponse.ok) {
                             throw new Error('Failed to initialize payment');
@@ -903,7 +914,7 @@
                     });
 
                     const result = await response.json();
-
+                    console.log(result)
                     if (result.success) {
                         showCouponMessage('Coupon applied successfully!', 'success');
                         updateCouponDisplay(result.discountAmount);
@@ -923,7 +934,7 @@
                 couponMessage.style.color = type === 'error' ? 'red' : 'green';
             }
 
-           
+
             // Update coupon and total amount display
             function updateCouponDisplay(discountAmount) {
                 const subtotal = parseFloat(subtotalElement.textContent.replace('₹', ''));

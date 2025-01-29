@@ -507,67 +507,27 @@ const razorpay = new Razorpay({
 
 const initiatePayment = async (req, res) => {
     try {
-        const { amount, addressDetails, couponCode } = req.body;
-        const cartId = req.session.cart;
+    const { amount } = req.body;
+   console.log(amount)
+    const options = {
+        amount: amount * 100, // Convert to paise
+        currency: "INR",
+        receipt: "order_rcptid_" + Date.now(),
+    };
 
-        // Validate cart
-        const cart = await Cart.findById(cartId).populate('items.productId');
-        if (!cart || !cart.items.length) {
-            return res.status(400).json({
-                success: false,
-                message: "Your cart is empty"
-            });
-        }
-
-        let finalAmount = amount;
-
-        // Calculate total amount
-        // let totalAmount = 0;
-        // for (const item of cart.items) {
-        //     const product = item.productId;
-        //     if (item.quantity > product.stock) {
-        //         return res.status(400).json({
-        //             success: false,
-        //             message: `Insufficient stock for product: ${product.name}`
-        //         });
-        //     }
-        //     totalAmount += product.price * item.quantity;
-        // }
-
-        // Apply coupon if provided
-        // let finalAmount = totalAmount + 10; // Adding shipping fee
-        if (couponCode) {
-            const coupon = await Coupon.findOne({ couponCode });
-            if (coupon) {
-                const discount = (totalAmount * coupon.discountPercentage) / 100;
-                finalAmount -= discount;
-                finalAmount = Math.max(finalAmount, totalAmount * 0.1); // Ensure minimum 10% payment
-            }
-        }
-
-        // Create Razorpay order
-        const options = {
-            amount: Math.round(finalAmount * 100), // Convert to paise
-            currency: "INR",
-            receipt: `order_${Date.now()}`
-        };
-
-        const razorpayOrder = await razorpay.orders.create(options);
-
+    
+        const response = await razorpay.orders.create(options);
+        console.log(response)
         res.json({
-            success: true,
-            razorpayKey: process.env.RAZORPAY_KEY_ID,
-            razorpayOrderId: razorpayOrder.id
+            razorpayKey: process.env.RAZORPAY_KEY,
+            razorpayOrderId: response.id
         });
-
     } catch (error) {
-        console.error('Error initiating payment:', error);
-        res.status(500).json({
-            success: false,
-            message: "Failed to initiate payment"
-        });
+        
+        console.error(error);
+        res.status(500).json("Razorpay order creation failed");
     }
-};
+}
 
 const verifyPayment = async (req, res) => {
     try {

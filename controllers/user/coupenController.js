@@ -2,17 +2,6 @@ const Coupon = require("../../models/coupenSchema");
 const User = require("../../models/userSchema")
 const mongoose = require('mongoose');
 
-
-
-
-
-
-
-
-
-
-
-
 // Get available coupons
 const availableCoupen=  async (req, res) => {
     try {
@@ -30,7 +19,6 @@ const availableCoupen=  async (req, res) => {
 };
 
 // Apply coupon
-
 const applyCoupen=  async (req, res) => {
     try {
         const { couponCode, subtotal } = req.body;
