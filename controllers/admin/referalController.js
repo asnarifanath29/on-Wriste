@@ -8,10 +8,9 @@ const loadReferalPage=async (req, res) => {
         const users = await User.find()
             .populate('referredBy', 'name');
 
-        // Calculate statistics
         const totalReferrals = users.reduce((acc, user) => acc + user.referralCount, 0);
         const activeUsers = users.filter(user => !user.isBlocked).length;
-        const totalRewards = totalReferrals * 100; // Assuming $100 per referral
+        const totalRewards = totalReferrals * 200; 
 
         res.render('referal', {
             users,

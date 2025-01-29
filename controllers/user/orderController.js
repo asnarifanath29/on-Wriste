@@ -99,6 +99,7 @@ const cancelOrder = async (req, res) => {
                 });
                 await newWallet.save();
             }
+            order.paymentStatus = "Refunded"
         }
 
         await order.save();

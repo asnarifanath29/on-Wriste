@@ -91,11 +91,9 @@ const updatePaymentStatus = async (req, res) => {
             });
         }
 
-        // Optional: Handle any additional logic based on the payment status
-        // For example, if the status is 'Refunded', you might want to trigger a refund process
+        
         if (newStatus === 'Refunded') {
-            // Add logic to process the refund, e.g., initiate a refund API call
-            // Or update related financial records in the system
+            
         }
 
         order.paymentStatus = newStatus;
@@ -115,77 +113,37 @@ const updatePaymentStatus = async (req, res) => {
 };
 
 
-// const acceptReturn = async (req, res) => {
-//     const { orderId } = req.params;
-
-//     try {
-//         const order = await Order.findById(orderId);
-
-//         if (!order || order.orderStatus !== 'Delivered') {
-//             return res.status(400).json({ success: false, message: 'Invalid order status for return.' });
-//         }
-
-//         order.orderStatus = 'Returned';
-//         await order.save();
-
-
-
-//          // Iterate through the products in the order to update stock
-//          for (const item of order.products) {
-//             const product = await Product.findById(item.productId); // Find the product by ID
-
-//             if (product) {
-//                 product.stock += item.quantity; // Add the returned quantity to the product's stock
-//                 await product.save(); // Save the updated product
-//             } else {
-//                 console.warn(`Product with ID ${item.productId} not found.`);
-//             }
-//         }
-
-//         res.status(200).json({ success: true, message: 'Return request accepted.' });
-//     } catch (error) {
-//         console.error('Error accepting return:', error);
-//         res.status(500).json({ success: false, message: 'An error occurred while accepting the return.' });
-//     }
-// };
-
-
 const acceptReturn = async (req, res) => {
     const { orderId } = req.params;
 
     try {
-        // Find the order by ID
+        
         const order = await Order.findById(orderId);
 
-        // Validate the order and its status
+        
         if (!order || order.orderStatus !== 'Delivered') {
             return res.status(400).json({ success: false, message: 'Invalid order status for return.' });
         }
         
-        // Update order status to 'Returned'
-        order.orderStatus = 'Returned';
-        order.paymentStatus ='Refunded'
-        await order.save();
-        
-        // Iterate through the items in the order to update stock
+
         for (const item of order.items) {
-            const product = await Product.findById(item.productId); // Find the product by ID
+            const product = await Product.findById(item.productId); 
 
             if (product) {
-                product.stock += item.quantity; // Add the returned quantity to the product's stock
-                await product.save(); // Save the updated product
+                product.stock += item.quantity;
+                await product.save();
             } else {
                 console.warn(`Product with ID ${item.productId} not found.`);
             }
         }
 
 
-        // Handle wallet update if payment was made (paymentStatus is 'Paid')
+       
         if (order.paymentStatus === 'Paid') {
             const wallet = await Wallet.findOne({ userId: order.userId });
 
             if (wallet) {
-                wallet.balance += order.payableAmount; // Add the order amount to the wallet
+                wallet.balance += order.payableAmount;
                 wallet.transactions.push({
                     amount: order.payableAmount,
                     type: 'Credit',
@@ -194,7 +152,7 @@ const acceptReturn = async (req, res) => {
                 wallet.updatedAt = new Date();
                 await wallet.save();
             } else {
-                // If wallet does not exist, create a new one
+              
                 const newWallet = new Wallet({
                     userId: order.userId,
                     balance: order.payableAmount,
@@ -209,6 +167,10 @@ const acceptReturn = async (req, res) => {
                 await newWallet.save();
             }
         }
+
+        order.orderStatus = 'Returned';
+        order.paymentStatus ='Refunded'
+        await order.save();
 
         res.status(200).json({ success: true, message: 'Return request accepted, and stock updated successfully.' });
     } catch (error) {

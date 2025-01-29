@@ -522,8 +522,8 @@
                 showCancelButton: true,
                 confirmButtonText: 'Add Offer',
                 preConfirm: (offerPercentage) => {
-                    if (offerPercentage < 0 || offerPercentage > 100) {
-                        Swal.showValidationMessage('Percentage must be between 0 and 100');
+                    if (offerPercentage < 10 || offerPercentage > 70) {
+                        Swal.showValidationMessage('Percentage must be between 10 and 70');
                     }
                     return offerPercentage;
                 }
