@@ -53,6 +53,7 @@ function generateOtp() {
 }
 
 
+
 async function sendVerificationEmail(email, otp, session) {
     try {
         const transporter = nodemailer.createTransport({

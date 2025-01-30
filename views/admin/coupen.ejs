@@ -750,9 +750,8 @@
                 isValid = false;
             }
 
-            // If valid, send data using fetch
             if (isValid) {
-                // Collect form data
+
                 const data = {
                     couponCode: couponCode.value.trim(),
                     discountPercentage: parseFloat(discountPercentage.value),
@@ -783,10 +782,8 @@
                             timer: 1500,
                             showConfirmButton: false
                         }).then(() => {
-                            // Close the modal
                             const modal = bootstrap.Modal.getInstance(editModal);
                             modal.hide();
-                            // Reload the page or update the table
                             window.location.reload();
                         });
                     } else {
@@ -815,7 +812,7 @@
 
     async function toggleCouponStatus(button) {
     const couponId = button.getAttribute('data-id');
-    const currentStatus = button.getAttribute('data-status') === 'true'; // Convert string to boolean
+    const currentStatus = button.getAttribute('data-status') === 'true'; 
     const newStatus = !currentStatus;
 
     // Show confirmation dialog
@@ -832,9 +829,9 @@
 
     if (confirmation.isConfirmed) {
         try {
-            // Make API call to update the status
+
             const response = await fetch(`/admin/coupon/status/${couponId}`, {
-                method: 'PATCH', // Use PATCH or PUT for partial updates
+                method: 'PATCH', 
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -844,7 +841,6 @@
             if (response.ok) {
                 const result = await response.json();
 
-                // Update the button UI
                 button.setAttribute('data-status', newStatus);
                 button.className = `btn btn-action ${newStatus ? 'btn-deactivate' : 'btn-activate'}`;
                 button.innerHTML = `
@@ -852,7 +848,6 @@
                     ${newStatus ? 'Deactivate' : 'Activate'}
                 `;
 
-                // Show success SweetAlert
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',

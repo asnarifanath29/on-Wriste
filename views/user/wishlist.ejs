@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -25,7 +26,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
-         .popular-img {
+        .popular-img {
             position: relative;
             width: 300px;
             height: 300px;
@@ -75,7 +76,7 @@
             overflow: hidden;
         }
 
-        .view-details-btn {
+        .addToCartBtn {
             display: inline-block;
             padding: 10px 20px;
             background-color: #000;
@@ -85,7 +86,7 @@
             transition: all 0.3s ease;
         }
 
-        .view-details-btn:hover {
+        .addToCartBtn:hover {
             background-color: #333;
             transform: translateY(-2px);
         }
@@ -110,189 +111,261 @@
     <%- include('../partials/user/header') %>
 
 
-    <section class="wishlist-section">
-        <div class="container">
-            <h2 class="text-center mb-5">My Wishlist</h2>
+        <section class="wishlist-section">
+            <div class="container">
+                <h2 class="text-center mb-5">My Wishlist</h2>
 
-            <% if (wishlist.products.length > 0) { %>
-                <div class="row">
-                    <% wishlist.products.forEach(({ productId }) => { %>
-                        <% if (productId) { %>
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                <div class="single-popular-items mb-50 text-center">
-                                    <div class="popular-img">
-                                        <img src="<%= productId.images[0] || '/assets/img/default-product.png' %>" 
-                                             alt="<%= productId.name %>">
-                                        <div class="img-cap">
-                                            <span>Add to cart</span>
-                                        </div>
-                                        <div class="favorit-items">
-                                            <span class="flaticon-heart"></span>
-                                        </div>
-                                    </div>
-                                    <div class="popular-caption">
-                                        <h3 class="popular-product-name">
-                                            <a href="/product/<%= productId._id %>">
-                                                <%= productId.name %>
-                                            </a>
-                                        </h3>
-
-                                        <!-- Price Display -->
-                                        <div class="pricing">
-                                            <% if (productId.offerPrice && productId.offerPrice < productId.price) { %>
-                                                <span class="price">$<%= productId.offerPrice.toFixed(2) %></span>
-                                                <span class="original-price">$<%= productId.price.toFixed(2) %></span>
-                                            <% } else { %>
-                                                <span class="price">$<%= productId.price.toFixed(2) %></span>
-                                            <% } %>
-                                        </div>
-
-                                        <!-- Rating Display -->
-                                        <div class="rating mt-2">
-                                            <% for(let i=1; i <=5; i++) { %>
-                                                <% if (i <=Math.round(productId.rating)) { %>
-                                                    <i class="fas fa-star"></i>
-                                                <% } else { %>
-                                                    <i class="far fa-star"></i>
-                                                <% } %>
-                                            <% } %>
-                                            <span class="rating-count">
-                                                (<%= productId.reviews.length %> reviews)
-                                            </span>
-                                        </div>
-
-                                        <!-- Brand & Category -->
-                                        <% if (productId.brand || (productId.category && productId.category.name)) { %>
-                                            <div class="product-meta mt-2">
-                                                <% if (productId.brand) { %>
-                                                    <span class="brand">
-                                                        <%= productId.brand %>
-                                                    </span>
-                                                <% } %>
-                                                <% if (productId.category && productId.category.name) { %>
-                                                    <span class="category">| <%= productId.category.name %></span>
-                                                <% } %>
+                <% if (wishlist.products.length> 0) { %>
+                    <div class="row">
+                        <% wishlist.products.forEach(({ productId })=> { %>
+                            <% if (productId) { %>
+                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                                    <div class="single-popular-items mb-50 text-center">
+                                        <div class="popular-img">
+                                            <img src="<%= productId.images[0] || '/assets/img/default-product.png' %>"
+                                                alt="<%= productId.name %>">
+                                            <div class="img-cap">
+                                                <span>Add to cart</span>
                                             </div>
-                                        <% } %>
-
-                                        <!-- Tags -->
-                                        <% if (productId.tags && productId.tags.length > 0) { %>
-                                            <div class="tags mt-2">
-                                                <% productId.tags.slice(0, 3).forEach(tag => { %>
-                                                    <span class="tag">
-                                                        <%= tag %>
-                                                    </span>
-                                                <% }) %>
+                                            <div class="favorit-items">
+                                                <span class="flaticon-heart"></span>
                                             </div>
-                                        <% } %>
+                                        </div>
+                                        <div class="popular-caption">
+                                            <h3 class="popular-product-name">
+                                                <a href="/product/<%= productId._id %>">
+                                                    <%= productId.name %>
+                                                </a>
+                                            </h3>
 
-                                        <div class="mt-3 d-flex justify-content-center gap-2">
-                                            <a href="/product/<%= productId._id %>" class="view-details-btn">
-                                                View Details
-                                            </a>
-                                            <a href="#" class="remove-wishlist-btn" 
-                                               onclick="removeFromWishlist('<%= productId._id %>')">
-                                                Remove
-                                            </a>
+                                            <!-- Price Display -->
+                                            <div class="pricing">
+                                                <% if (productId.offerPrice && productId.offerPrice < productId.price) {
+                                                    %>
+                                                    <span class="price">$<%= productId.offerPrice.toFixed(2) %></span>
+                                                    <span class="original-price">$<%= productId.price.toFixed(2) %>
+                                                    </span>
+                                                    <% } else { %>
+                                                        <span class="price">$<%= productId.price.toFixed(2) %></span>
+                                                        <% } %>
+                                            </div>
+
+                                            <!-- Rating Display -->
+                                            <div class="rating mt-2">
+                                                <% for(let i=1; i <=5; i++) { %>
+                                                    <% if (i <=Math.round(productId.rating)) { %>
+                                                        <i class="fas fa-star"></i>
+                                                        <% } else { %>
+                                                            <i class="far fa-star"></i>
+                                                            <% } %>
+                                                                <% } %>
+                                                                    <span class="rating-count">
+                                                                        (<%= productId.reviews.length %> reviews)
+                                                                    </span>
+                                            </div>
+
+                                            <!-- Brand & Category -->
+                                            <% if (productId.brand || (productId.category && productId.category.name)) {
+                                                %>
+                                                <div class="product-meta mt-2">
+                                                    <% if (productId.brand) { %>
+                                                        <span class="brand">
+                                                            <%= productId.brand %>
+                                                        </span>
+                                                        <% } %>
+                                                            <% if (productId.category && productId.category.name) { %>
+                                                                <span class="category">| <%= productId.category.name %>
+                                                                </span>
+                                                                <% } %>
+                                                </div>
+                                                <% } %>
+
+                                                    <!-- Tags -->
+                                                    <% if (productId.tags && productId.tags.length> 0) { %>
+                                                        <div class="tags mt-2">
+                                                            <% productId.tags.slice(0, 3).forEach(tag=> { %>
+                                                                <span class="tag">
+                                                                    <%= tag %>
+                                                                </span>
+                                                                <% }) %>
+                                                        </div>
+                                                        <% } %>
+
+                                                            <div class="mt-3 d-flex justify-content-center gap-2">
+                                                                <!-- <a href="/product/<%= productId._id %>" class="view-details-btn">
+                                                view Details
+                                            </a> -->
+                                                                <a href="#" class="addToCartBtn" id="addToCartBtn"
+                                                                    data-product-id="<%= productId._id %>">
+                                                                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                                                </a>
+
+
+                                                                <a href="#" class="remove-wishlist-btn"
+                                                                    onclick="removeFromWishlist('<%= productId._id %>')">
+                                                                    Remove
+                                                                </a>
+                                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <% } %>
+                                    <% }) %>
+                    </div>
+                    <% } else { %>
+                        <div class="text-center">
+                            <i class="fas fa-heart-broken fa-4x text-muted mb-4"></i>
+                            <h3>Your wishlist is empty</h3>
+                            <p class="text-muted">Explore our collection and add some items!</p>
+                            <a href="/shop" class="btn btn-dark mt-3">Start Shopping</a>
+                        </div>
                         <% } %>
-                    <% }) %>
-                </div>
-            <% } else { %>
-                <div class="text-center">
-                    <i class="fas fa-heart-broken fa-4x text-muted mb-4"></i>
-                    <h3>Your wishlist is empty</h3>
-                    <p class="text-muted">Explore our collection and add some items!</p>
-                    <a href="/shop" class="btn btn-dark mt-3">Start Shopping</a>
-                </div>
-            <% } %>
-        </div>
-    </section>
-
-    
-
-   
-    <%- include('../partials/user/footer') %>
-
-    <!-- JS here -->
-    <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
-    <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="/assets/js/popper.min.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
-    <script src="/assets/js/jquery.slicknav.min.js"></script>
-    <script src="/assets/js/owl.carousel.min.js"></script>
-    <script src="/assets/js/slick.min.js"></script>
-    <script src="/assets/js/wow.min.js"></script>
-    <script src="/assets/js/animated.headline.js"></script>
-    <script src="/assets/js/jquery.magnific-popup.js"></script>
-    <script src="/assets/js/jquery.scrollUp.min.js"></script>
-    <script src="/assets/js/jquery.nice-select.min.js"></script>
-    <script src="/assets/js/jquery.sticky.js"></script>
-    <script src="/assets/js/plugins.js"></script>
-    <script src="/assets/js/main.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.add-to-cart').on('click', function() {
-                const productId = $(this).data('product-id');
-                // Implement add to cart functionality
-                console.log('Adding product to cart:', productId);
-            });
-
-            $('.remove-from-wishlist').on('click', function(e) {
-                e.preventDefault();
-                const productId = $(this).data('product-id');
-                // Implement remove from wishlist functionality
-                console.log('Removing product from wishlist:', productId);
-            });
-        });
+            </div>
+        </section>
 
 
 
-        
-    
-    // Function to remove a product from the wishlist using Fetch
-    function removeFromWishlist(productId) {
-    fetch(`/wishlist/remove/${productId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Removed!',
-                text: 'Product has been removed from your wishlist.',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                window.location.reload();
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: data.message || 'Failed to remove product',
-            });
-        }
-    })
-    .catch(error => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'An unexpected error occurred',
-        });
-    });
-}
+
+        <%- include('../partials/user/footer') %>
+
+            <!-- JS here -->
+            <script src="/assets/js/vendor/modernizr-3.5.0.min.js"></script>
+            <script src="/assets/js/vendor/jquery-1.12.4.min.js"></script>
+            <script src="/assets/js/popper.min.js"></script>
+            <script src="/assets/js/bootstrap.min.js"></script>
+            <script src="/assets/js/jquery.slicknav.min.js"></script>
+            <script src="/assets/js/owl.carousel.min.js"></script>
+            <script src="/assets/js/slick.min.js"></script>
+            <script src="/assets/js/wow.min.js"></script>
+            <script src="/assets/js/animated.headline.js"></script>
+            <script src="/assets/js/jquery.magnific-popup.js"></script>
+            <script src="/assets/js/jquery.scrollUp.min.js"></script>
+            <script src="/assets/js/jquery.nice-select.min.js"></script>
+            <script src="/assets/js/jquery.sticky.js"></script>
+            <script src="/assets/js/plugins.js"></script>
+            <script src="/assets/js/main.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('.add-to-cart').on('click', function () {
+                        const productId = $(this).data('product-id');
+
+                        console.log('Adding product to cart:', productId);
+                    });
+
+                    $('.remove-from-wishlist').on('click', function (e) {
+                        e.preventDefault();
+                        const productId = $(this).data('product-id');
+
+                        console.log('Removing product from wishlist:', productId);
+                    });
+                });
 
 
-    </script>
+
+                function removeFromWishlist(productId) {
+                    fetch(`/wishlist/remove/${productId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Removed!',
+                                    text: 'Product has been removed from your wishlist.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: data.message || 'Failed to remove product',
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An unexpected error occurred',
+                            });
+                        });
+                }
+
+
+                document.querySelectorAll('.addToCartBtn').forEach((button) => {
+                    button.addEventListener('click', async function (event) {
+                        event.preventDefault();
+                        const productId = this.getAttribute('data-product-id');
+
+                        fetch('/cart', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ productId: productId })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.notLoggedIn) {
+                                    Swal.fire({
+                                        title: "Please Log In",
+                                        text: "Please log in to add items to your cart",
+                                        icon: "info",
+                                        showCancelButton: true,
+                                        confirmButtonText: "Log In",
+                                        cancelButtonText: "Cancel"
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = "/login";
+                                        }
+                                    });
+                                } else if (data.success) {
+                                    // If successfully added, show the cart navigation confirmation
+                                    Swal.fire({
+                                        title: 'Product Added to Cart!',
+                                        text: "Would you like to view your cart or continue shopping?",
+                                        icon: 'success',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'View Cart',
+                                        cancelButtonText: 'Continue Shopping',
+                                        reverseButtons: true
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.href = '/cart';
+                                        }
+                                    });
+                                } else {
+                                    // Handle specific error cases
+                                    if (data.message === 'Stock limit reached') {
+                                        Swal.fire({
+                                            title: 'Stock Limit Reached',
+                                            text: `Sorry, only ${data.availableStock} items are available in stock.`,
+                                            icon: 'warning',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    } else {
+                                        Swal.fire('Error', data.message || 'Could not add product to cart.', 'error');
+                                    }
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                            });
+                    })
+                })
+
+
+            </script>
 
 
 </body>
+
 </html>

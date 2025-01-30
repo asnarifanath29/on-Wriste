@@ -163,7 +163,7 @@ const loadCheckoutpage = async (req, res) => {
     try {
         const subtotal = req.session.subtotal
         const userId = req.session.userData.id;
-        const userAddress = await Address.find({ userId: userId });
+        const userAddress = await Address.find({ userId: userId }).sort({ isPrimary: -1 });;
 
         const currentDate = new Date();
         const validCoupons = await Coupon.find({

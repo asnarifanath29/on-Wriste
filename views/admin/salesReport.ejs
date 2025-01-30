@@ -286,9 +286,8 @@
                                         <th>Order Date</th>
                                         <th>Order ID</th>
                                         <th>Customer Name</th>
-                                        <th>Subtotal</th>
+                                        <th>Amount</th>
                                         <th>Coupon Discount</th>
-                                        <th>Offer Discount</th>
                                         <th>Total Amount</th>
                                         <th>Order Status</th>
                                     </tr>
@@ -314,9 +313,6 @@
                                                 <td>₹<%= order.totalAmount ? order.totalAmount.toFixed(2) : '0.00' %>
                                                 </td>
                                                 <td>₹<%= order.couponDiscount ? order.couponDiscount.toFixed(2) : '0.00'
-                                                        %>
-                                                </td>
-                                                <td>₹<%= order.offerDiscount ? order.offerDiscount.toFixed(2) : '0.00'
                                                         %>
                                                 </td>
                                                 <td>₹<%= order.payableAmount ? order.payableAmount.toFixed(2) : '0.00'
@@ -347,7 +343,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // Sidebar Toggle (same as previous HTML)
         document.getElementById('sidebarToggle').addEventListener('click', function () {
             document.getElementById('sidebar').classList.toggle('show');
         });
@@ -356,33 +351,28 @@
             dateRangeContainer.style.display = this.value === 'custom' ? 'block' : 'none';
         });
 
-        // Date Picker Initialization
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             autoclose: true
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            // Get the form and report type select element
+
             const reportForm = document.querySelector('form[action="/admin/generateReport"]');
             const reportTypeSelect = document.getElementById('reportType');
             const dateRangeContainer = document.getElementById('dateRangeContainer');
             const startDateInput = document.getElementById('startDate');
             const endDateInput = document.getElementById('endDate');
 
-            // Add event listener to form submission
             reportForm.addEventListener('submit', function (event) {
-                // Prevent default form submission
+
                 event.preventDefault();
 
-                // Validate report type selection
                 const reportType = reportTypeSelect.value;
 
-                // If custom date range is selected, perform additional validation
                 if (reportType === 'custom') {
-                    // Check if both start and end dates are filled
+
                     if (!startDateInput.value || !endDateInput.value) {
-                        // Show error using SweetAlert
                         Swal.fire({
                             icon: 'error',
                             title: 'Incomplete Date Range',
@@ -393,12 +383,11 @@
                         return;
                     }
 
-                    // Validate date range (start date should be before or equal to end date)
                     const startDate = new Date(startDateInput.value);
                     const endDate = new Date(endDateInput.value);
 
                     if (startDate > endDate) {
-                        // Show error using SweetAlert
+
                         Swal.fire({
                             icon: 'error',
                             title: 'Invalid Date Range',
@@ -410,7 +399,6 @@
                     }
                 }
 
-                // If all validations pass, show confirmation and submit the form
                 Swal.fire({
                     icon: 'question',
                     title: 'Generate Report',
@@ -421,7 +409,6 @@
                     confirmButtonText: 'Yes, Generate Report'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Show loading indicator
                         Swal.fire({
                             title: 'Generating Report...',
                             text: 'Please wait',
@@ -431,13 +418,11 @@
                             }
                         });
 
-                        // Submit the form
                         reportForm.submit();
                     }
                 });
             });
 
-            // Existing report type change event listener
             reportTypeSelect.addEventListener('change', function () {
                 const dateRangeContainer = document.getElementById('dateRangeContainer');
                 dateRangeContainer.style.display = this.value === 'custom' ? 'block' : 'none';
@@ -451,11 +436,9 @@
 
     <script>
 
-        // Get the download buttons
         const downloadPDFButton = document.getElementById('downloadPDF');
         const downloadExcelButton = document.getElementById('downloadExcel');
 
-        // Function to get the current filter parameters
         function getFilterParameters() {
             const reportType = document.getElementById('reportType').value;
             const startDate = document.getElementById('startDate').value;
@@ -472,10 +455,9 @@
             return params.toString();
         }
 
-        // Function to handle downloads
         async function handleDownload(format) {
             try {
-                // Show loading indicator
+
                 Swal.fire({
                     title: `Generating ${format.toUpperCase()} Report...`,
                     text: 'Please wait',
@@ -497,7 +479,6 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                // Get the filename from the Content-Disposition header if available
                 const contentDisposition = response.headers.get('Content-Disposition');
                 let filename = `sales-report.${format}`;
                 if (contentDisposition) {
@@ -507,10 +488,8 @@
                     }
                 }
 
-                // Convert the response to blob
                 const blob = await response.blob();
 
-                // Create a download link and trigger the download
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
@@ -520,7 +499,7 @@
                 a.click();
                 window.URL.revokeObjectURL(url);
 
-                // Close loading indicator and show success message
+             
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -541,9 +520,7 @@
             }
         }
 
-        // Add click event listeners to download buttons
         downloadPDFButton.addEventListener('click', () => {
-            // Validate date range if custom type is selected
             const reportType = document.getElementById('reportType').value;
             if (reportType === 'custom') {
                 const startDate = document.getElementById('startDate').value;
@@ -576,7 +553,6 @@
         });
 
         downloadExcelButton.addEventListener('click', () => {
-            // Validate date range if custom type is selected
             const reportType = document.getElementById('reportType').value;
             if (reportType === 'custom') {
                 const startDate = document.getElementById('startDate').value;
@@ -609,9 +585,6 @@
         });
 
     </script>
-
-
-
 
 </body>
 

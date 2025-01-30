@@ -17,19 +17,19 @@ const filter = async (req, res) => {
 
         if (priceRange) {
             switch (priceRange) {
-                case '$0.00 - $999.00':
+                case '₹0.00 - ₹999.00':
                     query.price = { $gte: 0, $lte: 999 };
                     break;
-                case '$1000.00 - $2999.00':
+                case '₹1000.00 - ₹2999.00':
                     query.price = { $gte: 1000, $lte: 2999 };
                     break;
-                case '$3000.00 - $6999.00':
+                case '₹3000.00 - ₹6999.00':
                     query.price = { $gte: 3000, $lte: 6999 };
                     break;
-                case '$7000.00 - $9999.00':
+                case '₹7000.00 - ₹9999.00':
                     query.price = { $gte: 7000, $lte: 9999 };
                     break;
-                case '$10000.00+':
+                case '₹10000.00+':
                     query.price = { $gte: 10000 };
                     break;
             }

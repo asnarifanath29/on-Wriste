@@ -204,11 +204,17 @@
                                 </p>
                             </div>
 
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <h5 class="mb-2">Stock</h5>
                                 <% if (product.stock && product.stock> 0) { %>
                                     <span class="badge bg-success stock-badge"> in stock</span>
                                     <% } else { %>
+                                        <span class="badge bg-danger stock-badge">Out of stock</span>
+                                        <% } %>
+                            </div> -->
+
+                            <div class="mb-3">
+                                <% if (product.stock== 0) { %>
                                         <span class="badge bg-danger stock-badge">Out of stock</span>
                                         <% } %>
                             </div>

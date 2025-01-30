@@ -179,18 +179,6 @@
 <div class="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Order Management</h2>
-        <!-- <div class="d-flex gap-2">
-            <input type="text" class="form-control" placeholder="Search orders..." id="orderSearch">
-            <select class="form-select" id="statusFilter">
-                <option value="">All Status</option>
-                <option value="Pending">Pending</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Canceled">Canceled</option>
-                <option value="Returned">Returned</option>
-            </select>
-        </div> -->
     </div>
 
     <div class="table-responsive">
@@ -279,94 +267,6 @@
     </div>
 </div>
 
-<!-- Modals for Each Order -->
-<!-- <% orders.forEach(order => { %>
-<div class="modal fade" id="orderModal<%= order._id %>" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Order Details - <%= order.orderedId %></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6 class="fw-bold">Customer Information</h6>
-                        <p>Name: <%= order.address.name %><br>
-                        Phone: <%= order.address.phone %></p>
-                    </div>
-                    <div class="col-md-6">
-                        <h6 class="fw-bold">Shipping Address</h6>
-                        <p><%= order.address.address %><br>
-                        <%= order.address.place %>, <%= order.address.state %><br>
-                        Pincode: <%= order.address.pincode %></p>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="mb-3">
-                    <h6 class="fw-bold">Order Status</h6>
-                    <select class="form-select order-status-update" data-order-id="<%= order._id %>">
-                        <option value="Pending" <%= order.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
-                        <option value="Confirmed" <%= order.orderStatus === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
-                        <option value="Shipped" <%= order.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-                        <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                        <option value="Canceled" <%= order.orderStatus === 'Canceled' ? 'selected' : '' %>>Canceled</option>
-                        <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %>>Returned</option>
-                    </select>
-                </div>
-
-                <h6 class="fw-bold">Order Items</h6>
-                <div class="table-responsive">
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% if (order.items && Array.isArray(order.items)) { %>
-                                <% order.items.forEach(item => { %>
-                                    <tr>
-                                        <td><img src="<%= item.image %>" alt="<%= item.productId?.name || 'Product' %>" class="img-thumbnail" style="width: 50px; height: 50px;"></td>
-                                        <td><%= item.productId?.name || 'Product Name Not Available' %></td>
-                                        <td><%= item.quantity %></td>
-                                        <td>$<%= (item.price).toFixed(2) %></td>
-                                    </tr>
-                                <% }); %>
-                            <% } else { %>
-                                <tr>
-                                    <td colspan="4">No products found</td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <% if (['Delivered', 'Canceled', 'Returned'].includes(order.orderStatus)) { %>
-                    <button type="button" class="btn btn-primary update-order-status" data-order-id="<%= order._id %>" disabled>Update Status</button>
-                  <% } else { %>
-                    <button type="button" class="btn btn-primary update-order-status" data-order-id="<%= order._id %>">Update Status</button>
-                  <% } %>
-                  
-
-
-                
-              
-
-            </div>
-        </div>
-    </div>
-</div>
-<% }) %> -->
-
-
 
 <% orders.forEach(order => { %>
     <div class="modal fade" id="orderModal<%= order._id %>" tabindex="-1">
@@ -393,19 +293,6 @@
     
                     <hr>
     
-                    <!-- <div class="mb-3">
-                        <h6 class="fw-bold">Order Status</h6>
-                        <select class="form-select order-status-update" data-order-id="<%= order._id %>">
-                            <option value="Pending" <%= order.orderStatus === 'Pending' ? 'selected' : '' %>>Pending</option>
-                            <option value="Confirmed" <%= order.orderStatus === 'Confirmed' ? 'selected' : '' %>>Confirmed</option>
-                            <option value="Shipped" <%= order.orderStatus === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-                            <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-                            <option value="Canceled" <%= order.orderStatus === 'Canceled' ? 'selected' : '' %>>Canceled</option>
-                            <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %>>Returned</option>
-                            <option value="Rejected" <%= order.orderStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
-                        </select>
-                    </div> -->
-
                     <div class="mb-3">
                         <h6 class="fw-bold">Order Status</h6>
                         <% if (['Delivered', 'Canceled', 'Returned', 'Rejected'].includes(order.orderStatus)) { %>
@@ -517,43 +404,6 @@
         document.getElementById('sidebar').classList.toggle('show');
     });
 
-    // Update Order Status
-    // document.getElementById('updateStatusBtn').addEventListener('click', function() {
-    //     const newStatus = document.getElementById('orderStatusUpdate').value;
-    //     Swal.fire({
-    //         title: 'Confirm Status Update',
-    //         text: `Are you sure you want to update the order status to ${newStatus}?`,
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Yes, update it!'
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-                // Here you would typically make an API call to update the status
-                // For demo purposes, we'll just show a success message
-    //             Swal.fire(
-    //                 'Updated!',
-    //                 'The order status has been updated.',
-    //                 'success'
-    //             );
-    //         }
-    //     });
-    // });
-
-    // Search functionality
-    // document.getElementById('orderSearch').addEventListener('input', function(e) {
-    //     const searchTerm = e.target.value.toLowerCase();
-    //     // Implement search logic here
-    // });
-
-    // // Status filter
-    // document.getElementById('statusFilter').addEventListener('change', function(e) {
-    //     const selectedStatus = e.target.value;
-    //     // Implement filter logic here
-    // });
-
-    // Logout functionality
     document.getElementById('logout-btn').addEventListener('click', () => {
         Swal.fire({
             title: 'Are you sure?',
@@ -665,17 +515,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('accept-return')) {
         const orderId = event.target.dataset.orderId;
@@ -684,8 +523,8 @@ document.addEventListener('click', (event) => {
             text: "You are about to accept the return for this order.",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#28a745', // Green for success
-            cancelButtonColor: '#d33', // Red for cancel
+            confirmButtonColor: '#28a745', 
+            cancelButtonColor: '#d33', 
             confirmButtonText: 'Yes, accept it!',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -721,7 +560,7 @@ function handleAcceptReturn(orderId) {
         .then((data) => {
             if (data.success) {
                 Swal.fire('Accepted!', 'The return has been accepted successfully.', 'success').then(() => {
-                    location.reload(); // Reload to update the status
+                    location.reload(); 
                 });
             } else {
                 Swal.fire('Error!', 'An error occurred while accepting the return.', 'error');

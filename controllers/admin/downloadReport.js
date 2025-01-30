@@ -83,7 +83,7 @@ const salesReportController = {
             // Add header
             doc.fontSize(20)
                .font('Helvetica-Bold')
-               .text('E-Shop Sales Report', { align: 'center' });
+               .text('Onwriste Watch Shop Sales Report', { align: 'center' });
             
             doc.moveDown();
             doc.fontSize(12)
@@ -105,10 +105,10 @@ const salesReportController = {
             // Create metrics table
             const metrics_data = [
                 ['Total Sales Count:', metrics.totalSales],
-                ['Total Revenue:', `$${metrics.totalRevenue.toFixed(2)}`],
-                ['Total Coupon Discounts:', `$${metrics.totalCouponDiscount.toFixed(2)}`],
+                ['Total Revenue:', `₹${metrics.totalRevenue.toFixed(2)}`],
+                ['Total Coupon Discounts:', `₹${metrics.totalCouponDiscount.toFixed(2)}`],
                 // ['Total Offer Discounts:', `$${metrics.totalOfferDiscount.toFixed(2)}`],
-                ['Net Revenue:', `$${metrics.netRevenue.toFixed(2)}`]
+                ['Net Revenue:', `₹${metrics.netRevenue.toFixed(2)}`]
             ];
 
             let yPos = doc.y + 10;
@@ -152,7 +152,7 @@ const salesReportController = {
                    .font('Helvetica')
                    .text(new Date(order.createdAt).toLocaleDateString(), 50, rowTop, { width: columnWidth })
                    .text(order.orderedId, 50 + columnWidth, rowTop, { width: columnWidth })
-                   .text(`$${order.payableAmount.toFixed(2)}`, 50 + (columnWidth * 2), rowTop, { width: columnWidth })
+                   .text(`₹${order.payableAmount.toFixed(2)}`, 50 + (columnWidth * 2), rowTop, { width: columnWidth })
                    .text(order.orderStatus, 50 + (columnWidth * 3), rowTop, { width: columnWidth });
 
                 rowTop += 20;
@@ -243,13 +243,12 @@ const salesReportController = {
                 });
             });
 
-            // Set response headers
             res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             res.setHeader('Content-Disposition', `attachment; filename=sales-report-${type}.xlsx`);
 
-            // Write to response
-            await workbook.xlsx.write(res);
-
+            const buffer = await workbook.xlsx.writeBuffer();
+        
+            res.send(buffer);
         } catch (error) {
             console.error('Excel generation error:', error);
             res.status(500).json({ error: 'Failed to generate Excel report' });

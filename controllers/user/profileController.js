@@ -111,11 +111,17 @@ const addaddress = async (req, res) => {
             state,
             landmark,
             alternatePhone,
-            addressType
+            addressType,
+            isPrimary
         } = req.body;
 
         if (!name || !phone || !pincode || !locality || !address || !place || !state || !addressType) {
             return res.status(400).json({ success: false, message: 'All required fields must be filled' });
+        }
+
+         
+         if (isPrimary === 1) {
+            await Address.updateMany({ userId:req.session.userData.id, isPrimary: 1 }, { $set: { isPrimary: 0 } });
         }
 
         const newAddress = new Address({
@@ -130,6 +136,7 @@ const addaddress = async (req, res) => {
             landmark,
             alternatePhone,
             addressType,
+            isPrimary,
             isBlocked: false,
         });
 
@@ -213,11 +220,16 @@ const editaddress = async (req, res) => {
             state,
             landmark,
             alternatePhone,
-            addressType
+            addressType,
+            isPrimary
         } = req.body;
 
         if (!name || !phone || !pincode || !locality || !address || !place || !state || !addressType) {
             return res.status(400).json({ success: false, message: 'All required fields must be filled' });
+        }
+        
+        if (isPrimary === 1) {
+            await Address.updateMany({ userId:req.session.userData.id, isPrimary: 1 }, { $set: { isPrimary: 0 } });
         }
 
         const updatedAddress = await Address.findByIdAndUpdate(
@@ -233,6 +245,7 @@ const editaddress = async (req, res) => {
                 landmark,
                 alternatePhone,
                 addressType,
+                isPrimary,
                 isBlocked: false,
             },
             { new: true }

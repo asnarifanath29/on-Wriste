@@ -1,25 +1,48 @@
+User side :
+Invoice download (Pdf)
+Order above Rs 1000 should not be allowed for COD
+Delivery charge can be applied according to location / fixed charges (optional)
+Handle error for failed payments (update status as payment pending), 
+Should be able to continue payment from my order page in case of failed payment
+Admin side :
+Admin Dashboard - Chart with filter(yearly,monthly etc.)
+Best selling product (top 10) 
+Best selling category (top 10) 
+Best selling brands (top 10) 
+Generate ledger book (optional)
 
-Integrate online payment method(Razorpay or Paypal). The integration of multiple payment gateways will be an add-on..
-Change order status(cancel,return etc.)
-Coupon Management (Apply Coupon, Remove Coupon) 
-Search, Category filtering
-Wishlist (Add, Remove)
-Wallet (for canceled orders)
 
-Admin side : 
-Offer module(Product offer, Category offer, Referral offer).
-Coupon Management (Create, Delete)
-Sales report(Daily, Weekly, Yearly, Custom date)
-Generate sales report
-Should be able to filter based on  
-Custom date range 
-1 Day / week / month 
-Show discount and coupons deduction in sales report 
-Overall sales count  
-Overall order amount 
-Overall discount
 
-Report download (Pdf, Excel)
+
+
+1. Add an eye icon to toggle password visibility.
+2. Ensure the sign-up and login pages have a consistent design.
+4. Do not show the “In Stock” label.
+5. Remove the cart check on wishlist.
+6. Allow users to add items to the cart directly from the wishlist page.
+7. Set a default address for users.
+8. Replace NetBanking with Razorpay.
+
+
+
+
+3. Make the category filter persistent.
+
+
+
+
+
+
+9. Add a wallet option to the payment methods.
+10. Add a time frame for order returns.
+11. Implement sorting, filtering, and pagination on both the admin and user sides on order.
+12. Fix both items getting returned if a user is returning an order.
+
+13. Add a .env.example file.
+14. Fix CORS to allow access from all origins.
+15. What is webhooks.
+
+
 
 Use code formatter
 Nodemailer config

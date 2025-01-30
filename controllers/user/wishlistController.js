@@ -55,15 +55,15 @@ const addToWishlist = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Product not found.' });
         }
         // Check if product is already in cart
-        const cart = await Cart.findOne({ userId });
-        const productInCart = cart?.items.some(item => item.productId.toString() === productId);
+        // const cart = await Cart.findOne({ userId });
+        // const productInCart = cart?.items.some(item => item.productId.toString() === productId);
         
-        if (productInCart) {
-            return res.status(200).json({ 
-                success: false, 
-                message: 'Product is already in your cart. Cannot add to wishlist.' 
-            });
-        }
+        // if (productInCart) {
+        //     return res.status(200).json({ 
+        //         success: false, 
+        //         message: 'Product is already in your cart. Cannot add to wishlist.' 
+        //     });
+        // }
 
         // Find the user's wishlist
         let wishlist = await Wishlist.findOne({ userId });

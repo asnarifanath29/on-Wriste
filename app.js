@@ -40,7 +40,7 @@ app.use("/", userRouter)
 app.use("/admin", adminRouter)
 
 const cors = require('cors');
-app.use(cors()); // Allow all origins (or restrict as needed)
+app.use(cors()); 
 
 app.listen(5000, () => {
     console.log("Server Running")
