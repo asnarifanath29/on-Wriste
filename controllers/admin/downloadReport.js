@@ -1,6 +1,6 @@
 const PDFDocument = require('pdfkit');
 const Excel = require('exceljs');
-const Order = require('../../models/orderSchema'); // Adjust path as needed
+const Order = require('../../models/orderSchema'); 
 
 const generateDateRange = (type, startDate, endDate) => {
     const now = new Date();

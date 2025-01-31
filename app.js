@@ -39,8 +39,16 @@ app.use(express.static(path.join(__dirname, "public")))
 app.use("/", userRouter)
 app.use("/admin", adminRouter)
 
+// const cors = require('cors');
+// app.use(cors()); 
+
 const cors = require('cors');
-app.use(cors()); 
+
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], 
+    allowedHeaders: ['Content-Type', 'Authorization'] 
+}));
 
 app.listen(5000, () => {
     console.log("Server Running")

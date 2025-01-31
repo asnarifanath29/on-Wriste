@@ -214,10 +214,10 @@
                                     <i class="fas fa-plus"></i> Add New Address
                                 </a>
                             </div>
-                           
-                           
-                                
-                            
+
+
+
+
                             <div class="card-body">
                                 <% if (addresses && addresses.length> 0) { %>
                                     <% addresses.forEach((address, index)=> { %>
@@ -227,42 +227,43 @@
                                                     id="address<%= index %>" value="<%= address._id %>" <%=index===0
                                                     ? 'checked' : '' %>>
                                                 <label class="form-check-label" for="address<%= index %>">
-                                                    <h6>
-                                                        <% if (address.isPrimary === true) { %>
-                                                            <p><b>Primary Address:</b> </p>
-                                                        <% } %> 
-                                                    </h6>
-                                                    <p class="mb-1">
-                                                        <%= address.name %>
-                                                    </p>
-                                                    <p class="mb-1">
-                                                        <%= address.locality %>
-                                                    </p>
-                                                    <p class="mb-1">
-                                                        <%= address.address %>
-                                                    </p>
-                                                    <p class="mb-1">
-                                                        <%= address.place %>, <%= address.state %>
-                                                                <%= address.pincode %>
-                                                    </p>
-                                                    <p class="mb-1">Phone: <%= address.phone %>
-                                                    </p>
-                                                    <% if (address.alternatePhone) { %>
-                                                        <p class="mb-1">Alternate Phone: <%= address.alternatePhone %>
-                                                        </p>
+                                                    <% if (address.isPrimary===true) { %>
+                                                        <p><b>Primary Address:</b></p>
                                                         <% } %>
-                                                            <% if (address.landmark) { %>
-                                                                <p class="mb-1">Landmark: <%= address.landmark %>
+                                                            <p class="mb-1 name">
+                                                                <%= address.name %>
+                                                            </p>
+                                                            <p class="mb-1 locality">
+                                                                <%= address.locality %>
+                                                            </p>
+                                                            <p class="mb-1 address">
+                                                                <%= address.address %>
+                                                            </p>
+                                                            <p class="mb-1 location">
+                                                                <%= address.place %>, <%= address.state %>
+                                                                        <%= address.pincode %>
+                                                            </p>
+                                                            <p class="mb-1 phone">Phone: <%= address.phone %>
+                                                            </p>
+                                                            <% if (address.alternatePhone) { %>
+                                                                <p class="mb-1 alternate-phone">Alternate Phone: <%=
+                                                                        address.alternatePhone %>
                                                                 </p>
                                                                 <% } %>
-                                                                    <b class="mb-1">
-                                                                        <%= address.addressType %>
-                                                                    </b>
+                                                                    <% if (address.landmark) { %>
+                                                                        <p class="mb-1 landmark">Landmark: <%=
+                                                                                address.landmark %>
+                                                                        </p>
+                                                                        <% } %>
+                                                                            <p class="mb-1 address-type"><b>
+                                                                                    <%= address.addressType %>
+                                                                                </b></p>
                                                 </label>
                                             </div>
                                             <a href="/edit-address/<%= address._id %>"
-                                                class="btn btn-outline-danger btn-sm edit-btn"><i
-                                                    class="fas fa-edit"></i></a>
+                                                class="btn btn-outline-danger btn-sm edit-btn">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
                                         </div>
                                         <% }) %>
                                             <% } else { %>
@@ -300,15 +301,15 @@
                                         </label>
                                     </div>
                                 </div>
-                                <!-- <div class="payment-method">
+                                <div class="payment-method">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment" id="upi">
-                                        <label class="form-check-label" for="upi">
-                                            <h6 class="mb-1">upi</h6>
-                                            <p class="mb-0 text-muted">Pay securely with upi</p>
+                                        <input class="form-check-input" type="radio" name="payment" id="wallet">
+                                        <label class="form-check-label" for="wallet">
+                                            <h6 class="mb-1">wallet</h6>
+                                            <p class="mb-0 text-muted">Pay securely with wallet</p>
                                         </label>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -373,14 +374,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
 
 
 
@@ -615,10 +608,8 @@
                 const couponSelect = document.getElementById('couponSelect');
                 const couponCode = couponSelect.value;
                 const couponDiscount = couponCode ? (subtotal + 10 - totalAmountWithShipping) : 0;
-                const finalAmount = totalAmountWithShipping 
-                console.log("totalAmountWithShipping"+totalAmountWithShipping)
-                console.log("couponDiscount"+couponDiscount)
-                console.log("finalAmount"+finalAmount)
+                const finalAmount = totalAmountWithShipping
+
 
 
                 // Helper function to safely extract text content
@@ -684,7 +675,7 @@
 
 
                 const orderDetails = {
-                    userId: '<%= userData.id %>', // This should be populated from your server-side template
+                    userId: '<%= userData.id %>', 
                     addressDetails: {
                         addressId: addressId,
                         name: addressDetails.name,
@@ -708,7 +699,14 @@
                     appliedCoupon: couponCode || null
                 };
 
-
+                if (selectedPaymentInput.id === 'cod' && finalAmount > 1000) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Cash On Delivery Not Available',
+                        text: 'Orders above Rs. 1000 are not eligible for Cash on Delivery (COD). Please select another payment method.'
+                    });
+                    return;
+                }
 
                 if (selectedPaymentInput.id === 'cod') {
                     try {
@@ -734,6 +732,7 @@
                         Swal.close();
 
                         if (response.ok) {
+                            console.log("heloooo success")
                             await Swal.fire({
                                 icon: 'success',
                                 title: 'Order Placed Successfully!',
@@ -743,11 +742,11 @@
                             window.location.href = `/order-confirmation/${data.orderId}`;
                         }
                     } catch (error) {
-                        console.error('Error placing COD order:', error);
-                        Swal.fire({
+
+                        await Swal.fire({
                             icon: 'error',
                             title: 'Order Failed',
-                            text: error.message || 'Failed to place your order. Please try again.'
+                            text: data.message || 'Failed to place your order. Please try again.'
                         });
                     }
                 }
@@ -764,8 +763,7 @@
                                 Swal.showLoading();
                             }
                         });
-                        console.log("payable:",orderDetails.orderAmount.payableAmount)
-                       console.log("hello")
+                        
                         const paymentResponse = await fetch('/razorpay/initiate', {
                             method: 'POST',
                             headers: {
@@ -774,10 +772,7 @@
                             body: JSON.stringify({ amount: orderDetails.orderAmount.payableAmount })
                         });
 
-                        console.log("==============================");
-                        console.log("paymentResponse : ");
-                        console.log(paymentResponse);
-                        console.log("==============================");
+                  
 
 
                         if (!paymentResponse.ok) {
@@ -816,7 +811,7 @@
                                             razorpayPaymentId: response.razorpay_payment_id,
                                             razorpayOrderId: response.razorpay_order_id,
                                             razorpaySignature: response.razorpay_signature
-                                        })
+                                        }) 
                                     });
 
                                     const result = await verifyResponse.json();
@@ -842,17 +837,55 @@
                                     });
                                 }
                             },
-                            prefill: {
-                                name: orderDetails.addressDetails.name,
-                                email: "", // Add email if available
-                                contact: orderDetails.addressDetails.phone
-                            },
+                            // prefill: {
+                            //     name: orderDetails.addressDetails.name,
+                            //     email: "", // Add email if available
+                            //     contact: orderDetails.addressDetails.phone
+                            // },
                             theme: {
-                                color: "#ff2020"
+                                color: "#F37254"
                             }
                         };
 
                         const razorpay = new Razorpay(razorpayOptions);
+                        // Add payment failure handler
+                        razorpay.on('payment.failed', async function (response) {
+                            try {
+                                // Update order status to Failed
+                                const updateResponse = await fetch('/failed-order', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        ...orderDetails,
+                                    })
+                                });
+
+                                if (!updateResponse.ok) {
+                                    throw new Error('Failed to update order status');
+                                }
+
+                                // Show failure message and redirect
+                                await Swal.fire({
+                                    title: 'Payment Failed',
+                                    text: 'Payment failed, redirecting to orders page',
+                                    icon: 'error',
+                                    showConfirmButton: false,
+                                    timer: 15000,
+                                    timerProgressBar: true,
+                                    willClose: () => {
+                                        window.location.href = '/update-profile';
+                                    }
+                                });
+                            } catch (error) {
+                                console.error('Error handling payment failure:', error);
+                                Swal.fire('Error', 'Something went wrong. Please try again.', 'error')
+                                    .then(() => {
+                                        window.location.href = '/update-profile';
+                                    });
+                            }
+                        });
                         razorpay.open();
 
                     } catch (error) {
@@ -861,6 +894,47 @@
                             icon: 'error',
                             title: 'Payment Failed',
                             text: error.message || 'Failed to initialize payment. Please try again.'
+                        });
+                    }
+                }
+                else if (selectedPaymentInput.id === 'wallet') {
+                    try {
+                        Swal.fire({
+                            title: 'Processing',
+                            text: 'Placing your order...',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            willOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        const response = await fetch('/place-order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(orderDetails)
+                        });
+
+                        const data = await response.json();
+                        Swal.close();
+
+                        if (response.ok) {
+                            await Swal.fire({
+                                icon: 'success',
+                                title: 'Order Placed Successfully!',
+                                text: data.message,
+                                showConfirmButton: true
+                            });
+                            window.location.href = `/order-confirmation/${data.orderId}`;
+                        }
+                    } catch (error) {
+
+                        await Swal.fire({
+                            icon: 'error',
+                            title: 'Order Failed',
+                            text: data.message || 'Failed to place your order. Please try again.'
                         });
                     }
                 }
@@ -874,16 +948,6 @@
                 });
             }
         }
-
-
-
-
-
-
-
-
-
-
 
 
         document.addEventListener('DOMContentLoaded', () => {

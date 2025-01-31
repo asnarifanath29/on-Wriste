@@ -3,10 +3,16 @@ const mongoose = require('mongoose');
 
 const getCoupenPage = async (req, res) => {
     try {
-        const coupons = await Coupon.find({});
+        const page = parseInt(req.query.page) || 1; 
+        const limit = 5; 
+        const skip = (page - 1) * limit;
+
+        const coupons = await Coupon.find({}).skip(skip).limit(limit);
         
+        const count = await Coupon.countDocuments();
+        const totalPages = Math.ceil(count / limit);
         
-        res.render('coupen', { coupons });
+        res.render('coupen', { coupons, currentPage: page,totalPages: totalPages });
     } catch (error) {
         console.error('Error fetching coupons:', error);
         res.status(500).json({ message: 'Error fetching coupons' });

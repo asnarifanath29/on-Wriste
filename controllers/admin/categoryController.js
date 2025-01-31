@@ -5,8 +5,14 @@ const Product= require("../../models/productSchema");
 const bcrypt = require("bcrypt")
 const categoriesget = async (req, res) => {
     try {
-        const categories = await Category.find(); 
-        res.render('category', { categories });
+        const page = parseInt(req.query.page) || 1; 
+        const limit = 2; 
+        const skip = (page - 1) * limit;
+
+        const categories = await Category.find().skip(skip).limit(limit); 
+        const count=await Category.countDocuments();
+        const totalPages=Math.ceil(count/limit);
+        res.render('category', { categories ,totalPages: totalPages,currentPage: page});
     } catch (error) {
         console.error('Error fetching categories:', error);
         res.status(500).json({ message: 'Error fetching categories' });

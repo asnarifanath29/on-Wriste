@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+
     <style>
         .modal-backdrop {
             z-index: 1040;
@@ -392,25 +394,37 @@
                                                             </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <% if (!['Canceled' , 'Returned' ,'Delivered'
+                                                    <% if (!['Canceled' , 'Returned' ,'Delivered','Pending'
                                                         ].includes(orderItem.orderStatus)) { %>
                                                         <button class="btn btn-outline-danger"
                                                             onclick="cancelOrder('<%= orderItem._id %>')">
                                                             Cancel Order
                                                         </button>
                                                         <% } %>
-                                                            <!-- <button class="btn btn-primary"
-                                                                onclick="trackOrder('<%= orderItem._id %>')">
-                                                                Track Order
-                                                            </button> -->
-                                                            <% if (['Delivered' ].includes(orderItem.orderStatus)) { %>
-                                                                <button class="btn btn-outline-danger"
-                                                                    onclick="returnOrder('<%= orderItem._id %>')">
-                                                                    Return Order
+                                                            <% if (['Failed'].includes(orderItem.paymentStatus)) { %>
+                                                                <button class="btn btn-primary"
+                                                                    onclick="retrypayment('<%= orderItem._id %>')">
+                                                                    Retry Payment
                                                                 </button>
                                                                 <% } %>
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
+
+                                                                    <% if
+                                                                        (!['Failed'].includes(orderItem.paymentStatus))
+                                                                        { %>
+                                                                        <button id="downloadPDF" class="btn btn-danger"
+                                                                            onclick="downloadPDF('<%= orderItem._id %>')">Download
+                                                                            PDF</button>
+                                                                        <% } %>
+                                                                            <% if (['Delivered'
+                                                                                ].includes(orderItem.orderStatus)) { %>
+                                                                                <button class="btn btn-outline-danger"
+                                                                                    onclick="returnOrder('<%= orderItem._id %>')">
+                                                                                    Return Order
+                                                                                </button>
+                                                                                <% } %>
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-bs-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -455,9 +469,9 @@
                                                                 </div>
                                                                 <div>
                                                                     <h6>
-                                                                        <% if (address.isPrimary === true) { %>
+                                                                        <% if (address.isPrimary===true) { %>
                                                                             <p><b>Primary Address:</b> </p>
-                                                                        <% } %> 
+                                                                            <% } %>
                                                                     </h6>
                                                                 </div>
                                                                 <div>
@@ -496,7 +510,7 @@
                                                                         </p>
                                                                         <% } %>
 
-                                                                                  
+
                                                         </div>
                                                     </div>
                                                     <% }) %>
@@ -1276,7 +1290,11 @@
                         });
                 }
             </script>
-
+            <script>
+                function downloadPDF(orderId) {
+                    window.location.href = `/download-invoice/${orderId}`;
+                }
+            </script>
 
             <script>
                 function generateReferralLink() {
@@ -1318,6 +1336,75 @@
                         });
                         console.error('Failed to copy text: ', err);
                     }
+                }
+            </script>
+            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+            <script>
+                function retrypayment(orderId) {
+                    fetch(`/retry-payment/${orderId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Open Razorpay payment modal
+                                const options = {
+                                    key: data.razorpayKey,
+                                    amount: data.amount,
+                                    currency: data.currency,
+                                    order_id: data.orderId,
+                                    name: "watch shop",
+                                    description: "Payment for Order",
+                                    handler: function (response) {
+                                        // Handle successful payment
+                                        fetch(`/payment-success/${orderId}`, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify(response)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    Swal.fire({
+                                                        title: "Payment Successful!",
+                                                        text: "Thank you for your payment.",
+                                                        icon: "success",
+                                                        confirmButtonText: "OK",
+                                                    }).then(() => {
+                                                        window.location.reload();
+                                                    });
+                                                } else {
+                                                    Swal.fire({
+                                                        title: "Payment Failed!",
+                                                        text: "Something went wrong. Please try again.",
+                                                        icon: "error",
+                                                        confirmButtonText: "Retry",
+                                                    });
+                                                }
+
+                                            });
+                                    },
+
+                                    theme: {
+                                        color: "#F37254"
+                                    }
+                                };
+                                const rzp = new Razorpay(options);
+                                rzp.open();
+                            } else {
+                                Swal.fire({
+                                    title: "Payment Initiation Failed!",
+                                    text: "Please check your details and try again.",
+                                    icon: "error",
+                                    confirmButtonText: "OK",
+                                });
+                            }
+                        });
                 }
             </script>
 

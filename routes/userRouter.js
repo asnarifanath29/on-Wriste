@@ -8,9 +8,12 @@ const filterController=require("../controllers/user/filterController")
 const orderController=require("../controllers/user/orderController")
 const coupenController=require("../controllers/user/coupenController")
 const wishlistController=require("../controllers/user/wishlistController")
+const invoiceController=require("../controllers/user/invoiceController")
+const retryPaymentController=require("../controllers/user/retryPaymentController")
 const User = require("../models/userSchema")
 const userAuth = require('../middlewares/userAuth');
 const coupenSchema = require('../models/coupenSchema')
+const { retryPayment } = require('../controllers/user/retryPaymentController')
 
 
 router.get("/pageNotFound", userController.pageNotFound)
@@ -70,11 +73,11 @@ router.get('/update-profile',userAuth,profileController.loadprofilepage);
 router.post('/update-profile',userAuth,profileController.updateprofilepage);
 router.get('/add-address',userAuth,profileController.loadaddressfieldpage);
 router.post('/add-address',userAuth,profileController.addaddress);
-
 router.get('/edit-address/:id',userAuth,profileController.geteditaddress);
 router.post('/edit-address/:id',userAuth,profileController.editaddress)
 router.delete("/delete-address/:id",userAuth,profileController.deleteaddress)
 router.post("/update-password",userAuth,profileController.updatepassword)
+
 
 
 router.get("/cart", userAuth,cartController.loadCartpage);
@@ -88,9 +91,7 @@ router.post("/checkout", userAuth,cartController.Checkout);
 router.get("/order-confirmation/:id", userAuth,cartController.confirmationPage);
 router.post('/razorpay/initiate',userAuth,cartController.initiatePayment);
 router.post("/place-order", userAuth,cartController.placeOrder);
-
-
-
+router.post('/failed-order',userAuth,cartController.faildOrder)
 router.delete("/delete-product",userAuth,cartController.deleteProduct)
 
 
@@ -108,6 +109,10 @@ router.post('/apply-coupon',coupenController.applyCoupen)
 router.get('/wishlist',userAuth,wishlistController.loadwishlist)
 router.post('/wishlist',wishlistController.addToWishlist)
 router.delete('/wishlist/remove/:productId',userAuth,wishlistController.deletewishlist)
+
+router.get('/download-invoice/:orderId',invoiceController.invoice)
+router.post('/retry-payment/:orderId',retryPaymentController.retryPayment)
+router.post('/payment-success/:orderId',retryPaymentController.paymentSuccess)
 
 module.exports = router
 

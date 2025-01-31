@@ -3,24 +3,35 @@ const Order = require("../../models/orderSchema");
 const Product = require("../../models/productSchema")
 const Wallet = require("../../models/walletSchema")
 
-const getOrderPage = async (req, res) => {
 
+const getOrderPage = async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1; 
+        const limit = 5; 
+        const skip = (page - 1) * limit;
+
+        // Fetch orders with pagination
         const orders = await Order.find()
             .populate('items.productId')
-            .exec();
-        orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+
+
+        // Count total orders
+        const count = await Order.countDocuments();
+        const totalPages = Math.ceil(count / limit);
+
         res.render("order", {
-            orders: orders
+            orders: orders,
+            currentPage: page,
+            totalPages: totalPages
         });
-    }
-    catch (error) {
+    } catch (error) {
         console.error("Error loading profile page:", error);
         res.redirect("/pageNotFound");
     }
 };
-
-
 
 const updateOrderStatus = async (req, res) => {
     try {

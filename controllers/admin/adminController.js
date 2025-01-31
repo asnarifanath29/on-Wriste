@@ -64,9 +64,17 @@ const userManagement = async (req, res) => {
 
         return res.redirect('/admin/login');
     }
+    const page = parseInt(req.query.page) || 1; 
+    const limit = 5; 
+    const skip = (page - 1) * limit;
 
-    const users = await User.find();
-    res.render('userManagement', { users });
+    const users = await User.find().skip(skip).limit(limit).exec();
+
+    const count=await User.countDocuments();
+    const totalPages=Math.ceil(count/limit);
+
+    res.render('userManagement', { users,currentPage: page,
+        totalPages: totalPages });
 
 };
 

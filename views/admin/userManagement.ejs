@@ -134,6 +134,28 @@
                 margin-left: 0;
             }
         }
+        .pagination {
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.pagination .page-link {
+    color: #343a40;
+    border-color: #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #343a40;
+    border-color: #343a40;
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    color: #343a40;
+}
+
     </style>
 </head>
 <body>
@@ -178,37 +200,43 @@
         <li class="nav-item">
             <a class="nav-link" href="/admin/products">
                 <i class="bi bi-box-seam"></i>
-                Products
+                Product Management
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="/admin/userManagement">
+            <a class="nav-link" href="/admin/userManagement">
                 <i class="bi bi-people"></i>
-                Users
+                User Management
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/admin/categories">
                 <i class="bi bi-grid"></i>
-                Categories
+                Categories Management
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/admin/order">
+            <a class="nav-link active" href="/admin/order">
                 <i class="bi bi-box-seam-fill"></i>
-                Order
+                Order Management
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/admin/coupen">
                 <i class="bi bi-coin"></i>
-                Coupen
+                Coupen Management
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/admin/salesReport">
                 <i class="bi bi-reception-4"></i>
                 Sales Report
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/referal">
+                <i class="bi bi-gift"></i>
+                Referal Management
             </a>
         </li>
     </ul>
@@ -258,6 +286,35 @@
                     <% } %>
                 </tbody>
             </table>
+            <div class="card-footer border-top">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center mb-0">
+                        <% if (currentPage > 1) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+                            </li>
+                        <% } %>
+            
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                            <% if (i == currentPage) { %>
+                                <li class="page-item active">
+                                    <a class="page-link"><%= i %></a>
+                                </li>
+                            <% } else { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                </li>
+                            <% } %>
+                        <% } %>
+            
+                        <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= Number(currentPage) + 1 %>">Next</a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>

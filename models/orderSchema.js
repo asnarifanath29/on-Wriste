@@ -103,7 +103,7 @@ const orderSchema = new Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ['cod', 'netbanking', 'upi'],
+    enum: ['cod', 'netbanking', 'wallet'],
     required: true,
   },
   orderStatus: {

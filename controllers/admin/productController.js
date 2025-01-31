@@ -7,11 +7,21 @@ const fs = require('fs')
 
 
 
+
 const getProduct = async (req, res) => {
     try {
-        const products = await Product.find().populate('category') 
+        const page = parseInt(req.query.page) || 1; 
+        const limit = 5; 
+        const skip = (page - 1) * limit;
+
+        const products = await Product.find().populate('category').skip(skip).limit(limit);
         const categories = await Category.find()
-        res.render('products', { products, categories }); 
+
+         
+        const count = await Product.countDocuments();
+        const totalPages = Math.ceil(count / limit);
+
+        res.render('products', { products, categories ,currentPage: page, totalPages: totalPages}); 
     } catch (error) {
         res.status(500).send({ error: 'Failed to fetch products.' });
     }
