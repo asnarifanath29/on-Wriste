@@ -9,12 +9,12 @@ const coupenController=require("../controllers/admin/coupenController")
 const salesController=require("../controllers/admin/salesController")
 const referalController=require("../controllers/admin/referalController")
 const downloadController=require("../controllers/admin/downloadReport")
+const dashboardController=require("../controllers/admin/dashboardController")
 const upload = require('../middlewares/upload');
 
 
 router.get("/login", isLogin, adminController.loadLogin)
 router.post("/login", adminController.login)
-router.get("/dashboard", adminController.loadDashboared)
 router.post("/logout", adminAuth, adminController.logout)
 
 
@@ -82,4 +82,16 @@ router.get("/referal",adminAuth,referalController.loadReferalPage)
 router.get("/downloadpdf",adminAuth,downloadController.downloadPDF)
 router.get("/downloadexcel",adminAuth,downloadController.downloadExcel)
 
+
+// router.get('/yearly-sales',dashboardController.dashboardController.getYearlySales);
+// router.get('/monthly-sales/:year',dashboardController.dashboardController.getMonthlySales);
+// router.get('/daily-sales/:year/:month',dashboardController.dashboardController.getDailySales);
+// router.get('/best-products',dashboardController.getBestProducts);
+// router.get('/best-categories',dashboardController.getBestCategories);
+// router.get('/best-brands',dashboardController.getBestBrands);
+router.get("/dashboard", dashboardController.loadDashboard)
+router.get('/sales-data',dashboardController.salesData)
+
+
+// router.get("/dashboard", adminController.loadDashboared)
 module.exports = router

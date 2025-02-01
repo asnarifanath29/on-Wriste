@@ -8,7 +8,7 @@ const adminAuth = (req, res, next) => {
 
 const isLogin = (req, res, next) => {
     if (req.session.isAdmin) {
-        res.redirect('/admin/dashboard')
+        res.redirect('')
     } else {
         next()
     }

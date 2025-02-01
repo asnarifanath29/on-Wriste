@@ -294,8 +294,8 @@
 
                                 <div class="payment-method">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="payment" id="netbanking">
-                                        <label class="form-check-label" for="netbanking">
+                                        <input class="form-check-input" type="radio" name="payment" id="razorpay">
+                                        <label class="form-check-label" for="razorpay">
                                             <h6 class="mb-1">Razorpay</h6>
                                             <p class="mb-0 text-muted">Pay securely with Razorpay</p>
                                         </label>
@@ -675,7 +675,7 @@
 
 
                 const orderDetails = {
-                    userId: '<%= userData.id %>', 
+                    userId: '<%= userData.id %>',
                     addressDetails: {
                         addressId: addressId,
                         name: addressDetails.name,
@@ -701,7 +701,7 @@
 
                 if (selectedPaymentInput.id === 'cod' && finalAmount > 1000) {
                     Swal.fire({
-                        icon: 'warning',
+                        icon: 'info',
                         title: 'Cash On Delivery Not Available',
                         text: 'Orders above Rs. 1000 are not eligible for Cash on Delivery (COD). Please select another payment method.'
                     });
@@ -751,8 +751,8 @@
                     }
                 }
 
-                // For Netbanking
-                else if (selectedPaymentInput.id === 'netbanking') {
+                // For Razorpay
+                else if (selectedPaymentInput.id === 'razorpay') {
                     try {
                         Swal.fire({
                             title: 'Processing',
@@ -763,7 +763,7 @@
                                 Swal.showLoading();
                             }
                         });
-                        
+
                         const paymentResponse = await fetch('/razorpay/initiate', {
                             method: 'POST',
                             headers: {
@@ -772,7 +772,7 @@
                             body: JSON.stringify({ amount: orderDetails.orderAmount.payableAmount })
                         });
 
-                  
+
 
 
                         if (!paymentResponse.ok) {
@@ -811,7 +811,7 @@
                                             razorpayPaymentId: response.razorpay_payment_id,
                                             razorpayOrderId: response.razorpay_order_id,
                                             razorpaySignature: response.razorpay_signature
-                                        }) 
+                                        })
                                     });
 
                                     const result = await verifyResponse.json();
@@ -929,12 +929,22 @@
                             });
                             window.location.href = `/order-confirmation/${data.orderId}`;
                         }
+                        else {
+                            Swal.fire({
+                                icon: 'info', // Use 'info' instead of 'error' for a neutral tone
+                                title: 'Order Not Completed',
+                                text: data.message || 'We encountered an issue while processing your order. Please check your details and try again.',
+                                confirmButtonText: 'Got it'
+                            });
+                        }
                     } catch (error) {
 
                         await Swal.fire({
                             icon: 'error',
                             title: 'Order Failed',
-                            text: data.message || 'Failed to place your order. Please try again.'
+                            text: data.message || 'Failed to place your order. Please try again.',
+                            timer: 15000,
+                            timerProgressBar: true,
                         });
                     }
                 }

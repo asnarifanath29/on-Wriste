@@ -6,15 +6,15 @@ Handle error for failed payments (update status as payment pending), ---
 Should be able to continue payment from my order page in case of failed payment ---
 
 Admin side :
-Admin Dashboard - Chart with filter(yearly,monthly etc.)
-Best selling product (top 10) 
-Best selling category (top 10) 
-Best selling brands (top 10) 
+Admin Dashboard - Chart with filter(yearly,monthly etc.)---
+Best selling product (top 10) ---
+Best selling category (top 10) ---
+Best selling brands (top 10) ---
+
 Generate ledger book (optional)
 
-3. Make the category filter persistent.
-9. Add a wallet option to the payment methods.
-rame for order returns.
+3. Make the category filter persistent. 
+10. Add a time frame for order returns.
 12. Fix both items getting returned if a user is returning an order.
 
 
@@ -25,6 +25,7 @@ rame for order returns.
 6. Allow users to add items to the cart directly from the wishlist page.
 7. Set a default address for users.
 8. Replace NetBanking with Razorpay.
+9. Add a wallet option to the payment methods.
 14. Fix CORS to allow access from all origins.
 13. Add a .env.example file..
 11. Implement sorting, filtering, and pagination on both the admin and user sides on order.

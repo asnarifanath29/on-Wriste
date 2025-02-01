@@ -353,7 +353,7 @@ const placeOrder = async (req, res) => {
             orderData.orderStatus = 'Confirmed';
         }
 
-        else if (paymentMethod === 'netbanking') {
+        else if (paymentMethod === 'razorpay') {
             // Verify Razorpay signature
             if (!razorpayPaymentId || !razorpayOrderId || !razorpaySignature) {
                 return res.status(400).json({
@@ -370,11 +370,40 @@ const placeOrder = async (req, res) => {
             orderData.currency = 'INR';
         }
 
+
         else if (paymentMethod === 'wallet') {
 
-            const wallet = await Wallet.find({ userId })
+            const wallet = await Wallet.findOne({ userId });
+            if (!wallet) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Wallet not found'
+                });
+            }
 
+            if (wallet.balance < orderAmount.payableAmount) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Insufficient wallet balance'
+                });
+            }
 
+            wallet.balance -= orderAmount.payableAmount;
+            const transaction = {
+                amount: orderAmount.payableAmount,
+                type: 'Debit',
+                description: `Payment for order ${orderedId},`,
+                createdAt: new Date(),
+            };
+            wallet.transactions.push(transaction);
+            wallet.updatedAt = new Date();
+
+            // Save the updated wallet
+            await wallet.save();
+
+            // Update order details
+            orderData.paymentStatus = 'Paid';
+            orderData.orderStatus = 'Confirmed';
         }
 
         // Create new order
@@ -395,8 +424,8 @@ const placeOrder = async (req, res) => {
             { $set: { items: [] } }
         );
 
-        // Update product inventory (you'll need to implement this based on your Product model)
-        // await updateProductInventory(orderItems);
+        // Update product inventory
+        await updateProductInventory(orderItems);
 
         return res.status(200).json({
             success: true,
@@ -414,6 +443,36 @@ const placeOrder = async (req, res) => {
     }
 };
 
+
+const updateProductInventory = async (orderItems) => {
+    try {
+        // Loop through each item in the order
+        for (const item of orderItems) {
+            const productId = item.productId;
+            const quantity = item.quantity;
+
+            // Find the product and decrement its stock
+            const product = await Product.findById(productId);
+            if (!product) {
+                throw new Error(`Product not found: ${productId}`);
+            }
+
+            // Check if there is enough stock
+            if (product.stock < quantity) {
+                throw new Error(`Insufficient stock for product: ${product.name}`);
+            }
+
+            // Decrement the stock
+            product.stock -= quantity;
+
+            // Save the updated product
+            await product.save();
+        }
+    } catch (error) {
+        console.error('Error updating product inventory:', error);
+        throw error; // Re-throw the error to handle it in the calling function
+    }
+};
 
 
 const confirmationPage = async (req, res) => {

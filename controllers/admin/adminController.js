@@ -40,15 +40,15 @@ const login = async (req, res) => {
     }
 };
 
-const loadDashboared = async (req, res) => {
-    try {
-        return res.render("dashboared")
+// const loadDashboared = async (req, res) => {
+//     try {
+//         return res.render("dashboared")
 
-    } catch (error) {
-        console.log("Dashboared not found")
-        res.status(500).send("Server error")
-    }
-}
+//     } catch (error) {
+//         console.log("Dashboared not found")
+//         res.status(500).send("Server error")
+//     }
+// }
 
 const logout = (req, res) => {
     req.session.destroy((err) => {
@@ -101,4 +101,4 @@ const userControl = async (req, res) => {
 
 
 
-module.exports = { loadLogin, login, loadDashboared, logout, userManagement, userControl };
+module.exports = { loadLogin, login, logout, userManagement, userControl };
