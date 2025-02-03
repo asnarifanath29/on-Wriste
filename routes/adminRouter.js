@@ -82,16 +82,7 @@ router.get("/referal",adminAuth,referalController.loadReferalPage)
 router.get("/downloadpdf",adminAuth,downloadController.downloadPDF)
 router.get("/downloadexcel",adminAuth,downloadController.downloadExcel)
 
+router.get("/dashboard",adminAuth, dashboardController.loadDashboard)
+router.get('/sales-data',adminAuth,dashboardController.getSalesData)
 
-// router.get('/yearly-sales',dashboardController.dashboardController.getYearlySales);
-// router.get('/monthly-sales/:year',dashboardController.dashboardController.getMonthlySales);
-// router.get('/daily-sales/:year/:month',dashboardController.dashboardController.getDailySales);
-// router.get('/best-products',dashboardController.getBestProducts);
-// router.get('/best-categories',dashboardController.getBestCategories);
-// router.get('/best-brands',dashboardController.getBestBrands);
-router.get("/dashboard", dashboardController.loadDashboard)
-router.get('/sales-data',dashboardController.salesData)
-
-
-// router.get("/dashboard", adminController.loadDashboared)
 module.exports = router

@@ -122,52 +122,52 @@ const loadDashboard = async (req, res) => {
 
 
 
-const salesData = async (req, res) => {
-    try {
-        const { range, startDate, endDate } = req.query;
+// const salesData = async (req, res) => {
+//     try {
+//         const { range, startDate, endDate } = req.query;
 
-        // Validate the range parameter
-        if (!['daily', 'weekly', 'monthly', 'yearly', 'custom'].includes(range)) {
-            return res.status(400).json({ message: 'Invalid range parameter' });
-        }
+//         // Validate the range parameter
+//         if (!['daily', 'weekly', 'monthly', 'yearly', 'custom'].includes(range)) {
+//             return res.status(400).json({ message: 'Invalid range parameter' });
+//         }
 
-        // Calculate the date range
-        let dateRange;
-        if (range === 'custom') {
-            if (!startDate || !endDate) {
-                return res.status(400).json({ message: 'Start date and end date are required for custom range' });
-            }
-            dateRange = { start: new Date(startDate), end: new Date(endDate) };
-        } else {
-            dateRange = getDateRange(range);
-        }
+//         // Calculate the date range
+//         let dateRange;
+//         if (range === 'custom') {
+//             if (!startDate || !endDate) {
+//                 return res.status(400).json({ message: 'Start date and end date are required for custom range' });
+//             }
+//             dateRange = { start: new Date(startDate), end: new Date(endDate) };
+//         } else {
+//             dateRange = getDateRange(range);
+//         }
 
-        // Fetch sales data from the database
-        const salesData = await Order.aggregate([
-            {
-                $match: {
-                    createdAt: { $gte: dateRange.start, $lte: dateRange.end },
-                    orderStatus: { $nin: ["Returned", "Canceled"] } // Exclude canceled/returned orders
-                }
-            },
-            {
-                $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // Group by day
-                    totalSales: { $sum: "$totalAmount" }
-                }
-            },
-            { $sort: { _id: 1 } } // Sort by date
-        ]);
+//         // Fetch sales data from the database
+//         const salesData = await Order.aggregate([
+//             {
+//                 $match: {
+//                     createdAt: { $gte: dateRange.start, $lte: dateRange.end },
+//                     orderStatus: { $nin: ["Returned", "Canceled"] } // Exclude canceled/returned orders
+//                 }
+//             },
+//             {
+//                 $group: {
+//                     _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // Group by day
+//                     totalSales: { $sum: "$totalAmount" }
+//                 }
+//             },
+//             { $sort: { _id: 1 } } // Sort by date
+//         ]);
 
-        // Send the response
-        res.status(200).json(salesData);
-    } catch (error) {
-        console.error("Error fetching sales data:", error);
-        res.status(500).json({ message: "Server error" });
-    }
-};
+//         // Send the response
+//         res.status(200).json(salesData);
+//     } catch (error) {
+//         console.error("Error fetching sales data:", error);
+//         res.status(500).json({ message: "Server error" });
+//     }
+// };
 
-// Helper function to calculate date ranges
+// // Helper function to calculate date ranges
 const getDateRange = (range) => {
     const now = new Date();
     switch (range) {
@@ -183,4 +183,42 @@ const getDateRange = (range) => {
             return { start: new Date(0), end: new Date() }; // All time
     }
 };
-module.exports = { loadDashboard , salesData };
+
+const getSalesData = async (req, res) => {
+    try {
+        const { range, startDate, endDate } = req.query;
+
+        if (!['daily', 'weekly', 'monthly', 'yearly', 'custom'].includes(range)) {
+            return res.status(400).json({ message: 'Invalid range parameter' });
+        }
+
+        const dateRange = range === 'custom' 
+            ? { start: new Date(startDate), end: new Date(endDate) }
+            : getDateRange(range);
+
+        // Fetch sales data
+        const salesData = await Order.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: dateRange.start, $lte: dateRange.end },
+                    orderStatus: { $nin: ["Returned", "Canceled"] }
+                }
+            },
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    totalSales: { $sum: "$totalAmount" },
+                    orderCount: { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]);
+
+        res.status(200).json(salesData);
+
+    } catch (error) {
+        console.error("Error fetching sales data:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+module.exports = { loadDashboard , getSalesData };
