@@ -25,6 +25,52 @@
 
 
     <style>
+        
+#orders-container {
+    max-height: 500px; 
+    overflow-y: auto;  
+    padding-right: 10px;
+}
+
+#orders-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#orders-container::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+#orders-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px; 
+}
+
+#orders-container::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+    .table-responsive {
+    max-height: 250px; 
+    overflow-y: auto; 
+}
+
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
         .modal-backdrop {
             z-index: 1040;
         }
@@ -95,11 +141,6 @@
         }
 
 
-
-
-
-
-
         .wallet-card {
             background: linear-gradient(135deg, #5a6e83 0%, #3498db 100%);
             color: white;
@@ -130,56 +171,6 @@
             background-color: #f8f9fa;
         }
 
-
-        /* .custom-pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .pagination-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #f8f9fa;
-            color: #495057;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .pagination-btn:hover {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .pagination-btn.active {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .pagination-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        } */
-
-
-        .pagination .page-item.active .page-link {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
-
-.pagination .page-link {
-    color: #dc3545;
-}
-
-.pagination .page-link:hover {
-    background-color: #f8f9fa;
-    color: #dc3545;
-}
 
 
 
@@ -302,6 +293,7 @@
 
                         <!-- Order Summary Card -->
                         <div id="orders" class="section">
+                            <div id="orders-container">
                             <h3>My Orders</h3>
                             <% if (order && order.length> 0) { %>
                                 <% order.forEach(function(orderItem) { %>
@@ -474,43 +466,6 @@
 
 
 
-
-
-
-
-
-
-                                        <!-- Pagination Controls -->
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center mb-0">
-                <% if (currentPage > 1) { %>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
-                    </li>
-                <% } %>
-                <% for (let i = 1; i <= totalPages; i++) { %>
-                    <% if (i == currentPage) { %>
-                        <li class="page-item active">
-                            <a class="page-link"><%= i %></a>
-                        </li>
-                    <% } else { %>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
-                        </li>
-                    <% } %>
-                <% } %>
-                <% if (currentPage < totalPages) { %>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<%= Number(currentPage) + 1 %>">Next</a>
-                    </li>
-                <% } %>
-            </ul>
-        </nav>
-
-
-
-
-
                                         <% } else { %>
                                             <div class="empty-orders text-center py-5">
                                                 <i class="fas fa-shopping-bag mb-3"
@@ -521,6 +476,8 @@
                                             </div>
                                             <% } %>
                         </div>
+          
+</div>
 
 
 
@@ -643,7 +600,7 @@
 
 
 
-                        <!-- wallet.ejs -->
+                         <!-- wallet.ejs -->
                         <div id="wallet" class="section">
                             <h3 class="mb-4">Wallet</h3>
                             <div class="card wallet-card">
@@ -662,6 +619,7 @@
                             </div>
 
                             <div class="card mt-4">
+                                
                                 <div class="card-header">
                                     <h5 class="card-title">Transaction History</h5>
                                 </div>
@@ -710,39 +668,11 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <nav aria-label="Transaction history pagination" class="mt-3">
-                                        <ul class="pagination justify-content-center mb-0">
-                                            <% if (transactionsCurrentPage > 1) { %>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?transactionsPage=<%= transactionsCurrentPage - 1 %>">Previous</a>
-                                                </li>
-                                            <% } %>
-                                            <% for (let i = 1; i <= totalTransactionsPages; i++) { %>
-                                                <% if (i == transactionsCurrentPage) { %>
-                                                    <li class="page-item active">
-                                                        <a class="page-link"><%= i %></a>
-                                                    </li>
-                                                <% } else { %>
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="?transactionsPage=<%= i %>"><%= i %></a>
-                                                    </li>
-                                                <% } %>
-                                            <% } %>
-                                            <% if (transactionsCurrentPage < totalTransactionsPages) { %>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?transactionsPage=<%= Number(transactionsCurrentPage) + 1 %>">Next</a>
-                                                </li>
-                                            <% } %>
-                                        </ul>
-                                    </nav>
-
-
-
-
-
                                 </div>
+                            
                             </div>
                         </div>
+
 
 
 
@@ -1504,6 +1434,43 @@
                         });
                 }
             </script>
+
+<script>
+    let currentPage = 1; // Track the current page
+    const ordersContainer = document.getElementById('orders-container');
+    const loadMoreButton = document.getElementById('load-more');
+
+    // Function to load more orders
+    async function loadMoreOrders() {
+        currentPage++;
+        const response = await fetch(`/profile?page=${currentPage}`);
+        const data = await response.text();
+
+        // Append new orders to the container
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = data;
+        const newOrders = tempDiv.querySelector('#orders-container').innerHTML;
+        ordersContainer.innerHTML += newOrders;
+
+        // Hide the "Load More" button if there are no more orders
+        if (!tempDiv.querySelector('#load-more')) {
+            loadMoreButton.style.display = 'none';
+        }
+    }
+
+    // Event listener for the "Load More" button
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', loadMoreOrders);
+    }
+
+    // Infinite scroll (optional)
+    window.addEventListener('scroll', () => {
+        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight - 10 && loadMoreButton) {
+            loadMoreOrders();
+        }
+    });
+</script>
 
 
 </body>

@@ -15,41 +15,30 @@ const loadprofilepage = async (req, res) => {
         const addresses = await Address.find({ userId: userData.id });
         const user = await User.findOne({ _id: userData.id });
 
-        const page = parseInt(req.query.page) || 1;
-        const limit = 5;
-        const skip = (page - 1) * limit;
         const orders = await Order.find({ userId: userData.id })
             .sort({ createdAt: -1 })
-            .populate('items.productId')
-            .skip(skip)
-            .limit(limit);
-        const totalOrders = await Order.countDocuments({ userId: userData.id });
-        const totalPages = Math.ceil(totalOrders / limit);
+            .populate('items.productId');
 
+        // Fetch wallet details for the user, if exists
+        const wallet = await Wallet.findOne({ userId: userData.id });
 
-        const transactionsPage = parseInt(req.query.transactionsPage) || 1;
-        const transactionsLimit = 5;
-        const transactionsSkip = (transactionsPage - 1) * transactionsLimit;
-        const wallet = await Wallet.findOne({ userId: userData.id }).sort({ createdAt: -1 });
+       
+
+        // Pass wallet balance as 0 if wallet doesn't exist
         const walletBalance = wallet ? wallet.balance : 0;
-        const totalTransactions = wallet ? wallet.transactions.length : 0;
-        const totalTransactionsPages = Math.ceil(totalTransactions / transactionsLimit);
-        const sortedTransactions = wallet
-            ? wallet.transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            : [];
-        const transactions = sortedTransactions.slice(transactionsSkip, transactionsSkip + transactionsLimit);
+       // Sort transactions by createdAt in descending order (latest first)
+       const transactions = wallet
+       ? wallet.transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+       : [];
 
+        // Render the profile page with all the data
         res.render("profile", {
             userData,
             addresses,
-            order: orders,
+            order:orders,
             walletBalance,
             transactions,
-            user,
-            currentPage: page, 
-            totalPages,
-            transactionsCurrentPage: transactionsPage, 
-            totalTransactionsPages,
+            user
         });
 
     } catch (error) {
@@ -130,9 +119,9 @@ const addaddress = async (req, res) => {
             return res.status(400).json({ success: false, message: 'All required fields must be filled' });
         }
 
-
-        if (isPrimary === 1) {
-            await Address.updateMany({ userId: req.session.userData.id, isPrimary: 1 }, { $set: { isPrimary: 0 } });
+         
+         if (isPrimary === 1) {
+            await Address.updateMany({ userId:req.session.userData.id, isPrimary: 1 }, { $set: { isPrimary: 0 } });
         }
 
         const newAddress = new Address({
@@ -238,9 +227,9 @@ const editaddress = async (req, res) => {
         if (!name || !phone || !pincode || !locality || !address || !place || !state || !addressType) {
             return res.status(400).json({ success: false, message: 'All required fields must be filled' });
         }
-
+        
         if (isPrimary === 1) {
-            await Address.updateMany({ userId: req.session.userData.id, isPrimary: 1 }, { $set: { isPrimary: 0 } });
+            await Address.updateMany({ userId:req.session.userData.id, isPrimary: 1 }, { $set: { isPrimary: 0 } });
         }
 
         const updatedAddress = await Address.findByIdAndUpdate(
