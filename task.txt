@@ -14,7 +14,6 @@ Best selling brands (top 10) ---
 Generate ledger book (optional)
 
 3. Make the category filter persistent. 
-10. Add a time frame for order returns.
 12. Fix both items getting returned if a user is returning an order.
 
 
@@ -26,6 +25,7 @@ Generate ledger book (optional)
 7. Set a default address for users.
 8. Replace NetBanking with Razorpay.
 9. Add a wallet option to the payment methods.
+10. Add a time frame for order returns.
 14. Fix CORS to allow access from all origins.
 13. Add a .env.example file..
 11. Implement sorting, filtering, and pagination on both the admin and user sides on order.

@@ -390,6 +390,21 @@
                                                                                     %></span>
                                                                         </div>
                                                                     </div>
+                                                                    <% if (['Delivered'].includes(orderItem.orderStatus)) { 
+                                                                        const updatedAt = new Date(orderItem.updatedAt); // Assuming `updatedAt` is the delivery date
+                                                                        const currentDate = new Date();
+                                                                        const timeDifference = currentDate - updatedAt;
+                                                                        const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Difference in days
+                                                                        const daysLeft = 7 - daysDifference; // Days left for return
+                                                                    %>
+                                                                        <div class="mt-2">
+                                                                            <% if (daysDifference <= 7) { %>
+                                                                                <span class="text-success">You have <%= daysLeft %> days left to return this order.</span>
+                                                                            <% } else { %>
+                                                                                <span class="text-danger">Return period has expired.</span>
+                                                                            <% } %>
+                                                                        </div>
+                                                                    <% } %>
                                                                 </div>
                                                             </div>
                                                 </div>
@@ -415,13 +430,23 @@
                                                                             onclick="downloadPDF('<%= orderItem._id %>')">Download
                                                                             PDF</button>
                                                                         <% } %>
-                                                                            <% if (['Delivered'
-                                                                                ].includes(orderItem.orderStatus)) { %>
-                                                                                <button class="btn btn-outline-danger"
-                                                                                    onclick="returnOrder('<%= orderItem._id %>')">
+                                                                        <% if (['Delivered'].includes(orderItem.orderStatus)) { 
+                                                                            const updatedAt = new Date(orderItem.updatedAt); 
+                                                                            const currentDate = new Date();
+                                                                            const timeDifference = currentDate - updatedAt;
+                                                                            const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                                                                            const daysLeft = 7 - daysDifference; 
+                                                                        %>
+                                                                            <% if (daysDifference <= 7) { %>
+                                                                                <button class="btn btn-outline-danger" onclick="returnOrder('<%= orderItem._id %>')">
                                                                                     Return Order
                                                                                 </button>
-                                                                                <% } %>
+                                                                            <% } else { %>
+                                                                                <button class="btn btn-outline-danger" disabled title="Return period has expired">
+                                                                                    Return Order (Expired)
+                                                                                </button>
+                                                                            <% } %>
+                                                                        <% } %>
                                                                                     <button type="button"
                                                                                         class="btn btn-secondary"
                                                                                         data-bs-dismiss="modal">Close</button>
