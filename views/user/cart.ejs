@@ -615,6 +615,24 @@
             try {
                 button.disabled = true;
                 button.textContent = 'Processing...';
+                // Fetch the cart data from the server
+        const cartResponse = await fetch('/cart-check');
+        const cartData = await cartResponse.json();
+
+        // Check if the cart is empty
+        if (!cartData || !cartData.items || cartData.items.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Your cart is empty',
+                text: 'Please add some items to your cart before proceeding to checkout.',
+                confirmButtonText: 'Go to Shop'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/shop';
+                }
+            });
+            return;
+        }
 
                 const totals = Array.from(document.querySelectorAll('[id^="total-"]'))
                     .map(el => parseFloat(el.textContent.replace('₹', '')));

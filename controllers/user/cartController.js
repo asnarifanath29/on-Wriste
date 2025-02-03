@@ -157,6 +157,21 @@ const updatecart = async (req, res) => {
         res.status(500).json({ error: 'Update failed' });
     }
 };
+const cartCheck = async (req, res) => {
+    try {
+        const userId = req.session.userData.id;
+        const cart = await Cart.findOne({ userId }).populate('items.productId');
+
+        if (!cart || !cart.items || !Array.isArray(cart.items)) {
+            return res.json({ items: [] });
+        }
+
+        res.json(cart);
+    } catch (error) {
+        console.error('Error fetching cart:', error);
+        res.status(500).json({ error: 'Failed to fetch cart' });
+    }
+};
 
 
 
@@ -760,5 +775,6 @@ module.exports = {
     deleteProduct,
     initiatePayment,
     // verifyPayment,
-    faildOrder
+    faildOrder, 
+    cartCheck
 }

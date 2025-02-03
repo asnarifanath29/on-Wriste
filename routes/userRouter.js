@@ -83,6 +83,7 @@ router.post("/update-password",userAuth,profileController.updatepassword)
 router.get("/cart", userAuth,cartController.loadCartpage);
 router.post("/cart",cartController.addtocart);
 router.post("/cart-update", userAuth,cartController.updatecart);
+router.get('/cart-check', userAuth,cartController.cartCheck);
 
 router.get("/checkout", userAuth,cartController.loadCheckoutpage);
 router.post("/checkout", userAuth,cartController.Checkout);
