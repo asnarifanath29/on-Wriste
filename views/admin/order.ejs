@@ -358,7 +358,7 @@
                                 <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
                                 <option value="Canceled" <%= order.orderStatus === 'Canceled' ? 'selected' : '' %>>Canceled</option>
                                 <!-- <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %>>Returned</option> -->
-                                <option value="Rejected" <%= order.orderStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                                <!-- <option value="Rejected" <%= order.orderStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option> -->
                             </select>
                         <% } else { %>
                             <select class="form-select order-status-update" data-order-id="<%= order._id %>">
@@ -368,10 +368,11 @@
                                 <option value="Delivered" <%= order.orderStatus === 'Delivered' ? 'selected' : '' %>>Delivered</option>
                                 <option value="Canceled" <%= order.orderStatus === 'Canceled' ? 'selected' : '' %>>Canceled</option>
                                 <!-- <option value="Returned" <%= order.orderStatus === 'Returned' ? 'selected' : '' %>>Returned</option> -->
-                                <option value="Rejected" <%= order.orderStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option>
+                                <!-- <option value="Rejected" <%= order.orderStatus === 'Rejected' ? 'selected' : '' %>>Rejected</option> -->
                             </select>
                         <% } %>
                     </div>
+                    <button type="button" class="btn btn-primary update-order-status" data-order-id="<%= order._id %>">Update order Status</button>
 
 
                     <div class="mb-3">
@@ -394,6 +395,7 @@
                             </select>
                         <% } %>
                     </div>
+                    
                     
                     
     
@@ -438,7 +440,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary update-order-status" data-order-id="<%= order._id %>">Update Status</button>   
+                    <!-- <button type="button" class="btn btn-primary update-order-status" data-order-id="<%= order._id %>">Update Status</button>    -->
                 </div>
             </div>
         </div>
@@ -483,7 +485,6 @@
 </script>
 
 <script>
-// Update your event listener code to use the correct URL
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.update-order-status').forEach(button => {
         button.addEventListener('click', async function () {
@@ -497,7 +498,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             try {
-                // Update this URL to match your route
                 const response = await fetch('/admin/update', {  
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -511,7 +511,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await response.json();
 
                 if (result.success) {
-                    // Refresh the page to show updated status
                     window.location.reload();
                 } else {
                     Swal.fire('Error', 'Failed to update status', 'error');
@@ -591,8 +590,8 @@ document.addEventListener('click', (event) => {
             text: "You are about to reject the return for this order.",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#28a745', // Green for success
-            cancelButtonColor: '#d33', // Red for cancel
+            confirmButtonColor: '#28a745', 
+            cancelButtonColor: '#d33', 
             confirmButtonText: 'Yes, reject it!',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -636,7 +635,7 @@ function handleRejectReturn(orderId) {
         .then((data) => {
             if (data.success) {
                 Swal.fire('Rejected!', 'The return has been rejected successfully.', 'success').then(() => {
-                    location.reload(); // Reload to update the status
+                    location.reload(); 
                 });
             } else {
                 Swal.fire('Error!', 'An error occurred while rejecting the return.', 'error');

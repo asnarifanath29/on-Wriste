@@ -8,13 +8,10 @@ const mongoose = require('mongoose');
 
 const loadDashboard = async (req, res) => {
     try {
-        // Fetch best-selling products (excluding Returned and Canceled orders)
         const bestProducts = await Order.aggregate([
             { 
                 $match: { 
-                    orderStatus: { 
-                        $nin: ["Returned", "Canceled"] // Exclude Returned and Canceled orders
-                    } 
+                    paymentStatus: 'Paid'
                 } 
             },
             { $unwind: "$items" },
@@ -27,21 +24,21 @@ const loadDashboard = async (req, res) => {
             { $sort: { totalOrders: -1 } },
             { $limit: 10 }
         ]);
-
+       
+        
         const productDetails = await Product.populate(bestProducts, { path: '_id', select: 'name' });
-
+      
+        
         const formattedProducts = productDetails.map(product => ({
             name: product._id.name,
             orderCount: product.totalOrders
         }));
+      
 
-        // Fetch best-selling categories (excluding Returned and Canceled orders)
         const bestCategories = await Order.aggregate([
             { 
                 $match: { 
-                    orderStatus: { 
-                        $nin: ["Returned", "Canceled"] // Exclude Returned and Canceled orders
-                    } 
+                    paymentStatus: 'Paid'
                 } 
             },
             { $unwind: "$items" },
@@ -71,13 +68,10 @@ const loadDashboard = async (req, res) => {
             orderCount: category.totalOrders
         }));
 
-        // Fetch best-selling brands (excluding Returned and Canceled orders)
         const bestBrands = await Order.aggregate([
             { 
                 $match: { 
-                    orderStatus: { 
-                        $nin: ["Returned", "Canceled"] // Exclude Returned and Canceled orders
-                    } 
+                    paymentStatus: 'Paid'
                 } 
             },
             { $unwind: "$items" },
@@ -105,7 +99,6 @@ const loadDashboard = async (req, res) => {
             orderCount: brand.totalOrders
         }));
 
-        // Render the dashboard view with the fetched data
         return res.render("dashboard", {
             bestProducts: formattedProducts,
             bestCategories: formattedCategories,
@@ -119,55 +112,6 @@ const loadDashboard = async (req, res) => {
 };
 
 
-
-
-
-// const salesData = async (req, res) => {
-//     try {
-//         const { range, startDate, endDate } = req.query;
-
-//         // Validate the range parameter
-//         if (!['daily', 'weekly', 'monthly', 'yearly', 'custom'].includes(range)) {
-//             return res.status(400).json({ message: 'Invalid range parameter' });
-//         }
-
-//         // Calculate the date range
-//         let dateRange;
-//         if (range === 'custom') {
-//             if (!startDate || !endDate) {
-//                 return res.status(400).json({ message: 'Start date and end date are required for custom range' });
-//             }
-//             dateRange = { start: new Date(startDate), end: new Date(endDate) };
-//         } else {
-//             dateRange = getDateRange(range);
-//         }
-
-//         // Fetch sales data from the database
-//         const salesData = await Order.aggregate([
-//             {
-//                 $match: {
-//                     createdAt: { $gte: dateRange.start, $lte: dateRange.end },
-//                     orderStatus: { $nin: ["Returned", "Canceled"] } // Exclude canceled/returned orders
-//                 }
-//             },
-//             {
-//                 $group: {
-//                     _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // Group by day
-//                     totalSales: { $sum: "$totalAmount" }
-//                 }
-//             },
-//             { $sort: { _id: 1 } } // Sort by date
-//         ]);
-
-//         // Send the response
-//         res.status(200).json(salesData);
-//     } catch (error) {
-//         console.error("Error fetching sales data:", error);
-//         res.status(500).json({ message: "Server error" });
-//     }
-// };
-
-// // Helper function to calculate date ranges
 const getDateRange = (range) => {
     const now = new Date();
     switch (range) {
@@ -196,18 +140,17 @@ const getSalesData = async (req, res) => {
             ? { start: new Date(startDate), end: new Date(endDate) }
             : getDateRange(range);
 
-        // Fetch sales data
         const salesData = await Order.aggregate([
             {
                 $match: {
                     createdAt: { $gte: dateRange.start, $lte: dateRange.end },
-                    orderStatus: { $nin: ["Returned", "Canceled"] }
+                    paymentStatus: 'Paid'
                 }
             },
             {
                 $group: {
                     _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-                    totalSales: { $sum: "$totalAmount" },
+                    totalSales: { $sum: "$payableAmount" },
                     orderCount: { $sum: 1 }
                 }
             },
@@ -221,4 +164,4 @@ const getSalesData = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
-module.exports = { loadDashboard , getSalesData };
+module.exports = { loadDashboard , getSalesData }; 

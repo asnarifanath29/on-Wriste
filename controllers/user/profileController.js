@@ -19,19 +19,14 @@ const loadprofilepage = async (req, res) => {
             .sort({ createdAt: -1 })
             .populate('items.productId');
 
-        // Fetch wallet details for the user, if exists
         const wallet = await Wallet.findOne({ userId: userData.id });
 
-       
-
-        // Pass wallet balance as 0 if wallet doesn't exist
+      
         const walletBalance = wallet ? wallet.balance : 0;
-       // Sort transactions by createdAt in descending order (latest first)
        const transactions = wallet
        ? wallet.transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
        : [];
 
-        // Render the profile page with all the data
         res.render("profile", {
             userData,
             addresses,
@@ -192,10 +187,7 @@ const updatepassword = async (req, res) => {
             return res.status(400).json({ success: false, message: "Incorrect current password." });
         }
 
-        // Step 4: Validate the new password (e.g., at least 6 characters)
-        // if (newPassword.length < 6) {
-        //     return res.status(400).json({ success: false, message: "New password must be at least 6 characters long." });
-        // }
+        
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 

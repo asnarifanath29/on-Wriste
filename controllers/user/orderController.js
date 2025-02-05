@@ -3,9 +3,6 @@ const Product = require('../../models/productSchema');
 const Wallet = require("../../models/walletSchema")
 
 
-
-
-
 const cancelOrder = async (req, res) => {
     const { orderId } = req.params;
     const { cancelReason } = req.body;

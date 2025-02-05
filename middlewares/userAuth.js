@@ -4,11 +4,9 @@ const checkUserStatus = async (req, res, next) => {
 
     
     if (req.session.userData) {
-        // User is logged in, validate their status
         try {
             const user = await userSchema.findOne({ email: req.session.userData.email });
             if (!user) {
-                // User does not exist in the database (account deleted)
                 console.log('User account does not exist. Destroying session.');
                 req.session.destroy((err) => {
                     if (err) {
@@ -17,7 +15,6 @@ const checkUserStatus = async (req, res, next) => {
                     return res.redirect('/home?status=deleted');
                 });
             } else if (user.isBlocked === true ) {
-                // User account is banned
                 console.log('User account is banned. Destroying session.');
                 req.session.destroy((err) => {
                     if (err) {
@@ -26,7 +23,6 @@ const checkUserStatus = async (req, res, next) => {
                     return res.redirect('/home?status=banned');
                 });
             } else {
-                // User is active
                 return next();
             }
         } catch (error) {
@@ -34,7 +30,6 @@ const checkUserStatus = async (req, res, next) => {
             return res.status(500).send('Internal Server Error');
         }
     } else {
-        // No session present, user is not logged in
         return res.redirect('/home?status=noUsers');
     }
 };

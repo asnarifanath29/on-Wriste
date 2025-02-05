@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const getCoupenPage = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; 
-        const limit = 5; 
+        const limit = 10; 
         const skip = (page - 1) * limit;
 
         const coupons = await Coupon.find({}).skip(skip).limit(limit);
@@ -161,20 +161,6 @@ const statusChange=async (req, res) => {
         res.status(500).json({ message: 'Failed to update coupon status' });
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-     
- 
 
 
 module.exports = { getCoupenPage ,createCoupon,editCoupen,statusChange};

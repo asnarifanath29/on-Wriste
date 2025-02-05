@@ -16,7 +16,7 @@ const retryPayment= async (req, res) => {
         }
 
         const options = {
-            amount: order.payableAmount * 100, // Convert to paise
+            amount: order.payableAmount * 100, 
             currency: "INR",
             receipt: "order_rcptid_" + Date.now(),
         };
@@ -47,7 +47,6 @@ const paymentSuccess= async (req, res) => {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
 
-        // Update order status and payment status
         order.paymentStatus = 'Paid';
         order.orderStatus = 'Confirmed';
         order.paymentId = paymentResponse.razorpay_payment_id;

@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt")
 const categoriesget = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; 
-        const limit = 2; 
+        const limit = 10; 
         const skip = (page - 1) * limit;
 
         const categories = await Category.find().skip(skip).limit(limit); 
@@ -135,28 +135,24 @@ const addOffer=async (req, res) => {
 
       const { categoryId }=req.params;
       const { offerPercentage } = req.body;
-  
-      // Validate input
+
       if (!categoryId || !offerPercentage) {
         return res.status(400).json({ message: "Category ID and offer Percentage are required." });
       }
-  
-      // Find products in the specified category
+
       const products = await Product.find({ category: categoryId });
-  
-      // Update offer prices for each product
+
       for (const product of products) {
         const newOfferPrice = product.price - (product.price * offerPercentage / 100);
         
-        // Only update if there's a change in offer price
+
         if (!product.salesPrice || newOfferPrice !== product.salesPrice) {
           product.prevOfferPrice = product.salesPrice || null;
           product.salesPrice = newOfferPrice;
           await product.save();
         }
       }
-  
-      // Update category offer details
+
       const category = await Category.findById(categoryId);
       if (!category) {
         return res.status(404).json({ message: "Category not found." });
@@ -179,22 +175,19 @@ const addOffer=async (req, res) => {
     try {
         const { categoryId } = req.params;
 
-        // Validate input
+        
         if (!categoryId) {
             return res.status(400).json({ message: "Category ID is required." });
         }
 
-        // Find products in the category
         const products = await Product.find({ category: categoryId });
 
-        // Update each product's offerPrice and clear prevOfferPrice
         for (let product of products) {
             product.salesPrice = product.prevOfferPrice || product.salesPrice;
             product.prevOfferPrice = null;
             await product.save();
         }
 
-        // Update category
         const category = await Category.findById(categoryId);
         category.offer = null;
         category.offerApplied = false;

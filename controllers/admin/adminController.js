@@ -40,16 +40,6 @@ const login = async (req, res) => {
     }
 };
 
-// const loadDashboared = async (req, res) => {
-//     try {
-//         return res.render("dashboared")
-
-//     } catch (error) {
-//         console.log("Dashboared not found")
-//         res.status(500).send("Server error")
-//     }
-// }
-
 const logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -65,7 +55,7 @@ const userManagement = async (req, res) => {
         return res.redirect('/admin/login');
     }
     const page = parseInt(req.query.page) || 1; 
-    const limit = 5; 
+    const limit = 10; 
     const skip = (page - 1) * limit;
 
     const users = await User.find().skip(skip).limit(limit).exec();

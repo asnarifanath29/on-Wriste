@@ -49,7 +49,6 @@ const addToWishlist = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Product ID is required.' });
         }
 
-        // Check if the product exists
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found.' });
@@ -65,23 +64,20 @@ const addToWishlist = async (req, res) => {
         //     });
         // }
 
-        // Find the user's wishlist
+        
         let wishlist = await Wishlist.findOne({ userId });
 
         if (!wishlist) {
-            // If the wishlist doesn't exist, create one
             wishlist = new Wishlist({ userId, products: [] });
         }
 
-        // Check if the product is already in the wishlist
         const productExists = wishlist.products.some(item => item.productId.toString() === productId);
 
         if (productExists) {
             return res.status(200).json({ success: false, message: 'Product is already in your wishlist.' });
         }
 
-      
-        // Add the product to the wishlist
+
         wishlist.products.push({ productId });
         await wishlist.save();
 
@@ -97,14 +93,7 @@ const deletewishlist = async (req, res) => {
         const userId = req.session.userData.id;
         const productId = req.params.productId;
 
-        // if (!userId) {
-        //     return res.status(401).json({ 
-        //         success: false, 
-        //         notLoggedIn: true, 
-        //         message: 'Please log in to manage your wishlist.' 
-        //     });
-        // }
-
+      
         if (!productId) {
             return res.status(400).json({
                 success: false,
@@ -112,7 +101,6 @@ const deletewishlist = async (req, res) => {
             });
         }
 
-        // Find the user's wishlist
         const wishlist = await Wishlist.findOne({ userId });
 
         if (!wishlist) {
@@ -122,13 +110,11 @@ const deletewishlist = async (req, res) => {
             });
         }
 
-        // Check if product exists in wishlist
         const initialLength = wishlist.products.length;
         wishlist.products = wishlist.products.filter(
             item => item.productId.toString() !== productId
         );
 
-        // If no products were removed
         if (wishlist.products.length === initialLength) {
             return res.status(404).json({
                 success: false,
@@ -136,7 +122,6 @@ const deletewishlist = async (req, res) => {
             });
         }
 
-        // Save the updated wishlist
         await wishlist.save();
 
         res.status(200).json({

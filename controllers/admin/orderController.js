@@ -7,10 +7,10 @@ const Wallet = require("../../models/walletSchema")
 const getOrderPage = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; 
-        const limit = 5; 
+        const limit = 10; 
         const skip = (page - 1) * limit;
 
-        // Fetch orders with pagination
+
         const orders = await Order.find()
             .populate('items.productId')
             .sort({ createdAt: -1 })
@@ -18,7 +18,6 @@ const getOrderPage = async (req, res) => {
             .limit(limit)
 
 
-        // Count total orders
         const count = await Order.countDocuments();
         const totalPages = Math.ceil(count / limit);
 
@@ -60,6 +59,39 @@ const updateOrderStatus = async (req, res) => {
                     product.stock += item.quantity;
                     await product.save();
                 }
+            }
+
+            if (order.paymentStatus === 'Paid' ) {
+                const wallet = await Wallet.findOne({ userId: order.userId });
+        
+                if (wallet) {
+                    
+                    wallet.balance += order.payableAmount;
+                    wallet.transactions.push({
+                        amount: order.payableAmount,
+                        type: 'Credit',
+                        description: `Refund for canceled order ${orderId}`
+                    });
+                    wallet.updatedAt = new Date();
+                    await wallet.save();
+                } else {
+                
+                    const newWallet = new Wallet({
+                        userId: order.userId,
+                        balance: order.payableAmount,
+                        transactions: [
+                            {
+                                amount: order.payableAmount,
+                                type: 'Credit',
+                                description: `Refund for canceled order ${orderId}`
+                            }
+                        ]
+                    });
+                    await newWallet.save();
+                }
+
+               order.paymentStatus = 'Refunded';
+               await order.save();
             }
         }
 
@@ -103,9 +135,9 @@ const updatePaymentStatus = async (req, res) => {
         }
 
         
-        if (newStatus === 'Refunded') {
+        // if (newStatus === 'Refunded') {
             
-        }
+        // }
 
         order.paymentStatus = newStatus;
         await order.save();

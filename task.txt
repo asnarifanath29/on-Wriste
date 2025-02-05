@@ -1,45 +1,26 @@
-User side :
-Invoice download (Pdf)---
-Order above Rs 1000 should not be allowed for COD ---
-Delivery charge can be applied according to location / fixed charges (optional)
-Handle error for failed payments (update status as payment pending), ---
-Should be able to continue payment from my order page in case of failed payment ---
+primary address issue
 
-Admin side :
-Admin Dashboard - Chart with filter(yearly,monthly etc.)---
-Best selling product (top 10) ---
-Best selling category (top 10) ---
-Best selling brands (top 10) ---
-
-Generate ledger book (optional)
-
-3. Make the category filter persistent. 
-12. Fix both items getting returned if a user is returning an order.
+Password strength validations ---
+Timer extending with invalid OTP --
+Cosmetic issues
+Show "products is already in cart" if we are adding same product to cart from wishlist or product list
 
 
-1. Add an eye icon to toggle password visibility.
-2. Ensure the sign-up and login pages have a consistent design.
-4. Do not show the “In Stock” label.
+1. Add an eye icon to toggle password visibility.---
+2. Ensure the sign-up and login pages have a consistent design.---
+3. Make the category filter persistent.
+4. Do not show the “In Stock” label.---
 5. Remove the cart check on wishlist.
-6. Allow users to add items to the cart directly from the wishlist page.
+6. Allow users to add items to the cart directly from the wishlist page.---
 7. Set a default address for users.
-8. Replace NetBanking with Razorpay.
-9. Add a wallet option to the payment methods.
-10. Add a time frame for order returns.
-14. Fix CORS to allow access from all origins.
-13. Add a .env.example file..
+8. Replace NetBanking with Razorpay.---
+9. Add a wallet option to the payment methods.---
+10. Add a time frame for order returns.---
 11. Implement sorting, filtering, and pagination on both the admin and user sides on order.
-15. What is webhooks.
-
-
-
-
-
-
-
-
-
-
+12. Fix both items getting returned if a user is returning an order.
+13. Add a .env.example file.---
+14. Fix CORS to allow access from all origins.---
+15. What is webhooks.---
 
 
 

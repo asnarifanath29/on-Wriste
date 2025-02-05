@@ -6,7 +6,6 @@ const User = require("../../models/userSchema");
 const getSalesReport = async (req, res) => {
     try {
 
-        // Default to showing orders for the current month
         const currentMonth = new Date();
         currentMonth.setDate(1);
         currentMonth.setHours(0, 0, 0, 0);

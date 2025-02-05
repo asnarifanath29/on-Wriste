@@ -11,7 +11,7 @@ const fs = require('fs')
 const getProduct = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; 
-        const limit = 5; 
+        const limit = 10; 
         const skip = (page - 1) * limit;
 
         const products = await Product.find().populate('category').skip(skip).limit(limit);
@@ -139,9 +139,10 @@ const editProduct = async (req, res) => {
         }
         
         await product.save();
-        const products = await Product.find().populate('category');
-        const categories = await Category.find();
-        res.render('products', { products, categories });
+        // const products = await Product.find().populate('category');
+        // const categories = await Category.find();
+        // res.render('products', { products, categories });
+        res.redirect('/admin/products');
     } catch (error) {
         console.error('Error editing product:', error);
         res.status(500).send({ error: 'Failed to edit product.' });

@@ -14,18 +14,14 @@ const invoice=async (req, res) => {
         const doc = new PDFDocument();
         const filename = `invoice_${order.orderedId}.pdf`;
 
-        // Set response headers
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
 
-        // Pipe the PDF to the response
         doc.pipe(res);
 
-        // Add content to the PDF
         doc.fontSize(25).text('Invoice', { align: 'center' });
         doc.moveDown();
 
-        // Order Details
         doc.fontSize(14).text(`Order ID: ${order.orderedId}`);
         doc.text(`Order Date: ${order.createdAt.toLocaleDateString()}`);
         doc.text(`Payment Method: ${order.paymentMethod.toUpperCase()}`);
@@ -51,12 +47,10 @@ const invoice=async (req, res) => {
             doc.moveDown();
         });
 
-       // Order Summary
        doc.fontSize(16).text('Order Summary:', { underline: true });
        doc.text(`Total Amount: ₹${order.totalAmount.toFixed(2)}`);
        doc.text(`Shipping Fee: ₹${order.shippingFee.toFixed(2)}`);
 
-       // Coupon Discount and Applied Coupon
        if (order.couponDiscount && order.couponDiscount > 0) {
            doc.text(`Coupon Discount: ₹${order.couponDiscount.toFixed(2)}`);
        }
@@ -67,7 +61,6 @@ const invoice=async (req, res) => {
        doc.text(`Payable Amount: ₹${order.payableAmount.toFixed(2)}`);
        doc.moveDown();
 
-        // Finalize the PDF and end the stream
         doc.end();
     } catch (error) {
         console.error('Error generating PDF:', error);

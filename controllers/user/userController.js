@@ -345,30 +345,23 @@ const shop = async (req, res) => {
     }
 };
 
-// const productDetails = async (req, res) => {
-//     const product = await Product.findById(req.params.id).populate('category');
-//     res.render('product', { product });
-// };
+
 
 const productDetails = async (req, res) => {
     try {
-        // Fetch the product by ID and populate its category
+    
         const product = await Product.findById(req.params.id).populate('category');
         const userData = req.session.userData || null;
 
-        // If the product does not exist, return a 404 error
         if (!product) {
             return res.status(404).render('404', { userData });
         }
 
-        // Render the product page, passing both product and userData
         res.render('product', { product, userData });
     } catch (error) {
         console.error("Error fetching product details:", error);
     }
 };
-
-
 
 
 
@@ -522,16 +515,6 @@ const resendforgot = async (req, res) => {
     }
 }
 
-
-// const loadCartpage = async (req, res) => {
-//     try {
-        
-//         return res.render("cart");
-//     } catch (error) {
-//         console.log("cart page not found");
-//         res.status(500).send("Server error");
-//     }
-// };
 
 module.exports = {
     loadHomepage, pageNotFound, loadSignup, signup, resendOtp, verifyOtp, loadOtpPage, loadLoginpPage, login, shop, productDetails,

@@ -24,7 +24,7 @@ const applyCoupen=  async (req, res) => {
         const { couponCode, subtotal } = req.body;
         // const userId = req.user.id; // Assuming authenticated user
         const userId = req.session.userData.id
-        // Find coupon
+       
         const coupon = await Coupon.findOne({ 
             couponCode, 
             status: true, 
@@ -38,7 +38,6 @@ const applyCoupen=  async (req, res) => {
             });
         }
 
-        // Check coupon validity
         const currentDate = new Date();
         if (currentDate < coupon.validFrom || currentDate > coupon.validUpto) {
             return res.status(400).json({ 
@@ -47,7 +46,6 @@ const applyCoupen=  async (req, res) => {
             });
         }
 
-        // Check minimum price requirement
         if (subtotal < coupon.minPrice) {
             return res.status(400).json({ 
                 success: false, 
@@ -55,7 +53,6 @@ const applyCoupen=  async (req, res) => {
             });
         }
 
-        // Check coupon usage count
         if (coupon.couponCount <= 0) {
             return res.status(400).json({ 
                 success: false, 
@@ -63,7 +60,6 @@ const applyCoupen=  async (req, res) => {
             });
         }
 
-        // Check if user has already used this coupon
         const userUsedCoupon = await User.findOne({
             _id: userId,
             'usedCoupons.couponId': coupon._id
@@ -76,15 +72,12 @@ const applyCoupen=  async (req, res) => {
             });
         }
 
-        // Calculate discount
         let discountAmount = (subtotal * coupon.discountPercentage / 100);
         discountAmount = Math.min(discountAmount, coupon.maxDiscount);
 
-        // Update coupon usage
         coupon.couponCount -= 1;
         await coupon.save();
 
-        // Update user's used coupons
         await User.findByIdAndUpdate(userId, {
             $push: { 
                 usedCoupons: { 

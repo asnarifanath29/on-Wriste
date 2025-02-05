@@ -416,7 +416,7 @@
                                                             </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <% if (!['Canceled' , 'Returned' ,'Delivered','Pending'
+                                                    <% if (!['Canceled' , 'Returned' ,'Delivered','Pending','Rejected'
                                                         ].includes(orderItem.orderStatus)) { %>
                                                         <button class="btn btn-outline-danger"
                                                             onclick="cancelOrder('<%= orderItem._id %>')">
@@ -1231,13 +1231,10 @@
             <script>
                 let returnOrderModal;
                 document.addEventListener('DOMContentLoaded', function () {
-                    // Initialize the return order modal
                     returnOrderModal = new bootstrap.Modal(document.getElementById('returnOrderModal'));
 
-                    // Add event listener to the confirm return button
                     document.getElementById('confirmReturnBtn').addEventListener('click', handleReturnOrder);
 
-                    // Reset the form and error state when the modal is hidden
                     document.getElementById('returnOrderModal').addEventListener('hidden.bs.modal', function () {
                         document.getElementById('returnOrderForm').reset();
                         document.getElementById('reasonError').style.display = 'none';
@@ -1273,7 +1270,6 @@
                     confirmBtn.disabled = true;
                     confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
 
-                    // Make the API call to handle the return request
                     fetch(`/update-profile/return/${orderId}`, {
                         method: 'POST',
                         headers: {
@@ -1377,7 +1373,6 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                // Open Razorpay payment modal
                                 const options = {
                                     key: data.razorpayKey,
                                     amount: data.amount,
@@ -1386,7 +1381,6 @@
                                     name: "watch shop",
                                     description: "Payment for Order",
                                     handler: function (response) {
-                                        // Handle successful payment
                                         fetch(`/payment-success/${orderId}`, {
                                             method: 'POST',
                                             headers: {
@@ -1435,44 +1429,37 @@
                 }
             </script>
 
-<script>
-    let currentPage = 1; // Track the current page
-    const ordersContainer = document.getElementById('orders-container');
-    const loadMoreButton = document.getElementById('load-more');
+// <script>
+//     let currentPage = 1; // Track the current page
+//     const ordersContainer = document.getElementById('orders-container');
+//     const loadMoreButton = document.getElementById('load-more');
 
-    // Function to load more orders
-    async function loadMoreOrders() {
-        currentPage++;
-        const response = await fetch(`/profile?page=${currentPage}`);
-        const data = await response.text();
+//     async function loadMoreOrders() {
+//         currentPage++;
+//         const response = await fetch(`/profile?page=${currentPage}`);
+//         const data = await response.text();
 
-        // Append new orders to the container
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = data;
-        const newOrders = tempDiv.querySelector('#orders-container').innerHTML;
-        ordersContainer.innerHTML += newOrders;
+//         const tempDiv = document.createElement('div');
+//         tempDiv.innerHTML = data;
+//         const newOrders = tempDiv.querySelector('#orders-container').innerHTML;
+//         ordersContainer.innerHTML += newOrders;
 
-        // Hide the "Load More" button if there are no more orders
-        if (!tempDiv.querySelector('#load-more')) {
-            loadMoreButton.style.display = 'none';
-        }
-    }
+//         if (!tempDiv.querySelector('#load-more')) {
+//             loadMoreButton.style.display = 'none';
+//         }
+//     }
 
-    // Event listener for the "Load More" button
-    if (loadMoreButton) {
-        loadMoreButton.addEventListener('click', loadMoreOrders);
-    }
+//     if (loadMoreButton) {
+//         loadMoreButton.addEventListener('click', loadMoreOrders);
+//     }
 
-    // Infinite scroll (optional)
-    window.addEventListener('scroll', () => {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        if (scrollTop + clientHeight >= scrollHeight - 10 && loadMoreButton) {
-            loadMoreOrders();
-        }
-    });
-</script>
-
+//     window.addEventListener('scroll', () => {
+//         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+//         if (scrollTop + clientHeight >= scrollHeight - 10 && loadMoreButton) {
+//             loadMoreOrders();
+//         }
+//     });
+// </script>
 
 </body>
-
 </html>

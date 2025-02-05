@@ -213,94 +213,6 @@ const Checkout = async (req, res) => {
 
 
 
-// const placeOrder = async (req, res) => {
-//     try {
-//         const { selectedAddress, paymentMethod } = req.body;
-
-//         const cartId = req.session.cart;
-
-//         const cart = await Cart.findById(cartId).populate('items.productId');
-//         if (!cart || !cart.items.length) {
-//             return res.status(400).json({
-//                 message: "Your cart is empty"
-//             });
-//         }
-
-//         if (!selectedAddress || !selectedAddress.name) {
-//             return res.status(400).json({
-//                 message: "Please select a valid delivery address"
-//             });
-//         }
-
-//         if (!paymentMethod || !['cod', 'upi','netbanking'].includes(paymentMethod)) {
-//             return res.status(400).json({
-//                 message: "Please select a valid payment method"
-//             });
-//         }
-
-//         let totalAmount = 0;
-//         const orderItems = [];
-
-//         for (const item of cart.items) {
-//             const product = item.productId;
-
-//             if (item.quantity > product.stock) {
-//                 return res.status(400).json({
-//                     message: `Insufficient stock for product: ${product.name}`,
-//                     productId: product._id
-//                 });
-//             }
-
-//             product.stock -= item.quantity;
-
-//             await product.save();
-
-//             const itemTotal = product.price * item.quantity;
-//             totalAmount += itemTotal;
-
-//             orderItems.push({
-//                 productId: product._id,
-//                 quantity: item.quantity,
-//                 price: product.price,
-//                 image: product.images[0],
-//                 isCanceled: false
-//             });
-//         }
-
-//         const shippingFee = 10;
-//         const payableAmount = totalAmount + shippingFee;
-
-//         const orderedId = 'ORD' + Date.now() + Math.floor(Math.random() * 1000);
-
-//         const newOrder = new Order({
-//             userId: req.session.userData.id,
-//             orderedId: orderedId,
-//             address: selectedAddress,
-//             items: orderItems,
-//             paymentStatus: paymentMethod === 'cod' ? 'Pending' : 'Pending',
-//             paymentMethod: paymentMethod,
-//             orderStatus: 'Pending',
-//             totalAmount: totalAmount,
-//             payableAmount: payableAmount,
-//             shippingFee: shippingFee
-//         });
-
-//         await newOrder.save();
-
-//         await Cart.findByIdAndUpdate(cartId, { $set: { items: [] } });
-
-//         res.status(200).json({
-//             message: "Order placed successfully!",
-//             orderId: newOrder._id
-//         });
-
-//     } catch (error) {
-//         console.error("Error placing order:", error);
-//         res.status(500).json({
-//             message: "An unexpected error occurred while processing your order."
-//         });
-//     }
-// };
 
 
 const placeOrder = async (req, res) => {
@@ -316,7 +228,6 @@ const placeOrder = async (req, res) => {
             razorpaySignature
         } = req.body;
 
-        // Fetch user's cart
         const cart = await Cart.findOne({ userId }).populate('items.productId');
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({
@@ -325,19 +236,16 @@ const placeOrder = async (req, res) => {
             });
         }
 
-        // Generate unique order ID
         const orderedId = crypto.randomBytes(8).toString('hex').toUpperCase();
 
-        // Map cart items to order items format
         const orderItems = cart.items.map(item => ({
             productId: item.productId._id,
             quantity: item.quantity,
             price: item.productId.price,
-            image: item.productId.images[0], // Assuming first image is main image
+            image: item.productId.images[0],
             isCanceled: false
         }));
 
-        // Initialize order object
         const orderData = {
             userId,
             orderedId,
@@ -362,14 +270,12 @@ const placeOrder = async (req, res) => {
             appliedCoupon: appliedCoupon
         };
 
-        // Handle payment method specific details
         if (paymentMethod === 'cod') {
             orderData.paymentStatus = 'Pending';
             orderData.orderStatus = 'Confirmed';
         }
 
         else if (paymentMethod === 'razorpay') {
-            // Verify Razorpay signature
             if (!razorpayPaymentId || !razorpayOrderId || !razorpaySignature) {
                 return res.status(400).json({
                     success: false,
@@ -377,7 +283,6 @@ const placeOrder = async (req, res) => {
                 });
             }
 
-            // Add payment details
             orderData.paymentId = razorpayPaymentId;
             orderData.receipt = razorpayOrderId;
             orderData.paymentStatus = 'Paid';
@@ -413,19 +318,15 @@ const placeOrder = async (req, res) => {
             wallet.transactions.push(transaction);
             wallet.updatedAt = new Date();
 
-            // Save the updated wallet
             await wallet.save();
 
-            // Update order details
             orderData.paymentStatus = 'Paid';
             orderData.orderStatus = 'Confirmed';
         }
 
-        // Create new order
         const order = new Order(orderData);
         await order.save();
 
-        // Update coupon usage if applied
         if (appliedCoupon) {
             await Coupon.findOneAndUpdate(
                 { couponCode: appliedCoupon },
@@ -433,13 +334,11 @@ const placeOrder = async (req, res) => {
             );
         }
 
-        // Clear user's cart
         await Cart.findOneAndUpdate(
             { userId },
             { $set: { items: [] } }
         );
 
-        // Update product inventory
         await updateProductInventory(orderItems);
 
         return res.status(200).json({
@@ -461,31 +360,27 @@ const placeOrder = async (req, res) => {
 
 const updateProductInventory = async (orderItems) => {
     try {
-        // Loop through each item in the order
+
         for (const item of orderItems) {
             const productId = item.productId;
             const quantity = item.quantity;
 
-            // Find the product and decrement its stock
             const product = await Product.findById(productId);
             if (!product) {
                 throw new Error(`Product not found: ${productId}`);
             }
 
-            // Check if there is enough stock
             if (product.stock < quantity) {
                 throw new Error(`Insufficient stock for product: ${product.name}`);
             }
 
-            // Decrement the stock
             product.stock -= quantity;
 
-            // Save the updated product
             await product.save();
         }
     } catch (error) {
         console.error('Error updating product inventory:', error);
-        throw error; // Re-throw the error to handle it in the calling function
+        throw error; 
     }
 };
 
@@ -549,7 +444,7 @@ const initiatePayment = async (req, res) => {
         const { amount } = req.body;
         console.log(amount)
         const options = {
-            amount: amount * 100, // Convert to paise
+            amount: amount * 100, 
             currency: "INR",
             receipt: "order_rcptid_" + Date.now(),
         };
@@ -586,7 +481,7 @@ const faildOrder = async (req, res) => {
             productId: item.productId._id,
             quantity: item.quantity,
             price: item.productId.price,
-            image: item.productId.images[0], // Assuming first image is main image
+            image: item.productId.images[0],
             isCanceled: false
         }));
 
@@ -622,10 +517,24 @@ const faildOrder = async (req, res) => {
         const order = new Order(orderData);
         await order.save();
 
+         if (appliedCoupon) {
+            await Coupon.findOneAndUpdate(
+                { couponCode: appliedCoupon },
+                { $inc: { usageCount: 1 } }
+            );
+        }
+
+        await Cart.findOneAndUpdate(
+            { userId },
+            { $set: { items: [] } }
+        );
+
+        await updateProductInventory(orderItems);
+
 
         return res.status(200).json({
             success: true,
-            message: 'Order status updated to Failed'
+            message: 'Order placed successfully'
         });
 
     } catch (error) {

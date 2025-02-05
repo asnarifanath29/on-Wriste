@@ -202,37 +202,7 @@
         <h2 class="mb-4">Dashboard</h2>
 
 
-        <!-- <div class="container mt-5">
-        <h1 class="text-center">Sales Dashboard</h1>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="rangeSelect">Select Range:</label>
-                    <select class="form-control" id="rangeSelect">
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="yearly">Yearly</option>
-                        <option value="custom">Custom Range</option>
-                    </select>
-                </div>
-                <div id="customRange" class="form-group mt-3" style="display: none;">
-                    <label for="startDate">Start Date:</label>
-                    <input type="date" class="form-control" id="startDate">
-                    <label for="endDate">End Date:</label>
-                    <input type="date" class="form-control" id="endDate">
-                </div>
-                <button class="btn btn-primary mt-3" onclick="fetchSalesData()">Fetch Data</button>
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <canvas id="salesChart"></canvas>
-            </div>
-        </div>
-    </div> -->
 
-        <!-- Place this before your tables section -->
         <div class="row mb-4">
             <div class="col-12">
                 <div class="card">
@@ -448,103 +418,7 @@
 
     </script>
     <script>
-        // let salesChart;
-        // async function fetchSalesData() {
-        // const range = document.getElementById('rangeSelect').value;
-        // let url = `/admin/sales-data?range=${range}`;
-
-        // if (range === 'custom') {
-        //     const startDate = document.getElementById('startDate').value;
-        //     const endDate = document.getElementById('endDate').value;
-        //     // Validate custom range
-        //     if (!startDate || !endDate) {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Oops...',
-        //             text: 'Please select both start and end dates for the custom range.',
-        //         });
-        //         return; // Stop further execution
-        //     }
-
-        //     if (new Date(startDate) >= new Date(endDate)) {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Invalid Date Range',
-        //             text: 'Start date cannot be greater than or equal to end date.',
-        //         });
-        //         return; // Stop further execution
-        //     }
-        //     url += `&startDate=${startDate}&endDate=${endDate}`;
-        // }
-
-        // try {
-        //     const response = await fetch(url);
-        //     if (!response.ok) {
-        //         throw new Error('Network response was not ok');
-        //     }
-        //     const data = await response.json();
-        //     updateChart(data); // Update the chart with the fetched data
-        // } catch (error) {
-        //     console.error('Error fetching sales data:', error);
-        // }
-
-        //     try {
-        //         const response = await fetch(url);
-        //         const data = await response.json();
-        //         updateChart(data);
-        //     } catch (error) {
-        //         console.error('Error:', error);
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Error',
-        //             text: 'Failed to fetch sales data'
-        //         });
-        //     }
-        // }
-
-        // Function to update the chart
-        // function updateChart(data) {
-        //     const labels = data.map(item => item._id);
-        //     const sales = data.map(item => item.totalSales);
-
-        //     const ctx = document.getElementById('salesChart').getContext('2d');
-
-        //     if (salesChart) {
-        //         salesChart.destroy(); // Destroy existing chart
-        //     }
-
-        //     salesChart = new Chart(ctx, {
-        //         type: 'bar',
-        //         data: {
-        //             labels: labels,
-        //             datasets: [{
-        //                 label: 'Total Sales',
-        //                 data: sales,
-        //                 borderColor: 'rgba(75, 192, 192, 1)',
-        //                 borderWidth: 2,
-        //                 fill: false
-        //             }]
-        //         },
-        //         options: {
-        //             responsive: true,
-        //             maintainAspectRatio: false,
-        //             scales: {
-        //                 x: {
-        //                     title: {
-        //                         display: true,
-        //                         text: 'Date'
-        //                     }
-        //                 },
-        //                 y: {
-        //                     title: {
-        //                         display: true,
-        //                         text: 'Total Sales'
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
+        
 
         let salesChart;
 
@@ -612,7 +486,7 @@
                     ]
                 },
                 options: {
-                    maintainAspectRatio: false, // Added to ensure custom height is respected
+                    maintainAspectRatio: false, 
                     responsive: true,
                     interaction: {
                         intersect: false,
@@ -621,10 +495,10 @@
                     plugins: {
                         legend: {
                             position: 'top',
-                            align: 'end' // Moved legend to the right
+                            align: 'end' 
                         },
                         title: {
-                            display: false // Removed title to save space
+                            display: false 
                         }
                     },
                     scales: {
@@ -654,13 +528,11 @@
             });
         }
 
-        // Range selector handling
         document.getElementById('rangeSelect').addEventListener('change', function () {
             const customRange = document.getElementById('customRange');
             customRange.classList.toggle('d-none', this.value !== 'custom');
         });
 
-        // Initial load
         document.addEventListener('DOMContentLoaded', fetchSalesData);
     </script>
 </body>

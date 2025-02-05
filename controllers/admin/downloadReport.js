@@ -70,17 +70,13 @@ const salesReportController = {
 
             const metrics = calculateMetrics(orders);
 
-            // Create PDF document
             const doc = new PDFDocument({ margin: 50 });
 
-            // Set response headers
             res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('Content-Disposition', `attachment; filename=sales-report-${type}.pdf`);
 
-            // Pipe PDF to response
             doc.pipe(res);
 
-            // Add header
             doc.fontSize(20)
                .font('Helvetica-Bold')
                .text('Onwriste Watch Shop Sales Report', { align: 'center' });
@@ -93,7 +89,6 @@ const salesReportController = {
 
             doc.moveDown();
 
-            // Add summary metrics
             doc.fontSize(16)
                .font('Helvetica-Bold')
                .text('Summary Metrics', { underline: true });
@@ -102,7 +97,6 @@ const salesReportController = {
             doc.fontSize(12)
                .font('Helvetica');
 
-            // Create metrics table
             const metrics_data = [
                 ['Total Sales Count:', metrics.totalSales],
                 ['Total Revenue:', `₹${metrics.totalRevenue.toFixed(2)}`],
@@ -120,29 +114,24 @@ const salesReportController = {
 
             doc.moveDown(2);
 
-            // Add order details table
             doc.fontSize(16)
                .font('Helvetica-Bold')
                .text('Order Details', { underline: true });
             
             doc.moveDown();
 
-            // Table headers
             const tableTop = doc.y + 10;
             const headers = ['Date', 'Order ID', 'Amount', 'Status'];
             const columnWidth = 120;
 
-            // Draw headers
             headers.forEach((header, i) => {
                 doc.fontSize(10)
                    .font('Helvetica-Bold')
                    .text(header, 50 + (i * columnWidth), tableTop, { width: columnWidth });
             });
 
-            // Draw orders
             let rowTop = tableTop + 20;
             orders.forEach((order, i) => {
-                // Add page if needed
                 if (rowTop > doc.page.height - 50) {
                     doc.addPage();
                     rowTop = 50;
@@ -158,7 +147,6 @@ const salesReportController = {
                 rowTop += 20;
             });
 
-            // Finalize PDF
             doc.end();
 
         } catch (error) {
@@ -178,17 +166,14 @@ const salesReportController = {
 
             const metrics = calculateMetrics(orders);
 
-            // Create workbook and sheets
             const workbook = new Excel.Workbook();
-            
-            // Add Summary Sheet
+
             const summarySheet = workbook.addWorksheet('Summary');
             summarySheet.columns = [
                 { header: 'Metric', key: 'metric', width: 30 },
                 { header: 'Value', key: 'value', width: 20 }
             ];
 
-            // Style the header row
             summarySheet.getRow(1).font = { bold: true, size: 12 };
             summarySheet.getRow(1).fill = {
                 type: 'pattern',
@@ -197,7 +182,6 @@ const salesReportController = {
             };
             summarySheet.getRow(1).font = { color: { argb: 'FFFFFFFF' }, bold: true };
 
-            // Add summary data
             summarySheet.addRows([
                 { metric: 'Report Type', value: type.charAt(0).toUpperCase() + type.slice(1) },
                 { metric: 'Total Sales Count', value: metrics.totalSales },
@@ -207,7 +191,6 @@ const salesReportController = {
                 { metric: 'Net Revenue', value: metrics.netRevenue }
             ]);
 
-            // Add Orders Sheet
             const ordersSheet = workbook.addWorksheet('Order Details');
             ordersSheet.columns = [
                 { header: 'Date', key: 'date', width: 15 },
@@ -220,7 +203,6 @@ const salesReportController = {
                 { header: 'Status', key: 'status', width: 15 }
             ];
 
-            // Style the header row
             ordersSheet.getRow(1).font = { bold: true, size: 12 };
             ordersSheet.getRow(1).fill = {
                 type: 'pattern',
@@ -229,7 +211,6 @@ const salesReportController = {
             };
             ordersSheet.getRow(1).font = { color: { argb: 'FFFFFFFF' }, bold: true };
 
-            // Add order data
             orders.forEach(order => {
                 ordersSheet.addRow({
                     date: new Date(order.createdAt).toLocaleDateString(),
