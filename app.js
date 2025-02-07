@@ -50,7 +50,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'] 
 }));
 
-app.listen(5000, () => {
+app.listen(3000, () => {
     console.log("Server Running")
 })
 
