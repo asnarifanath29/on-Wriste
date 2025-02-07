@@ -104,6 +104,12 @@
             background-color: #c82333;
             transform: translateY(-2px);
         }
+        .addToCartBtn.disabled {
+    background-color: #616161;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
     </style>
 </head>
 
@@ -180,6 +186,8 @@
                                                 </div>
                                                 <% } %>
 
+                                               
+
                                                     <!-- Tags -->
                                                     <% if (productId.tags && productId.tags.length> 0) { %>
                                                         <div class="tags mt-2">
@@ -195,10 +203,22 @@
                                                                 <!-- <a href="/product/<%= productId._id %>" class="view-details-btn">
                                                 view Details
                                             </a> -->
-                                                                <a href="#" class="addToCartBtn" id="addToCartBtn"
-                                                                    data-product-id="<%= productId._id %>">
-                                                                    <i class="fas fa-shopping-cart me-2"></i>Add to Cart
-                                                                </a>
+
+
+                                            <a href="#" 
+   class="addToCartBtn <%= cart?.items.some(item => item.productId.toString() === productId._id.toString()) ? 'disabled' : '' %>" 
+   id="addToCartBtn_<%= productId._id %>"
+   data-product-id="<%= productId._id %>"
+   <%= cart?.items.some(item => item.productId.toString() === productId._id.toString()) ? 'disabled' : '' %>>
+   <i class="fas fa-shopping-cart me-2"></i>
+   <% if (cart?.items.some(item => item.productId.toString() === productId._id.toString())) { %>
+       Item in Cart
+   <% } else { %>
+       Add to Cart
+   <% } %>
+</a>
+
+
 
 
                                                                 <a href="#" class="remove-wishlist-btn"
@@ -327,7 +347,6 @@
                                         }
                                     });
                                 } else if (data.success) {
-                                    // If successfully added, show the cart navigation confirmation
                                     Swal.fire({
                                         title: 'Product Added to Cart!',
                                         text: "Would you like to view your cart or continue shopping?",

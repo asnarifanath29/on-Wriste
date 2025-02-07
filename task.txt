@@ -1,9 +1,10 @@
-primary address issue
+primary address issue---
+edit address header and footer
 
 Password strength validations ---
 Timer extending with invalid OTP --
 Cosmetic issues
-Show "products is already in cart" if we are adding same product to cart from wishlist or product list
+Show "products is already in cart" if we are adding same product to cart from wishlist or product list---
 
 
 1. Add an eye icon to toggle password visibility.---

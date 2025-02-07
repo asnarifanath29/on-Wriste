@@ -227,9 +227,7 @@
                                                     id="address<%= index %>" value="<%= address._id %>" <%=index===0
                                                     ? 'checked' : '' %>>
                                                 <label class="form-check-label" for="address<%= index %>">
-                                                    <% if (address.isPrimary===true) { %>
-                                                        <p><b>Primary Address:</b></p>
-                                                        <% } %>
+                                                    
                                                             <p class="mb-1 name">
                                                                 <%= address.name %>
                                                             </p>
@@ -258,6 +256,9 @@
                                                                             <p class="mb-1 address-type"><b>
                                                                                     <%= address.addressType %>
                                                                                 </b></p>
+                                                                                <% if (address.isPrimary===true) { %>
+                                                                                    <h3><b>Primary Address:</b></h3>
+                                                                                    <% } %>
                                                 </label>
                                             </div>
                                             <a href="/edit-address/<%= address._id %>"
@@ -623,11 +624,12 @@
 
                 // Extract address details
                 const addressDetails = {
-                    addressId: selectedAddressInput.value, // Get the address ID from the radio input value
+                    addressId: selectedAddressInput.value, 
                     name: getTextContent(selectedAddressCard, 'label p:nth-child(1)'),
                     locality: getTextContent(selectedAddressCard, 'label p:nth-child(2)'),
                     address: getTextContent(selectedAddressCard, 'label p:nth-child(3)'),
                 };
+                console.log(addressDetails);
 
                 // Extract place, state, and pincode from the combined text
                 const locationText = getTextContent(selectedAddressCard, 'label p:nth-child(4)');
@@ -660,18 +662,18 @@
                 addressDetails.addressType = getTextContent(selectedAddressCard, 'label b');
 
                 // Validate essential address fields
-                const requiredFields = ['name', 'address', 'phone', 'pincode', 'place', 'state'];
-                const missingFields = requiredFields.filter(field => !addressDetails[field]);
+                // const requiredFields = ['name', 'address', 'phone', 'pincode', 'place', 'state'];
+                // const missingFields = requiredFields.filter(field => !addressDetails[field]);
 
-                if (missingFields.length > 0) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Invalid Address",
-                        text: `Missing required fields: ${missingFields.join(', ')}`,
-                        footer: 'Please ensure all required address fields are filled correctly'
-                    });
-                    return;
-                }
+                // if (missingFields.length > 0) {
+                //     Swal.fire({
+                //         icon: "error",
+                //         title: "Invalid Address",
+                //         text: `Missing required fields: ${missingFields.join(', ')}`,
+                //         footer: 'Please ensure all required address fields are filled correctly'
+                //     });
+                //     return;
+                // }
 
 
                 const orderDetails = {

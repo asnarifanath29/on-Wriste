@@ -325,6 +325,7 @@ const login = async (req, res) => {
 
 const shop = async (req, res) => {
     try {
+        const userData = req.session.userData || null;
         const categories = await Category.find({ status: 'listed' }); 
         const products = await Product.find({ isDeleted: false })
             .populate({
@@ -338,6 +339,7 @@ const shop = async (req, res) => {
             products: filteredProducts,
             title: 'Shop Page',
             categories:categories,
+            userData
         });
     } catch (error) {
         console.error('Error fetching products:', error);

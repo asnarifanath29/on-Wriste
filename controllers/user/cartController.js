@@ -40,12 +40,75 @@ const loadCartpage = async (req, res) => {
     }
 };
 
+// const addtocart = async (req, res) => {
+//     try {
+//         const productId = req.body.productId;
+//         const userId = req.session?.userData?.id;
+//         if (!userId) {
+//             return res.status(401).json({ success: false, notLoggedIn: true, message: 'Please log in to add items to the cart.' });
+//         }
+
+//         const product = await Product.findById(productId);
+//         if (!product) {
+//             return res.status(404).json({ success: false, message: 'Product not found' });
+//         }
+
+//         let cart = await Cart.findOne({ userId });
+
+//         if (!cart) {
+//             cart = new Cart({ userId, items: [] });
+//         }
+
+//         if (!cart.items) {
+//             cart.items = [];
+//         }
+
+//         const existingItemIndex = cart.items.findIndex(
+//             item => item.productId.toString() === productId
+//         );
+
+//         let newQuantity;
+//         if (existingItemIndex !== -1) {
+//             newQuantity = cart.items[existingItemIndex].quantity + 1;
+//         } else {
+//             newQuantity = 1;
+//         }
+
+//         if (newQuantity > product.stock) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: 'Stock limit reached',
+//                 availableStock: product.stock
+//             });
+//         }
+
+//         if (existingItemIndex !== -1) {
+//             cart.items[existingItemIndex].quantity = newQuantity;
+//         } else {
+//             cart.items.push({ productId, quantity: newQuantity });
+//         }
+
+//         await cart.save();
+
+//         return res.status(200).json({ success: true, message: 'Product added to cart', cart });
+
+//     } catch (error) {
+//         console.error('Error adding to cart:', error);
+//         res.status(500).json({ success: false, message: 'Server error' });
+//     }
+// };
+
 const addtocart = async (req, res) => {
     try {
         const productId = req.body.productId;
         const userId = req.session?.userData?.id;
+
         if (!userId) {
-            return res.status(401).json({ success: false, notLoggedIn: true, message: 'Please log in to add items to the cart.' });
+            return res.status(401).json({ 
+                success: false, 
+                notLoggedIn: true, 
+                message: 'Please log in to add items to the cart.' 
+            });
         }
 
         const product = await Product.findById(productId);
@@ -67,14 +130,15 @@ const addtocart = async (req, res) => {
             item => item.productId.toString() === productId
         );
 
-        let newQuantity;
         if (existingItemIndex !== -1) {
-            newQuantity = cart.items[existingItemIndex].quantity + 1;
-        } else {
-            newQuantity = 1;
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Product is already in the cart' 
+            });
         }
 
-        if (newQuantity > product.stock) {
+        // Check stock availability before adding the product
+        if (product.stock < 1) {
             return res.status(400).json({
                 success: false,
                 message: 'Stock limit reached',
@@ -82,11 +146,7 @@ const addtocart = async (req, res) => {
             });
         }
 
-        if (existingItemIndex !== -1) {
-            cart.items[existingItemIndex].quantity = newQuantity;
-        } else {
-            cart.items.push({ productId, quantity: newQuantity });
-        }
+        cart.items.push({ productId, quantity: 1 });
 
         await cart.save();
 
@@ -97,6 +157,7 @@ const addtocart = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };
+
 
 const updatecart = async (req, res) => {
     try {

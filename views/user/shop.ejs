@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
 
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <style>
@@ -142,30 +141,54 @@
             margin-top: 15px;
         }
 
-        .filter-section {
-            background-color: #f8f9fa;
-        }
+        /* Filter section container */
+.filter-section {
+    position: relative;
+    z-index: 100;
+    background-color: #f8f9fa;
+    transition: margin-bottom 0.3s ease;
+}
 
-        .filter-panel {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            z-index: 1000;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
+/* Filter panel styling */
+.filter-panel {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
 
-        .filter-row {
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-        }
+/* Active state for filter panel */
+.filter-panel.active {
+    opacity: 1;
+    max-height: 800px; /* Adjust based on your content */
+    margin-bottom: 30px;
+}
 
-        .filter-row:last-child {
-            border-bottom: none;
-        }
+/* Product grid section */
+.product-grid {
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+    z-index: 99;
+}
+
+/* Push down effect when filter is active */
+.product-grid.filter-active {
+    transform: translateY(20px);
+}
+.product-grid {
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+    z-index: 99;
+}
+
+/* Push down effect when filter is active */
+.product-grid.filter-active {
+    transform: translateY(20px);
+}
 
         .btn-group {
             flex-wrap: wrap;
@@ -448,17 +471,17 @@
 
 <body>
     <!-- Header Start -->
-    <header>
-        <div class="header-area">
+    <!-- <header> -->
+        <!-- <div class="header-area">
             <div class="main-header header-sticky">
                 <div class="container-fluid">
-                    <div class="menu-wrapper">
+                    <div class="menu-wrapper"> -->
                         <!-- Logo -->
-                        <div class="logo">
+                        <!-- <div class="logo">
                             <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
-                        </div>
+                        </div> -->
                         <!-- Main-menu -->
-                        <div class="main-menu d-none d-lg-block">
+                        <!-- <div class="main-menu d-none d-lg-block">
                             <nav>
                                 <ul id="navigation">
                                     <li><a href="/">Home</a></li>
@@ -467,9 +490,9 @@
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul>
                             </nav>
-                        </div>
+                        </div> -->
                         <!-- Header Right -->
-                        <div class="header-right">
+                        <!-- <div class="header-right">
                             <ul>
                                 <li>
                                     <div class="nav-search search-switch">
@@ -480,16 +503,17 @@
                                 <li><a href="/cart"><span class="flaticon-shopping-cart"></span></a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div>  -->
                     <!-- Mobile Menu -->
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                         <div class="mobile_menu d-block d-lg-none"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </header> -->
     <!-- Header End -->
+    <%- include('../partials/user/header') %>
 
     <main>
         <!-- Hero Area Start-->
@@ -507,134 +531,109 @@
             </div>
         </div>
         <!-- Hero Area End-->
-        <section class="filter-section py-4 position-relative">
-            <div class="container">
-                <!-- Top Bar with Filter Button and Search -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <button class="btn btn-dark d-flex align-items-center" id="filterToggle" style="padding: 5px 10px; font-size: 0.85rem;">
-                            <i class="fas fa-filter me-2"></i>
-                            Filters
-                        </button>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search products..." id="searchInput" style="padding: 5px; font-size: 0.85rem;">
-                            <button class="btn btn-dark " id="searchBtn" style="padding: 5px 10px; font-size: 0.85rem;">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
+        <!-- Filter Section Start -->
+<section class="filter-section py-4">
+    <div class="container">
+        <!-- Search and Filter Toggle Row -->
+        <div class="row mb-4 align-items-center">
+            <!-- Filter Toggle -->
+            <div class="col-md-6 mb-3 mb-md-0">
+                <button class="btn btn-dark d-flex align-items-center gap-2" id="filterToggle">
+                    <i class="fas fa-filter"></i>
+                    <span>Filters</span>
+                </button>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search products..." id="searchInput">
+                    <button class="btn btn-dark" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
+            </div>
+        </div>
 
-                <!-- Filter Panel -->
-                <div class="filter-panel shadow" id="filterPanel" style="display: none;">
-                    <!-- Price Range Filter Row -->
-                    <div class="filter-row">
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                <h5 class="mb-0">Price Range</h5>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="price-range-options">
-                                    <div class="btn-group" role="group">
-                                        <input type="radio" class="btn-check" name="priceRange" id="price1"
-                                            value="₹0.00 - ₹999.00">
-                                        <label  for="price1">₹0 - ₹999</label>
+        <!-- Collapsible Filter Panel -->
+        <div class="filter-panel shadow-sm rounded p-4" id="filterPanel" style="display: none;">
+            <!-- Price Range Filter -->
+            <div class="filter-row mb-4">
+                <h5 class="filter-heading mb-3">Price Range</h5>
+                <div class="price-range-options">
+                    <div class="btn-group flex-wrap" role="group">
+                        <input type="radio" class="btn-check" name="priceRange" id="price1" value="₹0.00 - ₹999.00">
+                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price1">₹0 - ₹999</label>
 
-                                        <input type="radio" class="btn-check" name="priceRange" id="price2"
-                                            value="₹1000.00 - ₹2999.00">
-                                        <label for="price2">₹1,000 - ₹2,999</label>
+                        <input type="radio" class="btn-check" name="priceRange" id="price2" value="₹1000.00 - ₹2999.00">
+                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price2">₹1,000 - ₹2,999</label>
 
-                                        <input type="radio" class="btn-check" name="priceRange" id="price3"
-                                            value="₹3000.00 - ₹6999.00">
-                                        <label  for="price3">₹3,000 - ₹6,999</label>
+                        <input type="radio" class="btn-check" name="priceRange" id="price3" value="₹3000.00 - ₹6999.00">
+                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price3">₹3,000 - ₹6,999</label>
 
-                                        <input type="radio" class="btn-check" name="priceRange" id="price4"
-                                            value="₹7000.00 - ₹9999.00">
-                                        <label  for="price4">₹7,000 - ₹9,999</label>
+                        <input type="radio" class="btn-check" name="priceRange" id="price4" value="₹7000.00 - ₹9999.00">
+                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price4">₹7,000 - ₹9,999</label>
 
-                                        <input type="radio" class="btn-check" name="priceRange" id="price5"
-                                            value="₹10000.00+">
-                                        <label  for="price5">₹10,000+</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sort By Filter Row -->
-                    <div class="filter-row">
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                <h5 class="mb-0">Sort By</h5>
-                            </div>
-                            <div class="col-md-9">
-                                <select class="form-select" id="sortBy">
-                                    <option value="">Select Option</option>
-                                    <option value="Price: Low to High">Price: Low to High</option>
-                                    <option value="Price: High to Low">Price: High to Low</option>
-                                    <option value="aA - zZ">Name: A to Z</option>
-                                    <option value="zZ - aA">Name: Z to A</option>
-                                    <option value="Newness">Newest First</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="filter-row">
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                <h5 class="mb-0">Category</h5>
-                            </div>
-                            <div class="col-md-9">
-                                <select class="form-select" id="category">
-                                    <option value="*">All Categories</option>
-                                    <% categories.forEach(category => { %>
-                                        <option value="<%= category.name %>"><%= category.name %></option>
-                                    <% }) %>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Availability Filter Row -->
-                    <div class="filter-row">
-                        <div class="row align-items-center">
-                            <div class="col-md-3">
-                                <h5 class="mb-0">Availability</h5>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="excludeOutOfStock">
-                                    <label class="form-check-label" for="excludeOutOfStock">
-                                        Show only in-stock items
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filter Actions -->
-                    <div class="filter-actions mt-3">
-                        <div class="row">
-                            <div class="col-md-12 text-end">
-                                <button class="btn btn-dark me-2" id="clearFilters" style="padding: 15px 10px;font-size: 0.85rem;">Clear All</button>
-                                <button class="btn btn-dark" id="applyFilters" style="padding: 15px 10px;font-size: 0.85rem;">Apply Filters</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Filters Display -->
-                <div class="active-filters mt-3" style="display: none;">
-                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                        <span class="fw-bold me-2">Active Filters:</span>
-                        <!-- Active filters will be added here dynamically -->
+                        <input type="radio" class="btn-check" name="priceRange" id="price5" value="₹10000.00+">
+                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price5">₹10,000+</label>
                     </div>
                 </div>
             </div>
-        </section>
+
+            <!-- Sort and Category Filters -->
+            <div class="row mb-4">
+                <!-- Sort By -->
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h5 class="filter-heading mb-3">Sort By</h5>
+                    <select class="form-select" id="sortBy">
+                        <option value="">Select Option</option>
+                        <option value="Price: Low to High">Price: Low to High</option>
+                        <option value="Price: High to Low">Price: High to Low</option>
+                        <option value="aA - zZ">Name: A to Z</option>
+                        <option value="zZ - aA">Name: Z to A</option>
+                        <option value="Newness">Newest First</option>
+                    </select>
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-6">
+                    <h5 class="filter-heading mb-3">Category</h5>
+                    <select class="form-select" id="category">
+                        <option value="*">All Categories</option>
+                        <% categories.forEach(category => { %>
+                            <option value="<%= category.name %>"><%= category.name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Availability Filter -->
+            <div class="filter-row mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="excludeOutOfStock">
+                    <label class="form-check-label" for="excludeOutOfStock">
+                        Show only in-stock items
+                    </label>
+                </div>
+            </div>
+
+            <!-- Filter Actions -->
+            <div class="filter-actions d-flex justify-content-end gap-2">
+                <button class="btn btn-outline-dark" id="clearFilters">Clear All</button>
+                <button class="btn btn-dark" id="applyFilters">Apply Filters</button>
+            </div>
+        </div>
+
+        <!-- Active Filters Display -->
+        <div class="active-filters mt-3" style="display: none;">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <span class="fw-bold me-2">Active Filters:</span>
+                <!-- Active filters will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Filter Section End -->
 
 
         <!-- Product Grid Section -->
@@ -743,10 +742,75 @@
                     <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
                         <div class="single-footer-caption mb-50">
                             <div class="single-footer-caption mb-30">
-                                <!-- Footer Logo -->
+                                <!-- logo -->
                                 <div class="footer-logo">
                                     <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
                                 </div>
+                                <div class="footer-tittle">
+                                    <div class="footer-pera">
+                                        <p>Asorem ipsum adipolor sdit amet, consectetur adipisicing elitcf sed do eiusmod tem.</p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Quick Links</h4>
+                                <ul>
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#"> Offers & Discounts</a></li>
+                                    <li><a href="#"> Get Coupon</a></li>
+                                    <li><a href="#">  Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>New Products</h4>
+                                <ul>
+                                    <li><a href="#">Woman Cloth</a></li>
+                                    <li><a href="#">Fashion Accessories</a></li>
+                                    <li><a href="#"> Man Accessories</a></li>
+                                    <li><a href="#"> Rubber made Toys</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
+                        <div class="single-footer-caption mb-50">
+                            <div class="footer-tittle">
+                                <h4>Support</h4>
+                                <ul>
+                                    <li><a href="#">Frequently Asked Questions</a></li>
+                                    <li><a href="#">Terms & Conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Report a Payment Issue</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer bottom -->
+                <div class="row align-items-center">
+                    <div class="col-xl-7 col-lg-8 col-md-7">
+                        <div class="footer-copy-right">
+                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+       Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+       <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>                  
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-4 col-md-5">
+                        <div class="footer-copy-right f-right">
+                            <!-- social -->
+                            <div class="footer-social">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="https://www.facebook.com/sai4ull"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                                <a href="#"><i class="fas fa-globe"></i></a>
                             </div>
                         </div>
                     </div>
@@ -755,6 +819,36 @@
         </div>
         <!-- Footer End-->
     </footer>
+    
+    
+        <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+    
+    const logoutButton = document.getElementById('logout-btn');
+    
+    // Add a click event listener
+    logoutButton.addEventListener('click', () => {
+            
+                
+                // SweetAlert2 confirmation
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, log me out!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to the logout route
+                        window.location.href = '/logout';
+                    }
+                });
+            });
+        </script>
 
     <!-- JS here -->
     <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
@@ -907,6 +1001,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchBtn');
     const activeFilters = document.querySelector('.active-filters');
+    const productGrid = document.querySelector('.product-grid');
+
     
     let searchTimeout;
 
@@ -1063,6 +1159,50 @@ document.addEventListener('DOMContentLoaded', function () {
             !filterToggle.contains(event.target) && 
             filterPanel.style.display === 'block') {
             filterPanel.style.display = 'none';
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const filterToggle = document.getElementById('filterToggle');
+    const filterPanel = document.getElementById('filterPanel');
+    const productGrid = document.querySelector('.product-grid');
+    
+    filterToggle.addEventListener('click', function () {
+        const isVisible = filterPanel.classList.contains('active');
+        
+        if (!isVisible) {
+            // Show filter panel
+            filterPanel.style.display = 'block';
+            // Use setTimeout to trigger transition after display change
+            setTimeout(() => {
+                filterPanel.classList.add('active');
+                productGrid.classList.add('filter-active');
+            }, 10);
+        } else {
+            // Hide filter panel
+            filterPanel.classList.remove('active');
+            productGrid.classList.remove('filter-active');
+            // Wait for transition to complete before hiding
+            setTimeout(() => {
+                filterPanel.style.display = 'none';
+            }, 300);
+        }
+        
+        filterToggle.classList.toggle('active');
+    });
+
+    // Close filter panel when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!filterPanel.contains(event.target) && 
+            !filterToggle.contains(event.target) && 
+            filterPanel.classList.contains('active')) {
+            filterPanel.classList.remove('active');
+            productGrid.classList.remove('filter-active');
+            setTimeout(() => {
+                filterPanel.style.display = 'none';
+            }, 300);
         }
     });
 });

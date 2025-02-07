@@ -8,19 +8,22 @@ const Wishlist = require("../../models/wishlistSchema");
 
 const loadwishlist = async (req, res) => {
     const userId = req.session.userData.id;
-    // if (!userId) {
-    //     return res.status(401).json({ success: false, notLoggedIn: true, message: 'Please log in to view the wishlist.' });
-    // }
+   
 
     try {
-        // Fetch the user's wishlist and populate product details
-        const wishlist = await Wishlist.findOne({ userId }).populate('products.productId');
+        const wishlist = await Wishlist.findOne({ userId })
+    .populate({
+        path: 'products.productId',
+        populate: { path: 'category' } 
+    });
+
+        const cart=await Cart.findOne({userId})
 
         // Provide a default structure if wishlist is null
         const wishlistData = wishlist || { _id: null, userId, products: [] };
 
         // Render the wishlist page with userData and wishlist data
-        res.render("wishlist", { userData: req.session.userData, wishlist: wishlistData });
+        res.render("wishlist", { userData: req.session.userData, wishlist: wishlistData ,cart});
     } catch (error) {
         console.error("Error loading wishlist:", error);
         res.status(500).json({
