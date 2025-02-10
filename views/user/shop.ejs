@@ -1,487 +1,582 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="zxx">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Watch shop | eCommers</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="assets/img/favicon.ico"
+    />
 
     <!-- CSS here -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="assets/css/flaticon.css">
-    <link rel="stylesheet" href="assets/css/slicknav.css">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="assets/css/themify-icons.css">
-    <link rel="stylesheet" href="assets/css/slick.css">
-    <link rel="stylesheet" href="assets/css/nice-select.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="assets/css/flaticon.css" />
+    <link rel="stylesheet" href="assets/css/slicknav.css" />
+    <link rel="stylesheet" href="assets/css/animate.min.css" />
+    <link rel="stylesheet" href="assets/css/magnific-popup.css" />
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="assets/css/themify-icons.css" />
+    <link rel="stylesheet" href="assets/css/slick.css" />
+    <link rel="stylesheet" href="assets/css/nice-select.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
 
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
 
     <style>
-        .rating {
-            color: #ffc107;
-            margin: 10px 0;
-        }
+      .rating {
+        color: #ffc107;
+        margin: 10px 0;
+      }
 
-        .rating-count {
-            color: #6c757d;
-            font-size: 0.9em;
-            margin-left: 5px;
-        }
+      .rating-count {
+        color: #6c757d;
+        font-size: 0.9em;
+        margin-left: 5px;
+      }
 
-        .product-meta {
-            font-size: 0.9em;
-            color: #6c757d;
-        }
+      .product-meta {
+        font-size: 0.9em;
+        color: #6c757d;
+      }
 
-        .brand,
-        .category {
-            margin: 0 5px;
-        }
+      .brand,
+      .category {
+        margin: 0 5px;
+      }
 
-        .tags {
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+      .tags {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
 
-        .tag {
-            background: #f8f9fa;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            color: #6c757d;
-        }
+      .tag {
+        background: #f8f9fa;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.8em;
+        color: #6c757d;
+      }
 
-        .description {
-            color: #6c757d;
-            font-size: 0.9em;
-            line-height: 1.5;
-            margin: 10px 0;
-        }
+      .description {
+        color: #6c757d;
+        font-size: 0.9em;
+        line-height: 1.5;
+        margin: 10px 0;
+      }
 
-        .original-price {
-            text-decoration: line-through;
-            color: #999;
-            margin-left: 10px;
-            font-size: 0.9em;
-        }
+      .original-price {
+        text-decoration: line-through;
+        color: #999;
+        margin-left: 10px;
+        font-size: 0.9em;
+      }
 
-        .view-details-btn {
-            display: inline-block;
-            padding: 8px 20px;
-            background-color: #000;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
+      .view-details-btn {
+        display: inline-block;
+        padding: 8px 20px;
+        background-color: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: all 0.3s;
+      }
 
-        .view-details-btn:hover {
-            background-color: #333;
-            color: #fff;
-            transform: translateY(-2px);
-        }
+      .view-details-btn:hover {
+        background-color: #333;
+        color: #fff;
+        transform: translateY(-2px);
+      }
+      .popular-img {
+        position: relative;
+        width: 300px;
+        /* Fixed width container */
+        height: 300px;
+        /* Fixed height container */
+        margin: 0 auto;
+        overflow: hidden;
+        background-color: #f8f9fa;
+      }
+
+      .popular-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.3s ease;
+      }
+
+      .popular-img:hover img {
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 768px) {
         .popular-img {
-            position: relative;
-            width: 300px;
-            /* Fixed width container */
-            height: 300px;
-            /* Fixed height container */
-            margin: 0 auto;
-            overflow: hidden;
-            background-color: #f8f9fa;
+          width: 250px;
+          height: 250px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .popular-img {
+          width: 200px;
+          height: 200px;
+        }
+      }
+
+      .single-popular-items {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .popular-caption {
+        width: 100%;
+        padding: 20px;
+        margin-top: 15px;
+      }
+
+      /* Filter section container */
+      .filter-section {
+        position: relative;
+        z-index: 100;
+        background-color: #f8f9fa;
+        transition: margin-bottom 0.3s ease;
+      }
+
+      /* Filter panel styling */
+      .filter-panel {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Active state for filter panel */
+      .filter-panel.active {
+        opacity: 1;
+        max-height: 800px; /* Adjust based on your content */
+        margin-bottom: 30px;
+      }
+
+      /* Product grid section */
+      .product-grid {
+        transition: transform 0.3s ease-in-out;
+        position: relative;
+        z-index: 99;
+      }
+
+      /* Push down effect when filter is active */
+      .product-grid.filter-active {
+        transform: translateY(20px);
+      }
+      .product-grid {
+        transition: transform 0.3s ease-in-out;
+        position: relative;
+        z-index: 99;
+      }
+
+      /* Push down effect when filter is active */
+      .product-grid.filter-active {
+        transform: translateY(20px);
+      }
+
+      .btn-group {
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .btn-outline-dark {
+        border-radius: 20px;
+        padding: 5px 15px;
+        font-size: 0.9rem;
+      }
+
+      .btn-check:checked + .btn-outline-dark {
+        background-color: #212529;
+        color: white;
+      }
+
+      .active-filters .badge {
+        background-color: #212529;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin: 2px;
+      }
+
+      .active-filters .badge button {
+        background: none;
+        border: none;
+        color: white;
+        padding: 0;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .form-select:focus,
+      .form-control:focus {
+        border-color: #212529;
+        box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
+      }
+
+      .filter-panel {
+        transition: all 0.3s ease-in-out;
+      }
+
+      @media (max-width: 768px) {
+        .btn-group {
+          flex-direction: column;
+          width: 100%;
         }
 
-        .popular-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            transition: transform 0.3s ease;
+        .btn-outline-dark {
+          width: 100%;
+          margin: 2px 0;
         }
 
-        .popular-img:hover img {
-            transform: scale(1.05);
+        .filter-row .row {
+          margin-bottom: 10px;
+        }
+      }
+
+      .product-card {
+        transition: transform 0.3s ease;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .product-img-container {
+        overflow: hidden;
+      }
+
+      .product-overlay {
+        background: rgba(255, 255, 255, 0.9);
+        transition: opacity 0.3s ease;
+      }
+
+      .product-card:hover .product-overlay {
+        opacity: 1 !important;
+      }
+
+      .product-title {
+        font-size: 1rem;
+        line-height: 1.4;
+        height: 2.8em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+
+      .filter-section {
+        background-color: #f8f9fa;
+      }
+
+      .filter-sidebar {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+      }
+
+      .filter-group {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1.5rem;
+      }
+
+      .filter-group:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .form-check-input:checked {
+        background-color: #212529;
+        border-color: #212529;
+      }
+
+      .active-filters .badge {
+        background-color: #212529;
+        color: #fff;
+        font-weight: normal;
+        padding: 0.5rem 0.75rem;
+        margin: 0.25rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .active-filters .badge button {
+        background: none;
+        border: none;
+        color: #fff;
+        padding: 0;
+        font-size: 0.875rem;
+      }
+
+      @media (max-width: 991.98px) {
+        .filter-sidebar {
+          margin-bottom: 2rem;
+        }
+      }
+
+      .filter-sidebar {
+        transition: all 0.3s ease;
+      }
+
+      .form-select:focus,
+      .form-control:focus {
+        border-color: #212529;
+        box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
+      }
+
+      .btn-dark:hover {
+        background-color: #343a40;
+        transform: translateY(-1px);
+        transition: all 0.3s ease;
+      }
+      .product-card {
+        transition: transform 0.3s ease;
+        margin-bottom: 30px;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .product-img-container {
+        overflow: hidden;
+      }
+
+      .product-overlay {
+        background: rgba(255, 255, 255, 0.9);
+        transition: opacity 0.3s ease;
+      }
+
+      .product-card:hover .product-overlay {
+        opacity: 1 !important;
+      }
+
+      .product-title {
+        font-size: 1rem;
+        line-height: 1.4;
+        height: 2.8em;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+
+      @media (max-width: 991.98px) {
+        .col-md-6 {
+          max-width: 50%;
+        }
+      }
+
+      @media (max-width: 767.98px) {
+        .col-12 {
+          max-width: 100%;
         }
 
-        @media (max-width: 768px) {
-            .popular-img {
-                width: 250px;
-                height: 250px;
-            }
+        .product-img-container {
+          height: 250px;
+        }
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .col-lg-4 {
+        padding: 0 15px;
+      }
+
+      .row > div:nth-last-child(-n + 3) .product-card {
+        margin-bottom: 0;
+      }
+
+      .popular-product-name {
+        margin: 15px 0;
+        min-height: 48px;
+      }
+
+      .popular-product-name a {
+        color: #444444;
+        font-weight: 500;
+        font-size: 18px;
+        text-decoration: none;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.3;
+        transition: color 0.3s ease;
+      }
+
+      .popular-product-name a:hover {
+        color: #000000;
+      }
+
+      .popular-caption {
+        padding: 20px;
+        text-align: center;
+      }
+
+      .price {
+        font-size: 18px;
+        font-weight: 500;
+        color: #444444;
+      }
+
+      .original-price {
+        text-decoration: line-through;
+        color: #777;
+        margin-left: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .popular-product-name a {
+          font-size: 16px;
         }
 
-        @media (max-width: 480px) {
-            .popular-img {
-                width: 200px;
-                height: 200px;
-            }
+        .price {
+          font-size: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .popular-product-name {
+          min-height: 40px;
         }
 
-        .single-popular-items {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .popular-product-name a {
+          font-size: 15px;
         }
+      }
 
-        .popular-caption {
-            width: 100%;
-            padding: 20px;
-            margin-top: 15px;
-        }
-
-        /* Filter section container */
+      /* Filter section container */
 .filter-section {
-    position: relative;
-    z-index: 100;
-    background-color: #f8f9fa;
-    transition: margin-bottom 0.3s ease;
+  position: relative;
+  z-index: 1000; /* Increased z-index to ensure it's above other elements */
+  background-color: #f8f9fa;
+  transition: margin-bottom 0.3s ease;
 }
 
 /* Filter panel styling */
 .filter-panel {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  opacity: 0;
+  max-height: 0;
+  overflow: visible; /* Changed from hidden to visible */
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  z-index: 1001; /* Higher than filter-section */
 }
 
-/* Active state for filter panel */
-.filter-panel.active {
-    opacity: 1;
-    max-height: 800px; /* Adjust based on your content */
-    margin-bottom: 30px;
+/* Form select container */
+.form-select {
+  position: relative;
+  z-index: 1002; /* Higher than filter-panel */
+}
+
+/* Ensure dropdowns appear above other elements */
+.form-select option {
+  position: relative;
+  z-index: 1003; /* Higher than form-select */
 }
 
 /* Product grid section */
 .product-grid {
-    transition: transform 0.3s ease-in-out;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Update active state for filter panel */
+.filter-panel.active {
+  opacity: 1;
+  max-height: 800px;
+  margin-bottom: 30px;
+}
+
+/* Ensure proper stacking for all filter components */
+.filter-row {
+  position: relative;
+  z-index: 1002;
+}
+
+/* Style for dropdown when open */
+.form-select:focus {
+  position: relative;
+  z-index: 1004; /* Highest z-index when focused */
+}
+
+/* Fix for mobile devices */
+@media (max-width: 768px) {
+  .filter-panel {
     position: relative;
-    z-index: 99;
+    z-index: 1001;
+  }
+  
+  .form-select {
+    width: 100%;
+  }
+}
+#filterToggle,
+#searchBtn
+ {
+  padding: 4px 12px;  /* Reduce padding */
+  font-size: 12px;  /* Reduce text size */
 }
 
-/* Push down effect when filter is active */
-.product-grid.filter-active {
-    transform: translateY(20px);
+#filterToggle i,
+#searchBtn i {
+  font-size: 12px;  /* Reduce icon size */
 }
-.product-grid {
-    transition: transform 0.3s ease-in-out;
-    position: relative;
-    z-index: 99;
-}
-
-/* Push down effect when filter is active */
-.product-grid.filter-active {
-    transform: translateY(20px);
+#clearFilters,
+#applyFilters{
+padding: 19px 12px;
+font-size: 13px;
 }
 
-        .btn-group {
-            flex-wrap: wrap;
-            gap: 5px;
-        }
 
-        .btn-outline-dark {
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-size: 0.9rem;
-        }
-
-        .btn-check:checked+.btn-outline-dark {
-            background-color: #212529;
-            color: white;
-        }
-
-        .active-filters .badge {
-            background-color: #212529;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin: 2px;
-        }
-
-        .active-filters .badge button {
-            background: none;
-            border: none;
-            color: white;
-            padding: 0;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .form-select:focus,
-        .form-control:focus {
-            border-color: #212529;
-            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
-        }
-
-        .filter-panel {
-            transition: all 0.3s ease-in-out;
-        }
-
-        @media (max-width: 768px) {
-            .btn-group {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .btn-outline-dark {
-                width: 100%;
-                margin: 2px 0;
-            }
-
-            .filter-row .row {
-                margin-bottom: 10px;
-            }
-        }
-
-        .product-card {
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-img-container {
-            overflow: hidden;
-        }
-
-        .product-overlay {
-            background: rgba(255, 255, 255, 0.9);
-            transition: opacity 0.3s ease;
-        }
-
-        .product-card:hover .product-overlay {
-            opacity: 1 !important;
-        }
-
-        .product-title {
-            font-size: 1rem;
-            line-height: 1.4;
-            height: 2.8em;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        .filter-section {
-            background-color: #f8f9fa;
-        }
-
-        .filter-sidebar {
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-        }
-
-        .filter-group {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1.5rem;
-        }
-
-        .filter-group:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .form-check-input:checked {
-            background-color: #212529;
-            border-color: #212529;
-        }
-
-        .active-filters .badge {
-            background-color: #212529;
-            color: #fff;
-            font-weight: normal;
-            padding: 0.5rem 0.75rem;
-            margin: 0.25rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .active-filters .badge button {
-            background: none;
-            border: none;
-            color: #fff;
-            padding: 0;
-            font-size: 0.875rem;
-        }
-
-        @media (max-width: 991.98px) {
-            .filter-sidebar {
-                margin-bottom: 2rem;
-            }
-        }
-
-        .filter-sidebar {
-            transition: all 0.3s ease;
-        }
-
-        .form-select:focus,
-        .form-control:focus {
-            border-color: #212529;
-            box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.25);
-        }
-
-        .btn-dark:hover {
-            background-color: #343a40;
-            transform: translateY(-1px);
-            transition: all 0.3s ease;
-        }
-        .product-card {
-            transition: transform 0.3s ease;
-            margin-bottom: 30px;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-img-container {
-            overflow: hidden;
-        }
-
-        .product-overlay {
-            background: rgba(255, 255, 255, 0.9);
-            transition: opacity 0.3s ease;
-        }
-
-        .product-card:hover .product-overlay {
-            opacity: 1 !important;
-        }
-
-        .product-title {
-            font-size: 1rem;
-            line-height: 1.4;
-            height: 2.8em;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        @media (max-width: 991.98px) {
-            .col-md-6 {
-                max-width: 50%;
-            }
-        }
-
-        @media (max-width: 767.98px) {
-            .col-12 {
-                max-width: 100%;
-            }
-
-            .product-img-container {
-                height: 250px;
-            }
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .col-lg-4 {
-            padding: 0 15px;
-        }
-
-        .row>div:nth-last-child(-n+3) .product-card {
-            margin-bottom: 0;
-        }
-
-        .popular-product-name {
-            margin: 15px 0;
-            min-height: 48px;
-        }
-
-        .popular-product-name a {
-            color: #444444;
-            font-weight: 500;
-            font-size: 18px;
-            text-decoration: none;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            line-height: 1.3;
-            transition: color 0.3s ease;
-        }
-
-        .popular-product-name a:hover {
-            color: #000000;
-        }
-
-        .popular-caption {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .price {
-            font-size: 18px;
-            font-weight: 500;
-            color: #444444;
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: #777;
-            margin-left: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .popular-product-name a {
-                font-size: 16px;
-            }
-
-            .price {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .popular-product-name {
-                min-height: 40px;
-            }
-
-            .popular-product-name a {
-                font-size: 15px;
-            }
-        }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Header Start -->
     <!-- <header> -->
-        <!-- <div class="header-area">
+    <!-- <div class="header-area">
             <div class="main-header header-sticky">
                 <div class="container-fluid">
                     <div class="menu-wrapper"> -->
-                        <!-- Logo -->
-                        <!-- <div class="logo">
+    <!-- Logo -->
+    <!-- <div class="logo">
                             <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
                         </div> -->
-                        <!-- Main-menu -->
-                        <!-- <div class="main-menu d-none d-lg-block">
+    <!-- Main-menu -->
+    <!-- <div class="main-menu d-none d-lg-block">
                             <nav>
                                 <ul id="navigation">
                                     <li><a href="/">Home</a></li>
@@ -491,8 +586,8 @@
                                 </ul>
                             </nav>
                         </div> -->
-                        <!-- Header Right -->
-                        <!-- <div class="header-right">
+    <!-- Header Right -->
+    <!-- <div class="header-right">
                             <ul>
                                 <li>
                                     <div class="nav-search search-switch">
@@ -504,8 +599,8 @@
                             </ul>
                         </div>
                     </div>  -->
-                    <!-- Mobile Menu -->
-                    <!-- <div class="col-12">
+    <!-- Mobile Menu -->
+    <!-- <div class="col-12">
                         <div class="mobile_menu d-block d-lg-none"></div>
                     </div>
                 </div>
@@ -516,339 +611,426 @@
     <%- include('../partials/user/header') %>
 
     <main>
-        <!-- Hero Area Start-->
-        <div class="slider-area">
-            <div class="single-slider slider-height2 d-flex align-items-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="hero-cap text-center">
-                                <h2>Watch Shop</h2>
-                            </div>
-                        </div>
-                    </div>
+      <!-- Hero Area Start-->
+      <div class="slider-area">
+        <div class="single-slider slider-height2 d-flex align-items-center">
+          <div class="container">
+            <div class="row">
+              <div class="col-xl-12">
+                <div class="hero-cap text-center">
+                  <h2>Watch Shop</h2>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-        <!-- Hero Area End-->
-        <!-- Filter Section Start -->
-<section class="filter-section py-4">
-    <div class="container">
-        <!-- Search and Filter Toggle Row -->
-        <div class="row mb-4 align-items-center">
+      </div>
+      <!-- Hero Area End-->
+      <!-- Filter Section Start -->
+      <section class="filter-section py-4">
+        <div class="container">
+          <!-- Search and Filter Toggle Row -->
+          <div class="row mb-4 align-items-center">
             <!-- Filter Toggle -->
             <div class="col-md-6 mb-3 mb-md-0">
-                <button class="btn btn-dark d-flex align-items-center gap-2" id="filterToggle">
-                    <i class="fas fa-filter"></i>
-                    <span>Filters</span>
-                </button>
+              <button
+                class="btn btn-dark  d-flex align-items-center gap-2"
+                id="filterToggle"
+              >
+                <i class="fas fa-filter"></i>
+                <span>Filters</span>
+              </button>
             </div>
-            
+
             <!-- Search Bar -->
             <div class="col-md-6">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search products..." id="searchInput">
-                    <button class="btn btn-dark" id="searchBtn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search products..."
+                  id="searchInput"
+                />
+                <button class="btn btn-dark " id="searchBtn">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
             </div>
-        </div>
+          </div>
 
-        <!-- Collapsible Filter Panel -->
-        <div class="filter-panel shadow-sm rounded p-4" id="filterPanel" style="display: none;">
+          <!-- Collapsible Filter Panel -->
+          <div
+            class="filter-panel shadow-sm rounded p-4"
+            id="filterPanel"
+            style="display: none"
+          >
             <!-- Price Range Filter -->
             <div class="filter-row mb-4">
-                <h5 class="filter-heading mb-3">Price Range</h5>
-                <div class="price-range-options">
-                    <div class="btn-group flex-wrap" role="group">
-                        <input type="radio" class="btn-check" name="priceRange" id="price1" value="₹0.00 - ₹999.00">
-                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price1">₹0 - ₹999</label>
+              <h5 class="filter-heading mb-3">Price Range</h5>
+              <div class="price-range-options">
+                <div class="btn-group flex-wrap" role="group">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="priceRange"
+                    id="price1"
+                    value="₹0.00 - ₹999.00"
+                  />
+                  <label
+                    class=" mx-1"
+                    for="price1"
+                    >₹0 - ₹999</label
+                  >
 
-                        <input type="radio" class="btn-check" name="priceRange" id="price2" value="₹1000.00 - ₹2999.00">
-                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price2">₹1,000 - ₹2,999</label>
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="priceRange"
+                    id="price2"
+                    value="₹1000.00 - ₹2999.00"
+                  />
+                  <label
+                    class=" mx-1"
+                    for="price2"
+                    >₹1,000 - ₹2,999</label
+                  >
 
-                        <input type="radio" class="btn-check" name="priceRange" id="price3" value="₹3000.00 - ₹6999.00">
-                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price3">₹3,000 - ₹6,999</label>
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="priceRange"
+                    id="price3"
+                    value="₹3000.00 - ₹6999.00"
+                  />
+                  <label
+                    class=" mx-1"
+                    for="price3"
+                    >₹3,000 - ₹6,999</label
+                  >
 
-                        <input type="radio" class="btn-check" name="priceRange" id="price4" value="₹7000.00 - ₹9999.00">
-                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price4">₹7,000 - ₹9,999</label>
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="priceRange"
+                    id="price4"
+                    value="₹7000.00 - ₹9999.00"
+                  />
+                  <label
+                    class=" mx-1"
+                    for="price4"
+                    >₹7,000 - ₹9,999</label
+                  >
 
-                        <input type="radio" class="btn-check" name="priceRange" id="price5" value="₹10000.00+">
-                        <label class="btn btn-outline-dark rounded-pill mx-1" for="price5">₹10,000+</label>
-                    </div>
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="priceRange"
+                    id="price5"
+                    value="₹10000.00+"
+                  />
+                  <label
+                    class=" mx-1"
+                    for="price5"
+                    >₹10,000+</label
+                  >
                 </div>
+              </div>
             </div>
 
             <!-- Sort and Category Filters -->
             <div class="row mb-4">
-                <!-- Sort By -->
-                <div class="col-md-6 mb-3 mb-md-0">
-                    <h5 class="filter-heading mb-3">Sort By</h5>
-                    <select class="form-select" id="sortBy">
-                        <option value="">Select Option</option>
-                        <option value="Price: Low to High">Price: Low to High</option>
-                        <option value="Price: High to Low">Price: High to Low</option>
-                        <option value="aA - zZ">Name: A to Z</option>
-                        <option value="zZ - aA">Name: Z to A</option>
-                        <option value="Newness">Newest First</option>
-                    </select>
-                </div>
+              <!-- Sort By -->
+              <div class="">
+                <h5 class="filter-heading mb-3">Sort By</h5>
+                <select class="form-select" id="sortBy">
+                  <option value="">Select Option</option>
+                  <option value="Price: Low to High">Price: Low to High</option>
+                  <option value="Price: High to Low">Price: High to Low</option>
+                  <option value="aA - zZ">Name: A to Z</option>
+                  <option value="zZ - aA">Name: Z to A</option>
+                  <option value="Newness">Newest First</option>
+                </select>
+              </div>
 
-                <!-- Category -->
-                <div class="col-md-6">
-                    <h5 class="filter-heading mb-3">Category</h5>
-                    <select class="form-select" id="category">
-                        <option value="*">All Categories</option>
-                        <% categories.forEach(category => { %>
-                            <option value="<%= category.name %>"><%= category.name %></option>
-                        <% }) %>
-                    </select>
-                </div>
+              <!-- Category -->
+              <div class="col-md-6">
+                <h5 class="filter-heading mb-3">Category</h5>
+                <select class="form-select" id="category">
+                  <option value="*">All Categories</option>
+                  <% categories.forEach(category => { %>
+                  <option value="<%= category.name %>">
+                    <%= category.name %>
+                  </option>
+                  <% }) %>
+                </select>
+              </div>
             </div>
 
             <!-- Availability Filter -->
             <div class="filter-row mb-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="excludeOutOfStock">
-                    <label class="form-check-label" for="excludeOutOfStock">
-                        Show only in-stock items
-                    </label>
-                </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="excludeOutOfStock"
+                />
+                <label class="form-check-label" for="excludeOutOfStock">
+                  Show only in-stock items
+                </label>
+              </div>
             </div>
 
             <!-- Filter Actions -->
             <div class="filter-actions d-flex justify-content-end gap-2">
-                <button class="btn btn-outline-dark" id="clearFilters">Clear All</button>
-                <button class="btn btn-dark" id="applyFilters">Apply Filters</button>
+              <button class="btn btn-outline-dark" id="clearFilters">
+                Clear All
+              </button>
+              <button class="btn btn-dark" id="applyFilters">
+                Apply Filters
+              </button>
             </div>
-        </div>
+          </div>
 
-        <!-- Active Filters Display -->
-        <div class="active-filters mt-3" style="display: none;">
+          <!-- Active Filters Display -->
+          <div class="active-filters mt-3" style="display: none">
             <div class="d-flex flex-wrap gap-2 align-items-center">
-                <span class="fw-bold me-2">Active Filters:</span>
-                <!-- Active filters will be added here dynamically -->
+              <span class="fw-bold me-2">Active Filters:</span>
+              <!-- Active filters will be added here dynamically -->
             </div>
+          </div>
         </div>
-    </div>
-</section>
-<!-- Filter Section End -->
+      </section>
+      <!-- Filter Section End -->
 
-
-        <!-- Product Grid Section -->
-        <section class="product-grid py-5">
-            <div class="container">
-                <div class="row">
-                    <% if (products.length===0 || products.every(product=> product.isDeleted)) { %>
-                        <div class="col-12 text-center">
-                            <p>No products available at the moment.</p>
-                        </div>
-                        <% } else { %>
-                            <% products.filter(product=> !product.isDeleted).forEach((product, index) => { %>
-                                <!-- Each product takes up exactly 1/3 of the row -->
-                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                    <div class="single-popular-items mb-50 text-center">
-                                        <div class="popular-img">
-                                            <img src="<%= product.images[0] || '/assets/img/default-product.png' %>"
-                                                alt="<%= product.name %>">
-                                            <div class="img-cap">
-                                                <span>Add to cart</span>
-                                            </div>
-                                            <div class="favorit-items">
-                                                <span class="flaticon-heart"></span>
-                                            </div>
-                                        </div>
-                                        <div class="popular-caption">
-                                            <h3 class="popular-product-name">
-                                                <a href="/product/<%= product._id %>">
-                                                    <%= product.name %>
-                                                </a>
-                                            </h3>
-
-                                            <!-- Price Display -->
-                                            <div class="pricing">
-                                                <% if (product.offerPrice && product.offerPrice < product.price) { %>
-                                                    <span class="price">₹<%= product.offerPrice.toFixed(2) %></span>
-                                                    <span class="original-price">₹<%= product.price.toFixed(2) %></span>
-                                                    <% } else { %>
-                                                        <span class="price">₹<%= product.price.toFixed(2) %></span>
-                                                        <% } %>
-                                            </div>
-
-                                            <!-- Rating Display -->
-                                            <div class="rating mt-2">
-                                                <% for(let i=1; i <=5; i++) { %>
-                                                    <% if (i <=Math.round(product.rating)) { %>
-                                                        <i class="fas fa-star"></i>
-                                                        <% } else { %>
-                                                            <i class="far fa-star"></i>
-                                                            <% } %>
-                                                                <% } %>
-                                                                    <span class="rating-count">
-                                                                        (<%= product.reviews.length %> reviews)
-                                                                    </span>
-                                            </div>
-
-                                            <!-- Brand & Category -->
-                                            <% if (product.brand || (product.category && product.category.name)) { %>
-                                                <div class="product-meta mt-2">
-                                                    <% if (product.brand) { %>
-                                                        <span class="brand">
-                                                            <%= product.brand %>
-                                                        </span>
-                                                        <% } %>
-                                                            <% if (product.category && product.category.name) { %>
-                                                                <span class="category">| <%= product.category.name %>
-                                                                        </span>
-                                                                <% } %>
-                                                </div>
-                                                <% } %>
-
-                                                    <!-- Tags -->
-                                                    <% if (product.tags && product.tags.length> 0) { %>
-                                                        <div class="tags mt-2">
-                                                            <% product.tags.slice(0, 3).forEach(tag=> { %>
-                                                                <span class="tag">
-                                                                    <%= tag %>
-                                                                </span>
-                                                                <% }) %>
-                                                        </div>
-                                                        <% } %>
-
-                                                            <a href="/product/<%= product._id %>"
-                                                                class="view-details-btn mt-3">View Details</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Add clearfix after every 3rd item to force new row -->
-                                <% if ((index + 1) % 3===0) { %>
-                                    <div class="clearfix d-none d-lg-block"></div>
-                                    <% } %>
-                                        <% }) %>
-                                            <% } %>
-                </div>
+      <!-- Product Grid Section -->
+      <section class="product-grid py-5">
+        <div class="container">
+          <div class="row">
+            <% if (products.length===0 || products.every(product=>
+            product.isDeleted)) { %>
+            <div class="col-12 text-center">
+              <p>No products available at the moment.</p>
             </div>
-        </section>
+            <% } else { %> <% products.filter(product=>
+            !product.isDeleted).forEach((product, index) => { %>
+            <!-- Each product takes up exactly 1/3 of the row -->
+            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+              <div class="single-popular-items mb-50 text-center">
+                <div class="popular-img">
+                  <img
+                    src="<%= product.images[0] || '/assets/img/default-product.png' %>"
+                    alt="<%= product.name %>"
+                  />
+                  <div class="img-cap">
+                    <span>Add to cart</span>
+                  </div>
+                  <div class="favorit-items">
+                    <span class="flaticon-heart"></span>
+                  </div>
+                </div>
+                <div class="popular-caption">
+                  <h3 class="popular-product-name">
+                    <a href="/product/<%= product._id %>">
+                      <%= product.name %>
+                    </a>
+                  </h3>
 
+                  <!-- Price Display -->
+                  <div class="pricing">
+                    <% if (product.offerPrice && product.offerPrice <
+                    product.price) { %>
+                    <span class="price"
+                      >₹<%= product.offerPrice.toFixed(2) %></span
+                    >
+                    <span class="original-price"
+                      >₹<%= product.price.toFixed(2) %></span
+                    >
+                    <% } else { %>
+                    <span class="price">₹<%= product.price.toFixed(2) %></span>
+                    <% } %>
+                  </div>
+
+                  <!-- Rating Display -->
+                  <div class="rating mt-2">
+                    <% for(let i=1; i <=5; i++) { %> <% if (i
+                    <=Math.round(product.rating)) { %>
+                    <i class="fas fa-star"></i>
+                    <% } else { %>
+                    <i class="far fa-star"></i>
+                    <% } %> <% } %>
+                    <span class="rating-count">
+                      (<%= product.reviews.length %> reviews)
+                    </span>
+                  </div>
+
+                  <!-- Brand & Category -->
+                  <% if (product.brand || (product.category &&
+                  product.category.name)) { %>
+                  <div class="product-meta mt-2">
+                    <% if (product.brand) { %>
+                    <span class="brand"> <%= product.brand %> </span>
+                    <% } %> <% if (product.category && product.category.name) {
+                    %>
+                    <span class="category"
+                      >| <%= product.category.name %>
+                    </span>
+                    <% } %>
+                  </div>
+                  <% } %>
+
+                  <!-- Tags -->
+                  <% if (product.tags && product.tags.length> 0) { %>
+                  <div class="tags mt-2">
+                    <% product.tags.slice(0, 3).forEach(tag=> { %>
+                    <span class="tag"> <%= tag %> </span>
+                    <% }) %>
+                  </div>
+                  <% } %>
+
+                  <a
+                    href="/product/<%= product._id %>"
+                    class="view-details-btn mt-3"
+                    >View Details</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Add clearfix after every 3rd item to force new row -->
+            <% if ((index + 1) % 3===0) { %>
+            <div class="clearfix d-none d-lg-block"></div>
+            <% } %> <% }) %> <% } %>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer>
-        <!-- Footer Start-->
-        <div class="footer-area footer-padding">
-            <div class="container">
-                <div class="row d-flex justify-content-between">
-                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
-                        <div class="single-footer-caption mb-50">
-                            <div class="single-footer-caption mb-30">
-                                <!-- logo -->
-                                <div class="footer-logo">
-                                    <a href="index.html"><img src="assets/img/logo/logo2_footer.png" alt=""></a>
-                                </div>
-                                <div class="footer-tittle">
-                                    <div class="footer-pera">
-                                        <p>Asorem ipsum adipolor sdit amet, consectetur adipisicing elitcf sed do eiusmod tem.</p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
+      <!-- Footer Start-->
+      <div class="footer-area footer-padding">
+        <div class="container">
+          <div class="row d-flex justify-content-between">
+            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
+              <div class="single-footer-caption mb-50">
+                <div class="single-footer-caption mb-30">
+                  <!-- logo -->
+                  <div class="footer-logo">
+                    <a href="index.html"
+                      ><img src="assets/img/logo/logo2_footer.png" alt=""
+                    /></a>
+                  </div>
+                  <div class="footer-tittle">
+                    <div class="footer-pera">
+                      <p>
+                        Asorem ipsum adipolor sdit amet, consectetur adipisicing
+                        elitcf sed do eiusmod tem.
+                      </p>
                     </div>
-                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Quick Links</h4>
-                                <ul>
-                                    <li><a href="#">About</a></li>
-                                    <li><a href="#"> Offers & Discounts</a></li>
-                                    <li><a href="#"> Get Coupon</a></li>
-                                    <li><a href="#">  Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>New Products</h4>
-                                <ul>
-                                    <li><a href="#">Woman Cloth</a></li>
-                                    <li><a href="#">Fashion Accessories</a></li>
-                                    <li><a href="#"> Man Accessories</a></li>
-                                    <li><a href="#"> Rubber made Toys</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Support</h4>
-                                <ul>
-                                    <li><a href="#">Frequently Asked Questions</a></li>
-                                    <li><a href="#">Terms & Conditions</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Report a Payment Issue</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-                <!-- Footer bottom -->
-                <div class="row align-items-center">
-                    <div class="col-xl-7 col-lg-8 col-md-7">
-                        <div class="footer-copy-right">
-                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-       Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-       <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>                  
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-4 col-md-5">
-                        <div class="footer-copy-right f-right">
-                            <!-- social -->
-                            <div class="footer-social">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="https://www.facebook.com/sai4ull"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-behance"></i></a>
-                                <a href="#"><i class="fas fa-globe"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
+              <div class="single-footer-caption mb-50">
+                <div class="footer-tittle">
+                  <h4>Quick Links</h4>
+                  <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#"> Offers & Discounts</a></li>
+                    <li><a href="#"> Get Coupon</a></li>
+                    <li><a href="#"> Contact Us</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
+              <div class="single-footer-caption mb-50">
+                <div class="footer-tittle">
+                  <h4>New Products</h4>
+                  <ul>
+                    <li><a href="#">Woman Cloth</a></li>
+                    <li><a href="#">Fashion Accessories</a></li>
+                    <li><a href="#"> Man Accessories</a></li>
+                    <li><a href="#"> Rubber made Toys</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
+              <div class="single-footer-caption mb-50">
+                <div class="footer-tittle">
+                  <h4>Support</h4>
+                  <ul>
+                    <li><a href="#">Frequently Asked Questions</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Report a Payment Issue</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Footer bottom -->
+          <div class="row align-items-center">
+            <div class="col-xl-7 col-lg-8 col-md-7">
+              <div class="footer-copy-right">
+                <p>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                  Copyright &copy;
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>
+                  All rights reserved | This template is made with
+                  <i class="fa fa-heart" aria-hidden="true"></i> by
+                  <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </p>
+              </div>
+            </div>
+            <div class="col-xl-5 col-lg-4 col-md-5">
+              <div class="footer-copy-right f-right">
+                <!-- social -->
+                <div class="footer-social">
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="https://www.facebook.com/sai4ull"
+                    ><i class="fab fa-facebook-f"></i
+                  ></a>
+                  <a href="#"><i class="fab fa-behance"></i></a>
+                  <a href="#"><i class="fas fa-globe"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- Footer End-->
+      </div>
+      <!-- Footer End-->
     </footer>
-    
-    
-        <!-- SweetAlert2 CDN -->
+
+    <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script>
-    
-    const logoutButton = document.getElementById('logout-btn');
-    
-    // Add a click event listener
-    logoutButton.addEventListener('click', () => {
-            
-                
-                // SweetAlert2 confirmation
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, log me out!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Redirect to the logout route
-                        window.location.href = '/logout';
-                    }
-                });
-            });
-        </script>
+      const logoutButton = document.getElementById("logout-btn");
+
+      // Add a click event listener
+      logoutButton.addEventListener("click", () => {
+        // SweetAlert2 confirmation
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, log me out!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Redirect to the logout route
+            window.location.href = "/logout";
+          }
+        });
+      });
+    </script>
 
     <!-- JS here -->
     <script src="./assets/js/vendor/modernizr-3.5.0.min.js"></script>
@@ -865,60 +1047,65 @@
     <script src="./assets/js/jquery.sticky.js"></script>
     <script src="./assets/js/main.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Close buttons for active filters
-            document.querySelectorAll('.active-filters .btn-close').forEach(button => {
-                button.addEventListener('click', function () {
-                    this.closest('.badge').remove();
-                });
+      document.addEventListener("DOMContentLoaded", function () {
+        // Close buttons for active filters
+        document
+          .querySelectorAll(".active-filters .btn-close")
+          .forEach((button) => {
+            button.addEventListener("click", function () {
+              this.closest(".badge").remove();
             });
+          });
 
-            // Sort option selection
-            // document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
-            //     radio.addEventListener('change', function () {
-            //         console.log('Sort option selected:', this.id);
-            //         // Add your sorting logic here
-            //     });
-            // });
+        // Sort option selection
+        // document.querySelectorAll('input[name="sortOption"]').forEach(radio => {
+        //     radio.addEventListener('change', function () {
+        //         console.log('Sort option selected:', this.id);
+        //         // Add your sorting logic here
+        //     });
+        // });
 
-            // // Price range inputs
-            // const minPrice = document.querySelector('input[placeholder="Min"]');
-            // const maxPrice = document.querySelector('input[placeholder="Max"]');
+        // // Price range inputs
+        // const minPrice = document.querySelector('input[placeholder="Min"]');
+        // const maxPrice = document.querySelector('input[placeholder="Max"]');
 
-            // [minPrice, maxPrice].forEach(input => {
-            //     input.addEventListener('change', function () {
-            //         console.log('Price range updated:', {
-            //             min: minPrice.value,
-            //             max: maxPrice.value
-            //         });
-            //         // Add your price filter logic here
-            //     });
-            // });
-        });
+        // [minPrice, maxPrice].forEach(input => {
+        //     input.addEventListener('change', function () {
+        //         console.log('Price range updated:', {
+        //             min: minPrice.value,
+        //             max: maxPrice.value
+        //         });
+        //         // Add your price filter logic here
+        //     });
+        // });
+      });
     </script>
 
+    <script>
+      function updateProductList(products) {
+        const productGrid = document.querySelector(".product-grid .row");
 
+        productGrid.innerHTML = "";
 
-<script>
-    function updateProductList(products) {
-        const productGrid = document.querySelector('.product-grid .row');
-        
-        productGrid.innerHTML = '';
-    
         if (products.length === 0) {
-            productGrid.innerHTML = `
+          productGrid.innerHTML = `
                 <div class="col-12 text-center">
                     <p>No products available matching your filters.</p>
                 </div>`;
-            return;
+          return;
         }
-    
-        products.filter(product => !product.isDeleted).forEach((product, index) => {
+
+        products
+          .filter((product) => !product.isDeleted)
+          .forEach((product, index) => {
             const productHTML = `
                 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                     <div class="single-popular-items mb-50 text-center">
                         <div class="popular-img">
-                            <img src="${product.images[0] || '/assets/img/default-product.png'}" 
+                            <img src="${
+                              product.images[0] ||
+                              "/assets/img/default-product.png"
+                            }" 
                                  alt="${product.name}">
                             <div class="img-cap">
                                 <span>Add to cart</span>
@@ -929,285 +1116,323 @@
                         </div>
                         <div class="popular-caption">
                             <h3 class="popular-product-name">
-                                <a href="/product/${product._id}">${product.name}</a>
+                                <a href="/product/${product._id}">${
+              product.name
+            }</a>
                             </h3>
                             
                             <div class="pricing">
-                                ${product.offerPrice && product.offerPrice < product.price 
-                                    ? `<span class="price">₹${product.offerPrice.toFixed(2)}</span>
-                                       <span class="original-price">₹${product.price.toFixed(2)}</span>`
-                                    : `<span class="price">₹${product.price.toFixed(2)}</span>`
+                                ${
+                                  product.offerPrice &&
+                                  product.offerPrice < product.price
+                                    ? `<span class="price">₹${product.offerPrice.toFixed(
+                                        2
+                                      )}</span>
+                                       <span class="original-price">₹${product.price.toFixed(
+                                         2
+                                       )}</span>`
+                                    : `<span class="price">₹${product.price.toFixed(
+                                        2
+                                      )}</span>`
                                 }
                             </div>
     
                             <div class="rating mt-2">
                                 ${generateRatingStars(product.rating)}
-                                <span class="rating-count">(${product.reviews.length} reviews)</span>
+                                <span class="rating-count">(${
+                                  product.reviews.length
+                                } reviews)</span>
                             </div>
     
-                            ${(product.brand || (product.category && product.category.name)) 
+                            ${
+                              product.brand ||
+                              (product.category && product.category.name)
                                 ? `<div class="product-meta mt-2">
-                                     ${product.brand ? `<span class="brand">${product.brand}</span>` : ''}
-                                     ${product.category && product.category.name 
-                                         ? `<span class="category">| ${product.category.name}</span>` 
-                                         : ''}
+                                     ${
+                                       product.brand
+                                         ? `<span class="brand">${product.brand}</span>`
+                                         : ""
+                                     }
+                                     ${
+                                       product.category && product.category.name
+                                         ? `<span class="category">| ${product.category.name}</span>`
+                                         : ""
+                                     }
                                    </div>`
-                                : ''
+                                : ""
                             }
     
-                            ${product.tags && product.tags.length > 0 
+                            ${
+                              product.tags && product.tags.length > 0
                                 ? `<div class="tags mt-2">
-                                     ${product.tags.slice(0, 3).map(tag => 
-                                         `<span class="tag">${tag}</span>`
-                                     ).join('')}
+                                     ${product.tags
+                                       .slice(0, 3)
+                                       .map(
+                                         (tag) =>
+                                           `<span class="tag">${tag}</span>`
+                                       )
+                                       .join("")}
                                    </div>`
-                                : ''
+                                : ""
                             }
     
-                            <a href="/product/${product._id}" class="view-details-btn mt-3">View Details</a>
+                            <a href="/product/${
+                              product._id
+                            }" class="view-details-btn mt-3">View Details</a>
                         </div>
                     </div>
                 </div>
-                ${(index + 1) % 3 === 0 ? '<div class="clearfix d-none d-lg-block"></div>' : ''}
+                ${
+                  (index + 1) % 3 === 0
+                    ? '<div class="clearfix d-none d-lg-block"></div>'
+                    : ""
+                }
             `;
-            
-            productGrid.insertAdjacentHTML('beforeend', productHTML);
-        });
-    }
-    
-    // Helper function to generate rating stars
-    function generateRatingStars(rating) {
-        let starsHtml = '';
+
+            productGrid.insertAdjacentHTML("beforeend", productHTML);
+          });
+      }
+
+      // Helper function to generate rating stars
+      function generateRatingStars(rating) {
+        let starsHtml = "";
         const roundedRating = Math.round(rating);
-        
+
         for (let i = 1; i <= 5; i++) {
-            if (i <= roundedRating) {
-                starsHtml += '<i class="fas fa-star"></i>';
-            } else {
-                starsHtml += '<i class="far fa-star"></i>';
-            }
+          if (i <= roundedRating) {
+            starsHtml += '<i class="fas fa-star"></i>';
+          } else {
+            starsHtml += '<i class="far fa-star"></i>';
+          }
         }
-        
+
         return starsHtml;
-    }
-</script>
+      }
+    </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const filterToggle = document.getElementById('filterToggle');
-    const filterPanel = document.getElementById('filterPanel');
-    const applyFiltersBtn = document.getElementById('applyFilters');
-    const clearFiltersBtn = document.getElementById('clearFilters');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchBtn');
-    const activeFilters = document.querySelector('.active-filters');
-    const productGrid = document.querySelector('.product-grid');
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const filterToggle = document.getElementById("filterToggle");
+        const filterPanel = document.getElementById("filterPanel");
+        const applyFiltersBtn = document.getElementById("applyFilters");
+        const clearFiltersBtn = document.getElementById("clearFilters");
+        const searchInput = document.getElementById("searchInput");
+        const searchBtn = document.getElementById("searchBtn");
+        const activeFilters = document.querySelector(".active-filters");
+        const productGrid = document.querySelector(".product-grid");
 
-    
-    let searchTimeout;
+        let searchTimeout;
 
-    filterToggle.addEventListener('click', function () {
-        const isVisible = filterPanel.style.display === 'block';
-        filterPanel.style.display = isVisible ? 'none' : 'block';
-        filterToggle.classList.toggle('active');
-    });
+        filterToggle.addEventListener("click", function () {
+          const isVisible = filterPanel.style.display === "block";
+          filterPanel.style.display = isVisible ? "none" : "block";
+          filterToggle.classList.toggle("active");
+        });
 
-    async function performSearch() {
-        const searchTerm = searchInput.value.trim();
-        const excludeOutOfStock = document.getElementById('excludeOutOfStock').checked;
+        async function performSearch() {
+          const searchTerm = searchInput.value.trim();
+          const excludeOutOfStock =
+            document.getElementById("excludeOutOfStock").checked;
 
-        if (searchTerm === '') {
+          if (searchTerm === "") {
             applyFiltersBtn.click();
             return;
-        }
+          }
 
-        try {
-
-            const response = await fetch('/search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    search: searchTerm,
-                    excludeOutOfStock: excludeOutOfStock
-                })
+          try {
+            const response = await fetch("/search", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                search: searchTerm,
+                excludeOutOfStock: excludeOutOfStock,
+              }),
             });
 
             const data = await response.json();
             if (data.products) {
-                updateProductList(data.products);
-                updateActiveFilters({
-                    searchTerm: `Search: ${searchTerm}`
-                });
-                activeFilters.style.display = 'block';
+              updateProductList(data.products);
+              updateActiveFilters({
+                searchTerm: `Search: ${searchTerm}`,
+              });
+              activeFilters.style.display = "block";
             }
-        } catch (error) {
-            console.error('Search error:', error);
+          } catch (error) {
+            console.error("Search error:", error);
+          }
         }
-    }
 
-    async function applyFilters() {
-        const filters = {
-            sortBy: document.getElementById('sortBy').value,
-            priceRange: Array.from(document.querySelectorAll('input[name="priceRange"]'))
-                .find(input => input.checked)?.value,
-            category: document.getElementById('category').value,
-            excludeOutOfStock: document.getElementById('excludeOutOfStock').checked
-        };
-        
-        
+        async function applyFilters() {
+          const filters = {
+            sortBy: document.getElementById("sortBy").value,
+            priceRange: Array.from(
+              document.querySelectorAll('input[name="priceRange"]')
+            ).find((input) => input.checked)?.value,
+            category: document.getElementById("category").value,
+            excludeOutOfStock:
+              document.getElementById("excludeOutOfStock").checked,
+          };
 
-        try {
-            const response = await fetch('/filter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(filters)
+          try {
+            const response = await fetch("/filter", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(filters),
             });
 
             const data = await response.json();
             if (data.products) {
-                updateProductList(data.products);
-                updateActiveFilters(filters);
-                filterPanel.style.display = 'none';
-                activeFilters.style.display = Object.values(filters).some(value => value) ? 'block' : 'none';
+              updateProductList(data.products);
+              updateActiveFilters(filters);
+              filterPanel.style.display = "none";
+              activeFilters.style.display = Object.values(filters).some(
+                (value) => value
+              )
+                ? "block"
+                : "none";
             }
-        } catch (error) {
-            console.error('Filter error:', error);
+          } catch (error) {
+            console.error("Filter error:", error);
+          }
         }
-    }
 
-    function updateActiveFilters(filters) {
-        const activeFiltersContainer = document.querySelector('.active-filters > div');
-        activeFiltersContainer.innerHTML = '<span class="fw-bold me-2">Active Filters:</span>';
+        function updateActiveFilters(filters) {
+          const activeFiltersContainer = document.querySelector(
+            ".active-filters > div"
+          );
+          activeFiltersContainer.innerHTML =
+            '<span class="fw-bold me-2">Active Filters:</span>';
 
-        Object.entries(filters).forEach(([key, value]) => {
-            if (value && value !== '*' && value !== '') {
-                const badge = document.createElement('span');
-                badge.className = 'badge';
-                badge.innerHTML = `
-                    ${key === 'searchTerm' ? value : `${key}: ${value}`}
+          Object.entries(filters).forEach(([key, value]) => {
+            if (value && value !== "*" && value !== "") {
+              const badge = document.createElement("span");
+              badge.className = "badge";
+              badge.innerHTML = `
+                    ${key === "searchTerm" ? value : `${key}: ${value}`}
                     <button onclick="removeFilter('${key}')">&times;</button>
                 `;
-                activeFiltersContainer.appendChild(badge);
+              activeFiltersContainer.appendChild(badge);
             }
-        });
-    }
-
-    searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(performSearch, 500); 
-    });
-
-    searchBtn.addEventListener('click', performSearch);
-
-    applyFiltersBtn.addEventListener('click', applyFilters);
-
-    clearFiltersBtn.addEventListener('click', function() {
-
-        document.getElementById('sortBy').value = '';
-        document.querySelectorAll('input[name="priceRange"]')
-            .forEach(input => input.checked = false);
-        document.getElementById('category').value = '*';
-        document.getElementById('excludeOutOfStock').checked = false;
-        searchInput.value = '';
-
-        applyFilters();
-        
-
-        activeFilters.style.display = 'none';
-        document.querySelector('.active-filters > div').innerHTML = 
-            '<span class="fw-bold me-2">Active Filters:</span>';
-    });
-
-    window.removeFilter = function(filterKey) {
-        switch (filterKey) {
-            case 'sortBy':
-                document.getElementById('sortBy').value = '';
-                break;
-            case 'priceRange':
-                document.querySelectorAll('input[name="priceRange"]')
-                    .forEach(input => input.checked = false);
-                break;
-            case 'category':
-                document.getElementById('category').value = '*';
-                break;
-            case 'excludeOutOfStock':
-                document.getElementById('excludeOutOfStock').checked = false;
-                break;
-            case 'searchTerm':
-                searchInput.value = '';
-                break;
+          });
         }
 
-        if (filterKey === 'searchTerm') {
+        searchInput.addEventListener("input", function () {
+          clearTimeout(searchTimeout);
+          searchTimeout = setTimeout(performSearch, 500);
+        });
+
+        searchBtn.addEventListener("click", performSearch);
+
+        applyFiltersBtn.addEventListener("click", applyFilters);
+
+        clearFiltersBtn.addEventListener("click", function () {
+          document.getElementById("sortBy").value = "";
+          document
+            .querySelectorAll('input[name="priceRange"]')
+            .forEach((input) => (input.checked = false));
+          document.getElementById("category").value = "*";
+          document.getElementById("excludeOutOfStock").checked = false;
+          searchInput.value = "";
+
+          applyFilters();
+
+          activeFilters.style.display = "none";
+          document.querySelector(".active-filters > div").innerHTML =
+            '<span class="fw-bold me-2">Active Filters:</span>';
+        });
+
+        window.removeFilter = function (filterKey) {
+          switch (filterKey) {
+            case "sortBy":
+              document.getElementById("sortBy").value = "";
+              break;
+            case "priceRange":
+              document
+                .querySelectorAll('input[name="priceRange"]')
+                .forEach((input) => (input.checked = false));
+              break;
+            case "category":
+              document.getElementById("category").value = "*";
+              break;
+            case "excludeOutOfStock":
+              document.getElementById("excludeOutOfStock").checked = false;
+              break;
+            case "searchTerm":
+              searchInput.value = "";
+              break;
+          }
+
+          if (filterKey === "searchTerm") {
             applyFilters();
-        } else {
+          } else {
             const currentSearchTerm = searchInput.value.trim();
             if (currentSearchTerm) {
-                performSearch();
+              performSearch();
             } else {
-                applyFilters();
+              applyFilters();
             }
-        }
-    };
+          }
+        };
 
-    document.addEventListener('click', function(event) {
-        if (!filterPanel.contains(event.target) && 
-            !filterToggle.contains(event.target) && 
-            filterPanel.style.display === 'block') {
-            filterPanel.style.display = 'none';
-        }
-    });
-});
+        document.addEventListener("click", function (event) {
+          if (
+            !filterPanel.contains(event.target) &&
+            !filterToggle.contains(event.target) &&
+            filterPanel.style.display === "block"
+          ) {
+            filterPanel.style.display = "none";
+          }
+        });
+      });
 
+      document.addEventListener("DOMContentLoaded", function () {
+        const filterToggle = document.getElementById("filterToggle");
+        const filterPanel = document.getElementById("filterPanel");
+        const productGrid = document.querySelector(".product-grid");
 
-document.addEventListener('DOMContentLoaded', function () {
-    const filterToggle = document.getElementById('filterToggle');
-    const filterPanel = document.getElementById('filterPanel');
-    const productGrid = document.querySelector('.product-grid');
-    
-    filterToggle.addEventListener('click', function () {
-        const isVisible = filterPanel.classList.contains('active');
-        
-        if (!isVisible) {
+        filterToggle.addEventListener("click", function () {
+          const isVisible = filterPanel.classList.contains("active");
+
+          if (!isVisible) {
             // Show filter panel
-            filterPanel.style.display = 'block';
+            filterPanel.style.display = "block";
             // Use setTimeout to trigger transition after display change
             setTimeout(() => {
-                filterPanel.classList.add('active');
-                productGrid.classList.add('filter-active');
+              filterPanel.classList.add("active");
+              productGrid.classList.add("filter-active");
             }, 10);
-        } else {
+          } else {
             // Hide filter panel
-            filterPanel.classList.remove('active');
-            productGrid.classList.remove('filter-active');
+            filterPanel.classList.remove("active");
+            productGrid.classList.remove("filter-active");
             // Wait for transition to complete before hiding
             setTimeout(() => {
-                filterPanel.style.display = 'none';
+              filterPanel.style.display = "none";
             }, 300);
-        }
-        
-        filterToggle.classList.toggle('active');
-    });
+          }
 
-    // Close filter panel when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!filterPanel.contains(event.target) && 
-            !filterToggle.contains(event.target) && 
-            filterPanel.classList.contains('active')) {
-            filterPanel.classList.remove('active');
-            productGrid.classList.remove('filter-active');
+          filterToggle.classList.toggle("active");
+        });
+
+        // Close filter panel when clicking outside
+        document.addEventListener("click", function (event) {
+          if (
+            !filterPanel.contains(event.target) &&
+            !filterToggle.contains(event.target) &&
+            filterPanel.classList.contains("active")
+          ) {
+            filterPanel.classList.remove("active");
+            productGrid.classList.remove("filter-active");
             setTimeout(() => {
-                filterPanel.style.display = 'none';
+              filterPanel.style.display = "none";
             }, 300);
-        }
-    });
-});
-</script>
-
-</body>
-
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
